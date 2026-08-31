@@ -23,10 +23,13 @@ A mobile + web system that helps a mechanical workshop book vehicles, assign job
 - [W Nkuna] – [222010787]
 
 ## Repository Structure
-- `docs/` – Project documentation (planning, requirements, design, etc.)
+
 - `mobile/` – Flutter mobile application
 - `web/` – ASP.NET web application
-- `supabase/` – Database schema and related files (optional)
+- `supabase/` – Shared backend (migrations & seed data)
+- `project-docs/` – Assessment deliverables and project documentation
+- `assets/` – Shared images, icons and mockups
+- `CONTRIBUTORS.md` – Team ownership
 
 ## How to Run (to be completed later)
 ### Mobile (Flutter)
