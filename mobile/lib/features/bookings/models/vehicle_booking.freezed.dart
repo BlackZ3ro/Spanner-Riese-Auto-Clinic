@@ -1,0 +1,309 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
+// ignore_for_file: type=lint
+// ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+part of 'vehicle_booking.dart';
+
+// **************************************************************************
+// FreezedGenerator
+// **************************************************************************
+
+// dart format off
+T _$identity<T>(T value) => value;
+
+/// @nodoc
+mixin _$VehicleBooking {
+
+ String get id; String get brand; String get model; int get year; String? get engineSize; TransmissionType get transmissionType; String get registration; int get kilometers; String? get engineCode; String? get imageUrl;// @Default(BookingStatus.checkedIn) BookingStatus status,
+ DateTime? get closedAt;
+/// Create a copy of VehicleBooking
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$VehicleBookingCopyWith<VehicleBooking> get copyWith => _$VehicleBookingCopyWithImpl<VehicleBooking>(this as VehicleBooking, _$identity);
+
+  /// Serializes this VehicleBooking to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VehicleBooking&&(identical(other.id, id) || other.id == id)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.model, model) || other.model == model)&&(identical(other.year, year) || other.year == year)&&(identical(other.engineSize, engineSize) || other.engineSize == engineSize)&&(identical(other.transmissionType, transmissionType) || other.transmissionType == transmissionType)&&(identical(other.registration, registration) || other.registration == registration)&&(identical(other.kilometers, kilometers) || other.kilometers == kilometers)&&(identical(other.engineCode, engineCode) || other.engineCode == engineCode)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,brand,model,year,engineSize,transmissionType,registration,kilometers,engineCode,imageUrl,closedAt);
+
+@override
+String toString() {
+  return 'VehicleBooking(id: $id, brand: $brand, model: $model, year: $year, engineSize: $engineSize, transmissionType: $transmissionType, registration: $registration, kilometers: $kilometers, engineCode: $engineCode, imageUrl: $imageUrl, closedAt: $closedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $VehicleBookingCopyWith<$Res>  {
+  factory $VehicleBookingCopyWith(VehicleBooking value, $Res Function(VehicleBooking) _then) = _$VehicleBookingCopyWithImpl;
+@useResult
+$Res call({
+ String id, String brand, String model, int year, String? engineSize, TransmissionType transmissionType, String registration, int kilometers, String? engineCode, String? imageUrl, DateTime? closedAt
+});
+
+
+
+
+}
+/// @nodoc
+class _$VehicleBookingCopyWithImpl<$Res>
+    implements $VehicleBookingCopyWith<$Res> {
+  _$VehicleBookingCopyWithImpl(this._self, this._then);
+
+  final VehicleBooking _self;
+  final $Res Function(VehicleBooking) _then;
+
+/// Create a copy of VehicleBooking
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? brand = null,Object? model = null,Object? year = null,Object? engineSize = freezed,Object? transmissionType = null,Object? registration = null,Object? kilometers = null,Object? engineCode = freezed,Object? imageUrl = freezed,Object? closedAt = freezed,}) {
+  return _then(_self.copyWith(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,brand: null == brand ? _self.brand : brand // ignore: cast_nullable_to_non_nullable
+as String,model: null == model ? _self.model : model // ignore: cast_nullable_to_non_nullable
+as String,year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
+as int,engineSize: freezed == engineSize ? _self.engineSize : engineSize // ignore: cast_nullable_to_non_nullable
+as String?,transmissionType: null == transmissionType ? _self.transmissionType : transmissionType // ignore: cast_nullable_to_non_nullable
+as TransmissionType,registration: null == registration ? _self.registration : registration // ignore: cast_nullable_to_non_nullable
+as String,kilometers: null == kilometers ? _self.kilometers : kilometers // ignore: cast_nullable_to_non_nullable
+as int,engineCode: freezed == engineCode ? _self.engineCode : engineCode // ignore: cast_nullable_to_non_nullable
+as String?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String?,closedAt: freezed == closedAt ? _self.closedAt : closedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [VehicleBooking].
+extension VehicleBookingPatterns on VehicleBooking {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _VehicleBooking value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _VehicleBooking() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _VehicleBooking value)  $default,){
+final _that = this;
+switch (_that) {
+case _VehicleBooking():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _VehicleBooking value)?  $default,){
+final _that = this;
+switch (_that) {
+case _VehicleBooking() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  DateTime? closedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _VehicleBooking() when $default != null:
+return $default(_that.id,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.closedAt);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  DateTime? closedAt)  $default,) {final _that = this;
+switch (_that) {
+case _VehicleBooking():
+return $default(_that.id,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.closedAt);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  DateTime? closedAt)?  $default,) {final _that = this;
+switch (_that) {
+case _VehicleBooking() when $default != null:
+return $default(_that.id,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.closedAt);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _VehicleBooking implements VehicleBooking {
+  const _VehicleBooking({required this.id, required this.brand, required this.model, required this.year, this.engineSize, required this.transmissionType, required this.registration, required this.kilometers, this.engineCode, this.imageUrl, this.closedAt});
+  factory _VehicleBooking.fromJson(Map<String, dynamic> json) => _$VehicleBookingFromJson(json);
+
+@override final  String id;
+@override final  String brand;
+@override final  String model;
+@override final  int year;
+@override final  String? engineSize;
+@override final  TransmissionType transmissionType;
+@override final  String registration;
+@override final  int kilometers;
+@override final  String? engineCode;
+@override final  String? imageUrl;
+// @Default(BookingStatus.checkedIn) BookingStatus status,
+@override final  DateTime? closedAt;
+
+/// Create a copy of VehicleBooking
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$VehicleBookingCopyWith<_VehicleBooking> get copyWith => __$VehicleBookingCopyWithImpl<_VehicleBooking>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$VehicleBookingToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VehicleBooking&&(identical(other.id, id) || other.id == id)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.model, model) || other.model == model)&&(identical(other.year, year) || other.year == year)&&(identical(other.engineSize, engineSize) || other.engineSize == engineSize)&&(identical(other.transmissionType, transmissionType) || other.transmissionType == transmissionType)&&(identical(other.registration, registration) || other.registration == registration)&&(identical(other.kilometers, kilometers) || other.kilometers == kilometers)&&(identical(other.engineCode, engineCode) || other.engineCode == engineCode)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,id,brand,model,year,engineSize,transmissionType,registration,kilometers,engineCode,imageUrl,closedAt);
+
+@override
+String toString() {
+  return 'VehicleBooking(id: $id, brand: $brand, model: $model, year: $year, engineSize: $engineSize, transmissionType: $transmissionType, registration: $registration, kilometers: $kilometers, engineCode: $engineCode, imageUrl: $imageUrl, closedAt: $closedAt)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$VehicleBookingCopyWith<$Res> implements $VehicleBookingCopyWith<$Res> {
+  factory _$VehicleBookingCopyWith(_VehicleBooking value, $Res Function(_VehicleBooking) _then) = __$VehicleBookingCopyWithImpl;
+@override @useResult
+$Res call({
+ String id, String brand, String model, int year, String? engineSize, TransmissionType transmissionType, String registration, int kilometers, String? engineCode, String? imageUrl, DateTime? closedAt
+});
+
+
+
+
+}
+/// @nodoc
+class __$VehicleBookingCopyWithImpl<$Res>
+    implements _$VehicleBookingCopyWith<$Res> {
+  __$VehicleBookingCopyWithImpl(this._self, this._then);
+
+  final _VehicleBooking _self;
+  final $Res Function(_VehicleBooking) _then;
+
+/// Create a copy of VehicleBooking
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? brand = null,Object? model = null,Object? year = null,Object? engineSize = freezed,Object? transmissionType = null,Object? registration = null,Object? kilometers = null,Object? engineCode = freezed,Object? imageUrl = freezed,Object? closedAt = freezed,}) {
+  return _then(_VehicleBooking(
+id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
+as String,brand: null == brand ? _self.brand : brand // ignore: cast_nullable_to_non_nullable
+as String,model: null == model ? _self.model : model // ignore: cast_nullable_to_non_nullable
+as String,year: null == year ? _self.year : year // ignore: cast_nullable_to_non_nullable
+as int,engineSize: freezed == engineSize ? _self.engineSize : engineSize // ignore: cast_nullable_to_non_nullable
+as String?,transmissionType: null == transmissionType ? _self.transmissionType : transmissionType // ignore: cast_nullable_to_non_nullable
+as TransmissionType,registration: null == registration ? _self.registration : registration // ignore: cast_nullable_to_non_nullable
+as String,kilometers: null == kilometers ? _self.kilometers : kilometers // ignore: cast_nullable_to_non_nullable
+as int,engineCode: freezed == engineCode ? _self.engineCode : engineCode // ignore: cast_nullable_to_non_nullable
+as String?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String?,closedAt: freezed == closedAt ? _self.closedAt : closedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
+  ));
+}
+
+
+}
+
+// dart format on

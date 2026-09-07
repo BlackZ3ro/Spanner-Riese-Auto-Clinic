@@ -1,0 +1,52 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../data/vehicle_booking_repository.dart';
+import '../models/transmission_type.dart';
+import '../models/vehicle_booking.dart';
+
+final vehicleBookingRepositoryProvider = Provider((ref) => VehicleBookingRepository());
+
+class VehicleBookingNotifier extends AsyncNotifier<List<VehicleBooking>> {
+  @override
+  Future<List<VehicleBooking>> build(){
+    return ref.read(vehicleBookingRepositoryProvider).fetchAll();
+  }
+
+  Future<void> addBooking({
+    required String brand,
+    required String model,
+    required int year,
+    String? engineSize,
+    required TransmissionType transmissionType,
+    required String registration,
+    required int kilometers,
+    String? engineCode,
+    String? imageUrl,
+  }) async {
+    final repo = ref.read(vehicleBookingRepositoryProvider);
+    final newBooking = await repo.add(
+      brand: brand, 
+      model: model, 
+      year: year, 
+      engineSize: engineSize,
+      transmissionType: transmissionType, 
+      registration: registration, 
+      kilometers: kilometers,
+      engineCode: engineCode,
+      imageUrl: imageUrl,
+      );
+      final current = state.value ?? [];
+      state = AsyncData([newBooking, ...current]);
+  }
+
+  Future<void> removeBooking(String id) async{
+    final repo = ref.read(vehicleBookingRepositoryProvider);
+    await repo.remove(id);
+    final current = state.value ?? [];
+    state = AsyncData(current.where((b) => b.id != id).toList());
+  }
+}
+
+final vehicleBookingProvider = 
+  AsyncNotifierProvider<VehicleBookingNotifier, List<VehicleBooking>>(
+    VehicleBookingNotifier.new);
+  
