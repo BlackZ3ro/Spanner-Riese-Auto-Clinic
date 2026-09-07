@@ -31,12 +31,25 @@ Ground rules:
 
 ## Status as of M1
 
-- `/mobile/lib` and `/supabase/migrations`, `/supabase/seed` are still empty
-  stubs in this repo (placeholder `.gitkeep` files only) - there is no
-  mobile app code or committed migrations to check, despite earlier planning
-  documents assuming the mobile app was further along. Re-check this note
-  before M2/M6 (which assume `/mobile` exists) and update it once mobile
-  work lands.
+- `/mobile/lib` landed (Gary pushed it straight to `main` mid-M1). It
+  confirms the real schema below field-for-field (`vehicle_booking.dart`,
+  `stock_item.dart`, etc. match exactly). But **mobile has no real
+  authentication at all** - `main.dart` goes straight to `HomeScreen()`,
+  and `features/auth/` is just a local, unauthenticated
+  `StateProvider<UserRole?>` (admin/mechanic) that isn't backed by Supabase
+  Auth or persisted anywhere; there are zero `Auth.signIn*`/`signUp*` calls
+  in `/mobile/lib`. So "check /mobile's auth setup so staff use identical
+  credentials" (per the original build plan) doesn't apply yet - this web
+  app's Supabase Auth login is the first real FR-12 implementation in this
+  project. Worth a heads-up to the team: mobile still has no access control.
+- Mobile's `VehicleBooking` model is also behind the live DB schema - its
+  `status` field is commented out entirely (`booking_status.dart` is a
+  fully commented-out stub) and so is `createdAt`, even though both columns
+  exist in Supabase. Don't assume mobile is reading/writing everything the
+  DB has.
+- `/supabase/migrations`, `/supabase/seed` are still empty stubs - the real
+  schema was built directly in the Supabase dashboard, not via migrations
+  committed to this repo.
 - Supabase `Url`/`AnonKey` **are** configured (as local user-secrets, not
   committed) and the live connection is confirmed working.
 
