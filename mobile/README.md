@@ -1,18 +1,17 @@
-# Mobile Application (Flutter)
+# stock_system_riese_auto_clinic
 
-This folder contains the Flutter mobile application for Spanner.
+A new Flutter project.
 
-## Owner
-Gary
+## Getting Started
 
-## Setup Instructions
-1. Make sure Flutter is installed on your machine.
-2. Navigate to this folder:
-   ```bash
-   cd mobile
+This project is a starting point for a Flutter application.
 
-## Get the dependencies
-flutter pub get
+A few resources to get you started if this is your first Flutter project:
 
-## Run the app
-flutter run
+- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
+- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
+- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+
+For help getting started with Flutter development, view the
+[online documentation](https://docs.flutter.dev/), which offers tutorials,
+samples, guidance on mobile development, and a full API reference.
