@@ -1,10 +1,86 @@
-﻿@page
+@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h1 class="mb-4">Dashboard</h1>
+
+@if (!string.IsNullOrEmpty(Model.LoadError))
+{
+    <div class="alert alert-warning">@Model.LoadError</div>
+}
+
+<div class="row">
+    <section class="col-md-6 mb-4">
+        <h2 class="h4">Current bookings</h2>
+        <p class="text-muted">Bookings that haven't been closed out yet.</p>
+        @if (Model.OpenBookings.Count == 0)
+        {
+            <p><em>No open bookings.</em></p>
+        }
+        else
+        {
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Vehicle</th>
+                        <th>Registration</th>
+                        <th>Status</th>
+                        <th>Booked</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var booking in Model.OpenBookings)
+                    {
+                        <tr>
+                            <td>@booking.Brand @booking.Model @(booking.Year is not null ? $"({booking.Year})" : "")</td>
+                            <td>@booking.Registration</td>
+                            <td>@booking.Status</td>
+                            <td>@booking.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+
+    <section class="col-md-6 mb-4">
+        <h2 class="h4">Stock levels</h2>
+        <p class="text-muted">Rows highlighted in yellow are at or below their reorder level.</p>
+        @if (Model.StockItems.Count == 0)
+        {
+            <p><em>No stock items.</em></p>
+        }
+        else
+        {
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>Part</th>
+                        <th>SKU</th>
+                        <th>On hand</th>
+                        <th>Reorder at</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.StockItems)
+                    {
+                        var lowStock = item.QuantityOnHand <= item.ReorderLevel;
+                        <tr class="@(lowStock ? "table-warning" : "")">
+                            <td>@item.Name</td>
+                            <td>@item.Sku</td>
+                            <td>@item.QuantityOnHand</td>
+                            <td>@item.ReorderLevel</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+</div>
+
+<div class="alert alert-info">
+    There isn't a dedicated "jobs" table in Supabase yet (see <code>web/CLAUDE.md</code>) -
+    once one exists, a "jobs in progress" panel belongs here alongside bookings and stock.
 </div>

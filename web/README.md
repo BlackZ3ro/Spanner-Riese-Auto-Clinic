@@ -36,5 +36,8 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
 
 ## Status
 
-M0 (project setup, Supabase client wiring) is done. Supabase credentials and
-schema reconciliation are still pending - see `CLAUDE.md`.
+- M0 (project setup, Supabase client wiring): done. Live connection confirmed.
+- M1 (staff login + read-only dashboard): code complete, built against the
+  real Supabase schema (see `CLAUDE.md` - it differs from the original plan).
+  Login/dashboard tested against a live login failure and the unauthenticated
+  redirect; a successful login is still pending a confirmed staff account.

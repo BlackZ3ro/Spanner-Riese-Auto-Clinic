@@ -29,18 +29,53 @@ Ground rules:
   NFR-01 to NFR-07). If a prompt conflicts with the SRS, the SRS wins - flag
   the conflict instead of guessing.
 
-## Status as of M0
+## Status as of M1
 
 - `/mobile/lib` and `/supabase/migrations`, `/supabase/seed` are still empty
   stubs in this repo (placeholder `.gitkeep` files only) - there is no
-  existing mobile auth pattern or live schema to reconcile against yet,
-  despite earlier planning documents assuming the mobile app was further
-  along. Re-check this note before M1/M2/M6 (which assume `/mobile` exists)
-  and update it once mobile work lands.
-- Supabase `Url`/`AnonKey` are not yet configured - see README.md for how to
-  set them with `dotnet user-secrets` once they're available. Until then the
-  app runs fine but skips the live connection check at startup.
-- The proposed schema from the ASP.NET build plan has not been reconciled
-  against the real Supabase project (no credentials yet, and no migrations
-  committed to check against either). Do this before building M1's dashboard
-  queries.
+  mobile app code or committed migrations to check, despite earlier planning
+  documents assuming the mobile app was further along. Re-check this note
+  before M2/M6 (which assume `/mobile` exists) and update it once mobile
+  work lands.
+- Supabase `Url`/`AnonKey` **are** configured (as local user-secrets, not
+  committed) and the live connection is confirmed working.
+
+### Real schema (M0's reconciliation, done directly against the live project)
+
+The proposed schema in the ASP.NET build plan does **not** match what's
+actually built in Supabase. The real schema, discovered by probing the
+PostgREST API with the anon key (no dashboard/admin access was available):
+
+| Table | Columns |
+|---|---|
+| `bookings` | id, brand, model, year, engine_size, transmission_type, registration, kilometers, engine_code, image_url, status, created_at, closed_at |
+| `stock_items` | id, sku, name, category_id (fk categories), supplier_id (fk suppliers), cost_price, sell_price, quantity_on_hand, reorder_level, created_at |
+| `categories` | id, name, created_at |
+| `suppliers` | id, name, contact_info, created_at |
+| `booking_parts` | exists but empty - columns unconfirmed (probably booking_id/stock_item_id/quantity, but verify before building M3) |
+
+Notably **missing** versus both the plan and the SRS (FR-02, FR-05, FR-07):
+no `jobs`, no `customers` (`bookings` has vehicle fields directly on it, no
+customer name/contact at all), no `labour`/`invoices` tables. `bookings` has
+one `status` column that appears to carry the job-lifecycle concept itself
+(only "checked_in" seen in data so far) - there's no separate job entity
+with type/assigned_to/labour_hours/labour_rate.
+
+**This means M2 onward needs real schema/migration work, not just app code**
+- confirm with Gary (or whoever owns Supabase) how they intend to model
+  jobs, labour and invoicing before building against guessed table names.
+
+### M1 (staff login + read-only dashboard)
+
+Built against the real schema above: `Pages/Account/Login.cshtml(.cs)` for
+Supabase Auth email/password login (cookie-based ASP.NET session, backed by
+a per-request-scoped `Supabase.Client` that restores that user's access
+token via `Auth/SupabaseSessionFilter.cs`, so RLS applies per staff member
+rather than sharing one session). `Pages/Index.cshtml(.cs)` is the dashboard
+- open bookings and stock levels, live from Supabase.
+
+Verified live: unauthenticated redirect to login works; wrong credentials
+are rejected cleanly (no crash). A successful login + full dashboard load
+has not yet been verified end-to-end - no confirmed staff account existed
+in Auth to test with, and this project's built-in email sender is rate
+limited. See git log for how that was resolved.

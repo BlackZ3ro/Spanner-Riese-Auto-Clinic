@@ -1,14 +1,37 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Spanner.Web.Auth;
 using Spanner.Web.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+builder.Services.AddRazorPages(options =>
+{
+    // FR-12: every page requires a logged-in staff member, except the login page itself.
+    options.Conventions.AuthorizeFolder("/");
+    options.Conventions.AllowAnonymousToPage("/Account/Login");
+});
+builder.Services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options =>
+{
+    options.Filters.Add(typeof(SupabaseSessionFilter));
+});
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/Login";
+    });
+builder.Services.AddAuthorization();
 
 builder.Services.Configure<SupabaseSettings>(
     builder.Configuration.GetSection(SupabaseSettings.SectionName));
 
-builder.Services.AddSingleton(sp =>
+// Scoped (one per request), not singleton: each request restores its own
+// staff member's session (see SupabaseSessionFilter) so Postgrest queries
+// respect that user's Row Level Security, instead of sharing one session
+// across every visitor.
+builder.Services.AddScoped(sp =>
 {
     var settings = builder.Configuration
         .GetSection(SupabaseSettings.SectionName)
@@ -16,7 +39,7 @@ builder.Services.AddSingleton(sp =>
 
     var options = new Supabase.SupabaseOptions
     {
-        AutoConnectRealtime = true
+        AutoConnectRealtime = false
     };
 
     // Url/AnonKey are read from user secrets (dev) or environment variables
@@ -34,6 +57,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
