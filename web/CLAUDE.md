@@ -116,3 +116,38 @@ it, C#'s default `DateTime` (0001-01-01) gets sent explicitly on insert and
 silently overrides Postgres's `created_at default now()`. Caught by
 actually creating a booking through the browser and checking the result,
 not just by the build succeeding.
+
+Gary ran the jobs migration mid-M3 - `jobs` is now live, and job assignment
+(FR-02) is fully working and verified end-to-end (previously only degraded
+gracefully).
+
+### M3 (stock and linking parts)
+
+Reused the *real* live tables directly, not the plan's proposed ones:
+`Pages/Stock/Index` lists `stock_items` (joined with `categories`/
+`suppliers` for display names, low-stock rows highlighted - FR-10) and
+`Pages/Stock/Create` adds one (FR-03), matching `stock_item_repository.dart`
+field-for-field.
+
+Parts-to-booking linking (FR-04) uses the `booking_parts` table that
+already existed live (booking_id, stock_item_id, quantity, unit_price) -
+no schema change needed, unlike jobs. Adding a part on
+`Pages/Bookings/Details`: inserts a `booking_parts` row (unit_price
+snapshotted from the stock item's current sell_price), decrements
+`stock_items.quantity_on_hand`, and inserts a `stock_movements` "out" row
+(reusing mobile's exact movement-ledger pattern from
+`stock_movement_repository.dart` - cost_at_time, reference set to the
+booking's registration, user_id from the logged-in staff member's Supabase
+id) for the same audit trail mobile already writes to. Blocks against
+over-allocating (checks quantity_on_hand before inserting).
+
+Also fixed while building this: `StockItem.CreatedAt` had the same
+ignoreOnInsert bug as Booking/Job. And set the app's default culture to
+en-ZA in Program.cs so `ToString("C")` renders Rand, not the server OS's
+default currency.
+
+Verified live end-to-end: added a job, added a part (stock correctly
+dropped 9→7, stock_movements row correct with the real staff user_id and
+booking registration as reference), added a new stock item via the Stock
+page (category/supplier dropdowns populated from real data). All test data
+cleaned up afterward.

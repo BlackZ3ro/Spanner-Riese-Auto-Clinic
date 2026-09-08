@@ -74,6 +74,62 @@
         <span asp-validation-for="NewJobType" class="text-danger"></span>
     </form>
 
+    <h2 class="h4 mt-4">Parts used</h2>
+
+    @if (!string.IsNullOrEmpty(Model.PartsError))
+    {
+        <div class="alert alert-info">@Model.PartsError</div>
+    }
+
+    @if (Model.PartsUsed.Count == 0)
+    {
+        <p><em>No parts used on this booking yet.</em></p>
+    }
+    else
+    {
+        <table class="table table-sm table-striped col-md-8">
+            <thead>
+                <tr>
+                    <th>Part</th>
+                    <th>Qty</th>
+                    <th>Unit price</th>
+                    <th>Line total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var part in Model.PartsUsed)
+                {
+                    var partName = Model.StockItemsById.TryGetValue(part.StockItemId, out var stockItem)
+                        ? stockItem.Name : "(part no longer exists)";
+                    <tr>
+                        <td>@partName</td>
+                        <td>@part.Quantity</td>
+                        <td>@part.UnitPrice.ToString("C")</td>
+                        <td>@((part.UnitPrice * part.Quantity).ToString("C"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <form method="post" asp-page-handler="AddPart" class="col-md-6 mt-3">
+        <div class="row g-2">
+            <div class="col-7">
+                <select asp-for="NewPartStockItemId" class="form-select" asp-items="Model.StockItemOptions">
+                    <option value="">-- Select a part --</option>
+                </select>
+                <span asp-validation-for="NewPartStockItemId" class="text-danger"></span>
+            </div>
+            <div class="col-3">
+                <input asp-for="NewPartQuantity" class="form-control" type="number" min="1" placeholder="Qty" />
+                <span asp-validation-for="NewPartQuantity" class="text-danger"></span>
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-outline-primary w-100">Add</button>
+            </div>
+        </div>
+    </form>
+
     <p class="mt-4"><a asp-page="/Index">&larr; Back to dashboard</a></p>
 }
 

@@ -33,6 +33,7 @@ public class StockItem : BaseModel
     [Column("reorder_level")]
     public int ReorderLevel { get; set; }
 
-    [Column("created_at")]
+    // ignoreOnInsert: same pitfall as Booking/Job.CreatedAt - see web/CLAUDE.md.
+    [Column("created_at", ignoreOnInsert: true)]
     public DateTime CreatedAt { get; set; }
 }

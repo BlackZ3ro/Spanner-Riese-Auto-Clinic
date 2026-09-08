@@ -1,6 +1,13 @@
+using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Spanner.Web.Auth;
 using Spanner.Web.Configuration;
+
+// Riese Auto-Clinic is a South African workshop - ToString("C") etc. should render
+// Rand, not the server OS's default currency.
+var zaCulture = new CultureInfo("en-ZA");
+CultureInfo.DefaultThreadCurrentCulture = zaCulture;
+CultureInfo.DefaultThreadCurrentUICulture = zaCulture;
 
 var builder = WebApplication.CreateBuilder(args);
 

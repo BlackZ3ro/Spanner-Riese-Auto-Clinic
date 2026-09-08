@@ -1,8 +1,6 @@
 -- M2 (FR-02): a booking can have one or more jobs (units of work) attached to it.
--- This table does not exist yet in the live project - run this in the Supabase
--- SQL editor (or via the CLI) after review. It's purely additive: a new table with
--- a foreign key to the existing `bookings` table, no existing table/column is
--- touched, so it can't break anything mobile or web already does.
+-- Applied live by Gary (2026-09-08). Kept here as the record of what was run and
+-- reviewed, and so a fresh local Supabase instance can be brought up to match.
 --
 -- RLS below only allows the `authenticated` role (i.e. logged-in staff) to read/
 -- write jobs, matching FR-12's "restrict access to authenticated staff" intent.
