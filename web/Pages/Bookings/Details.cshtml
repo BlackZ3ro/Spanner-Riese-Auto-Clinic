@@ -1,0 +1,82 @@
+@page "{id:guid}"
+@model Spanner.Web.Pages.Bookings.DetailsModel
+@{
+    ViewData["Title"] = "Booking details";
+}
+
+@if (!string.IsNullOrEmpty(Model.LoadError))
+{
+    <div class="alert alert-warning">@Model.LoadError</div>
+}
+
+@if (Model.Booking is { } booking)
+{
+    <h1 class="mb-4">@booking.Brand @booking.Model (@booking.Year)</h1>
+
+    <dl class="row col-md-8">
+        <dt class="col-sm-3">Registration</dt>
+        <dd class="col-sm-9">@booking.Registration</dd>
+
+        <dt class="col-sm-3">Transmission</dt>
+        <dd class="col-sm-9">@booking.TransmissionType</dd>
+
+        <dt class="col-sm-3">Engine</dt>
+        <dd class="col-sm-9">@(booking.EngineSize ?? "-") @(booking.EngineCode is not null ? $"({booking.EngineCode})" : "")</dd>
+
+        <dt class="col-sm-3">Kilometers</dt>
+        <dd class="col-sm-9">@booking.Kilometers?.ToString("N0")</dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">@booking.Status</dd>
+
+        <dt class="col-sm-3">Booked</dt>
+        <dd class="col-sm-9">@booking.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</dd>
+    </dl>
+
+    <h2 class="h4 mt-4">Jobs</h2>
+
+    @if (!string.IsNullOrEmpty(Model.JobsError))
+    {
+        <div class="alert alert-info">@Model.JobsError</div>
+    }
+    else if (Model.Jobs.Count == 0)
+    {
+        <p><em>No jobs added to this booking yet.</em></p>
+    }
+    else
+    {
+        <table class="table table-sm table-striped col-md-8">
+            <thead>
+                <tr>
+                    <th>Job type</th>
+                    <th>Status</th>
+                    <th>Added</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var job in Model.Jobs)
+                {
+                    <tr>
+                        <td>@job.JobType</td>
+                        <td>@job.Status</td>
+                        <td>@job.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <form method="post" asp-page-handler="AddJob" class="col-md-6 mt-3">
+        <div class="input-group">
+            <input asp-for="NewJobType" class="form-control" placeholder="e.g. Brake pad replacement" />
+            <button type="submit" class="btn btn-outline-primary">Add job</button>
+        </div>
+        <span asp-validation-for="NewJobType" class="text-danger"></span>
+    </form>
+
+    <p class="mt-4"><a asp-page="/Index">&larr; Back to dashboard</a></p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

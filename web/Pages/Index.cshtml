@@ -13,7 +13,10 @@
 
 <div class="row">
     <section class="col-md-6 mb-4">
-        <h2 class="h4">Current bookings</h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4">Current bookings</h2>
+            <a asp-page="/Bookings/Create" class="btn btn-sm btn-primary">Book in a vehicle</a>
+        </div>
         <p class="text-muted">Bookings that haven't been closed out yet.</p>
         @if (Model.OpenBookings.Count == 0)
         {
@@ -34,7 +37,7 @@
                     @foreach (var booking in Model.OpenBookings)
                     {
                         <tr>
-                            <td>@booking.Brand @booking.Model @(booking.Year is not null ? $"({booking.Year})" : "")</td>
+                            <td><a asp-page="/Bookings/Details" asp-route-id="@booking.Id">@booking.Brand @booking.Model @(booking.Year is not null ? $"({booking.Year})" : "")</a></td>
                             <td>@booking.Registration</td>
                             <td>@booking.Status</td>
                             <td>@booking.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</td>

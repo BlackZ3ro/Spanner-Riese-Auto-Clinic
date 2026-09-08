@@ -92,3 +92,27 @@ login; wrong credentials rejected cleanly (no crash); successful login
 with a confirmed staff account redirects to the dashboard and shows real
 bookings/stock data matching Supabase directly; logout redirects back to
 login. M1's acceptance criteria are met.
+
+### M2 (bookings and jobs)
+
+`Pages/Bookings/Create` books in a vehicle (FR-01), reusing mobile's exact
+fields and validation (brand, model, year, transmission, engine
+size/code, registration, kilometers - see `book_in_screen.dart`). New
+bookings insert with `status = "checked_in"` explicitly, because
+`bookings.status` has a DB check constraint and mobile doesn't set a
+default either (its `BookingStatus` enum is commented out).
+
+`Pages/Bookings/Details` shows a booking plus its jobs, and can add a job
+type to it (FR-02) - but only once the `jobs` table exists. It doesn't yet:
+see `supabase/migrations/0001_create_jobs_table.sql`, a proposed additive
+migration (new table + FK to bookings, RLS restricted to `authenticated`)
+that needs someone with Supabase dashboard access (Gary) to review and run.
+Until then, the Jobs section shows a clean "table not found" message rather
+than crashing - verified live.
+
+**Bug found and fixed during testing**: `Booking`/`Job`'s `CreatedAt`
+property needed `[Column("created_at", ignoreOnInsert: true)]` - without
+it, C#'s default `DateTime` (0001-01-01) gets sent explicitly on insert and
+silently overrides Postgres's `created_at default now()`. Caught by
+actually creating a booking through the browser and checking the result,
+not just by the build succeeding.

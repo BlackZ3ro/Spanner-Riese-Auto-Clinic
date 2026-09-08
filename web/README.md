@@ -42,3 +42,8 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
   bookings/stock data, and logout all work. See `CLAUDE.md` for the real
   schema (it differs from the original plan) and a note that mobile has no
   real authentication yet.
+- M2 (bookings and jobs): booking creation is done and verified (created a
+  real booking through the browser, confirmed it in Supabase, cleaned up
+  the test data). Job assignment is built but blocked on a `jobs` table
+  that doesn't exist yet - see `supabase/migrations/0001_create_jobs_table.sql`
+  and `CLAUDE.md` for what needs review before it can run.

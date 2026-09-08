@@ -39,7 +39,9 @@ public class Booking : BaseModel
     [Column("status")]
     public string Status { get; set; } = string.Empty;
 
-    [Column("created_at")]
+    // ignoreOnInsert: without this, C#'s default DateTime (0001-01-01) gets sent
+    // explicitly on insert and overrides Postgres's own `created_at default now()`.
+    [Column("created_at", ignoreOnInsert: true)]
     public DateTime CreatedAt { get; set; }
 
     [Column("closed_at")]
