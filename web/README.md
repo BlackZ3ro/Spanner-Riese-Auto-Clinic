@@ -37,7 +37,8 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
 ## Status
 
 - M0 (project setup, Supabase client wiring): done. Live connection confirmed.
-- M1 (staff login + read-only dashboard): code complete, built against the
-  real Supabase schema (see `CLAUDE.md` - it differs from the original plan).
-  Login/dashboard tested against a live login failure and the unauthenticated
-  redirect; a successful login is still pending a confirmed staff account.
+- M1 (staff login + read-only dashboard): done. Verified end-to-end in a
+  browser against the real Supabase project - login, dashboard with live
+  bookings/stock data, and logout all work. See `CLAUDE.md` for the real
+  schema (it differs from the original plan) and a note that mobile has no
+  real authentication yet.

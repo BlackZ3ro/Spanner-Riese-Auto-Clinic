@@ -87,8 +87,8 @@ token via `Auth/SupabaseSessionFilter.cs`, so RLS applies per staff member
 rather than sharing one session). `Pages/Index.cshtml(.cs)` is the dashboard
 - open bookings and stock levels, live from Supabase.
 
-Verified live: unauthenticated redirect to login works; wrong credentials
-are rejected cleanly (no crash). A successful login + full dashboard load
-has not yet been verified end-to-end - no confirmed staff account existed
-in Auth to test with, and this project's built-in email sender is rate
-limited. See git log for how that was resolved.
+Verified live, end-to-end, in a browser: unauthenticated redirect to
+login; wrong credentials rejected cleanly (no crash); successful login
+with a confirmed staff account redirects to the dashboard and shows real
+bookings/stock data matching Supabase directly; logout redirects back to
+login. M1's acceptance criteria are met.
