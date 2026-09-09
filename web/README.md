@@ -47,3 +47,7 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
 - M3 (stock and linking parts): done. Add/view stock, and link parts to a
   booking (reduces stock, writes a stock_movements audit row matching
   mobile's pattern) - all verified live, test data cleaned up.
+- M4 (labour and cost calculation): done. Record labour hours/rate per job,
+  mark complete, automatic cost math verified by hand (2.5h @ R450 = R1,125;
+  + a R4,500 part = R5,625 booking total). Note: the total is booking-wide,
+  not per-job - see CLAUDE.md for why (booking_parts has no job_id).

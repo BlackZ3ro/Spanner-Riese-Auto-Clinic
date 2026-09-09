@@ -151,3 +151,27 @@ dropped 9→7, stock_movements row correct with the real staff user_id and
 booking registration as reference), added a new stock item via the Stock
 page (category/supplier dropdowns populated from real data). All test data
 cleaned up afterward.
+
+### M4 (labour capture and cost calculation)
+
+`Pages/Jobs/Details` (FR-05): record labour hours + hourly rate on a job,
+"Save hours" (no status change) or "Mark job complete" (sets
+status='completed', completed_at=now). Labour cost = hours × rate, shown
+immediately once both are entered - doesn't require completion first, so
+staff can see the running number before finalizing.
+
+FR-06 says "job cost = parts + labour", but **parts aren't scoped to
+individual jobs in this schema** - `booking_parts` has no `job_id`, only
+`booking_id` (confirmed in M3). So there's no such thing as "this job's
+parts" to sum. Instead: `Pages/Bookings/Details` shows a booking-wide total
+= sum of every part used on the booking + labour for every job on it that
+has both hours and rate recorded (regardless of completion status - see
+`DetailsModel.PartsTotal`/`LabourTotal`/`GrandTotal`). This is a deliberate
+scope call given the real schema, not an oversight - flag it if the team
+wants per-job parts tracking instead (would need a `job_id` column added to
+`booking_parts`, another schema change to coordinate).
+
+Verified live end-to-end, checked by hand: labour 2.5h × R450/h = R1,125.00
+on the job page; adding a R4,500.00 part brought the booking total to
+R5,625.00 (R4,500 + R1,125), both matching manual calculation exactly. Test
+data cleaned up afterward.

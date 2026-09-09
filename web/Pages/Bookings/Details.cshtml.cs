@@ -19,6 +19,16 @@ public class DetailsModel(Supabase.Client supabase) : PageModel
     public List<SelectListItem> StockItemOptions { get; private set; } = new();
     public string? PartsError { get; private set; }
 
+    // FR-06: parts aren't scoped to individual jobs in this schema (booking_parts
+    // has no job_id), so this is a booking-wide total rather than a per-job one -
+    // sum of every part used on the booking, plus labour for every job that has
+    // both hours and rate recorded (regardless of completion status). See
+    // web/CLAUDE.md for why this diverges from the build plan's per-job total.
+    public decimal PartsTotal => PartsUsed.Sum(p => p.UnitPrice * p.Quantity);
+    public decimal LabourTotal => Jobs.Where(j => j.LabourHours is not null && j.LabourRate is not null)
+        .Sum(j => j.LabourHours!.Value * j.LabourRate!.Value);
+    public decimal GrandTotal => PartsTotal + LabourTotal;
+
     [BindProperty]
     [Required(ErrorMessage = "Enter a job type.")]
     public string NewJobType { get; set; } = string.Empty;
