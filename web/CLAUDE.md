@@ -175,3 +175,20 @@ Verified live end-to-end, checked by hand: labour 2.5h × R450/h = R1,125.00
 on the job page; adding a R4,500.00 part brought the booking total to
 R5,625.00 (R4,500 + R1,125), both matching manual calculation exactly. Test
 data cleaned up afterward.
+
+### M5 (invoice PDF)
+
+`Services/BookingInvoiceDocument` (QuestPDF, Community license - set via
+`QuestPDF.Settings.License` in Program.cs, confirm this project still
+qualifies at questpdf.com/license before relying on it long-term) renders
+the same booking-wide total from M4 as a PDF: labour lines per job, parts
+lines, parts/labour/grand totals. `Pages/Bookings/Invoice` (FR-08: a plain
+authenticated download link, no native share sheet needed for a web app)
+generates it on request and returns it as a file download - nothing is
+persisted, since no `invoices` table exists in this schema either.
+
+Verified live: valid PDF (`%PDF-1.4` header), correct
+`content-type`/`content-disposition`, generated without error from real
+booking/job/part data. Also confirmed the download route is protected by
+auth like every other page (an unauthenticated request gets redirected to
+login, not a PDF). Test data cleaned up afterward.

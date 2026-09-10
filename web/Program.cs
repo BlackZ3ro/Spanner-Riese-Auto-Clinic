@@ -9,6 +9,11 @@ var zaCulture = new CultureInfo("en-ZA");
 CultureInfo.DefaultThreadCurrentCulture = zaCulture;
 CultureInfo.DefaultThreadCurrentUICulture = zaCulture;
 
+// Community license is free for this project's use (student/educational, well under
+// the revenue threshold) - see questpdf.com/license and web/CLAUDE.md. Required as of
+// QuestPDF 2023.12+; without it, PDF generation throws at runtime.
+QuestPDF.Settings.License = QuestPDF.Infrastructure.LicenseType.Community;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

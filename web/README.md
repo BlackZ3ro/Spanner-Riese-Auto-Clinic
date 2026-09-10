@@ -51,3 +51,7 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
   mark complete, automatic cost math verified by hand (2.5h @ R450 = R1,125;
   + a R4,500 part = R5,625 booking total). Note: the total is booking-wide,
   not per-job - see CLAUDE.md for why (booking_parts has no job_id).
+- M5 (invoice PDF): done. "Download invoice (PDF)" on a booking's page
+  generates a QuestPDF invoice (Community license) with the same
+  parts/labour/total breakdown as M4 - verified live, a real PDF downloads
+  correctly and the route is auth-protected like every other page.
