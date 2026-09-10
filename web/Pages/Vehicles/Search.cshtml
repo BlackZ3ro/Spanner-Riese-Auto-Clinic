@@ -1,0 +1,81 @@
+@page
+@model Spanner.Web.Pages.Vehicles.SearchModel
+@{
+    ViewData["Title"] = "Vehicle history";
+}
+
+<h1 class="mb-4">Vehicle history</h1>
+
+<form method="get" class="col-md-6 mb-4">
+    <div class="input-group">
+        <input name="q" value="@Model.Query" class="form-control" placeholder="Search by registration, e.g. CAW 22015" />
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@if (!string.IsNullOrEmpty(Model.SearchError))
+{
+    <div class="alert alert-warning">@Model.SearchError</div>
+}
+else if (Model.Query is not null && Model.Results.Count == 0)
+{
+    <p><em>No bookings found for "@Model.Query".</em></p>
+}
+else if (Model.Results.Count > 0)
+{
+    var first = Model.Results[0];
+
+    <div class="row mb-4">
+        <div class="col-md-4">
+            @if (Model.ImageUrl is not null)
+            {
+                <img src="@Model.ImageUrl" class="img-fluid rounded" alt="@first.Brand @first.Model" />
+                <p class="text-muted small mt-1">
+                    Reference image from Wikimedia Commons based on brand/model/year -
+                    not a photo of this specific vehicle.
+                </p>
+            }
+            else
+            {
+                <div class="p-4 bg-light border rounded text-center">
+                    <p class="mb-0">@first.Brand @first.Model @(first.Year is not null ? $"({first.Year})" : "")</p>
+                    <p class="text-muted small mb-0">No reference image found.</p>
+                </div>
+            }
+        </div>
+        <div class="col-md-8">
+            <p><strong>@Model.Results.Count</strong> booking(s) matching "@Model.Query".</p>
+
+            @foreach (var booking in Model.Results)
+            {
+                <div class="border rounded p-3 mb-3">
+                    <h2 class="h5">
+                        <a asp-page="/Bookings/Details" asp-route-id="@booking.Id">
+                            @booking.Brand @booking.Model @(booking.Year is not null ? $"({booking.Year})" : "")
+                        </a>
+                    </h2>
+                    <p class="mb-1 text-muted">
+                        @booking.Registration - booked @booking.CreatedAt.ToLocalTime().ToString("dd MMM yyyy") - status: @booking.Status
+                    </p>
+
+                    @{
+                        var jobs = Model.JobsByBooking.GetValueOrDefault(booking.Id, new List<Spanner.Web.Models.Job>());
+                    }
+                    @if (jobs.Count == 0)
+                    {
+                        <p class="mb-0"><em>No jobs recorded on this booking.</em></p>
+                    }
+                    else
+                    {
+                        <ul class="mb-0">
+                            @foreach (var job in jobs)
+                            {
+                                <li>@job.JobType - @job.Status</li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+}

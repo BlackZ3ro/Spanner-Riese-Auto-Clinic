@@ -2,6 +2,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Spanner.Web.Auth;
 using Spanner.Web.Configuration;
+using Spanner.Web.Services;
 
 // Riese Auto-Clinic is a South African workshop - ToString("C") etc. should render
 // Rand, not the server OS's default currency.
@@ -57,6 +58,14 @@ builder.Services.AddScoped(sp =>
     // Url/AnonKey are read from user secrets (dev) or environment variables
     // (SUPABASE__URL / SUPABASE__ANONKEY) - never hardcoded, never committed.
     return new Supabase.Client(settings.Url, settings.AnonKey, options);
+});
+
+// Wikimedia rejects requests with no User-Agent (403, "please set a user-agent") -
+// this isn't optional, per their robot policy: https://w.wiki/4wJS.
+builder.Services.AddHttpClient<VehicleImageService>(client =>
+{
+    client.DefaultRequestHeaders.UserAgent.ParseAdd(
+        "Spanner-RieseAutoClinic/1.0 (ITC327W student project; https://github.com/BlackZ3ro/Spanner-Riese-Auto-Clinic)");
 });
 
 var app = builder.Build();

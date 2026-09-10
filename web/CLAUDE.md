@@ -192,3 +192,40 @@ Verified live: valid PDF (`%PDF-1.4` header), correct
 booking/job/part data. Also confirmed the download route is protected by
 auth like every other page (an unauthenticated request gets redirected to
 login, not a PDF). Test data cleaned up afterward.
+
+### M6 (vehicle history search + reference image)
+
+No VIN column exists anywhere in this schema (see the real-schema section
+above), so FR-11's "search by VIN or licence plate" searches
+`bookings.registration` instead (`ILike`, partial match) - the closest
+thing this schema has to a persistent vehicle identity across repeat
+visits, since there's no separate `vehicles` table either. `Pages/Vehicles/
+Search` shows every matching booking with its job history.
+
+`Services/VehicleImageService` (FR-13) is a direct C# port of mobile's
+`vehicle_image_service.dart` - same Wikimedia Commons search endpoint,
+same query shape, same retry-without-trailing-year fallback. One reference
+image is shown per search (from the most recent matching booking's brand/
+model/year), falling back to plain text when there's no match - never
+treated as an error, per the SRS/risk R-13 framing.
+
+**Bug found and fixed during testing, not just by building**: every
+Wikimedia lookup was silently returning "no image" - .NET's `HttpClient`
+sends no `User-Agent` header by default, and Wikimedia's API returns 403
+("please set a user-agent") without one. The try/catch around the search
+was swallowing that 403 and looking exactly like an expected "no match".
+Fixed by setting a descriptive User-Agent on the typed `HttpClient` in
+Program.cs. Confirmed the fix against a real request (a correctly-spelled
+"Toyota Corolla 2008" now returns a real Commons image url) - testing
+against curl directly (which sends its own default User-Agent) is what
+surfaced this; it would never have shown up from the build succeeding or
+from a quick glance at the fallback UI, since the fallback renders
+identically whether Wikimedia genuinely has no match or the request never
+actually reached it.
+
+Verified live: registration search across two bookings sharing the same
+plate correctly returns both, each with its own job history; a
+correctly-spelled query finds and displays a real Wikimedia image; a
+misspelled one ("Corrola") still found a reasonable fuzzy match (expected -
+FR-13 doesn't require authoritative accuracy). Test bookings cleaned up
+afterward.

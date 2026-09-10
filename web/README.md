@@ -55,3 +55,10 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
   generates a QuestPDF invoice (Community license) with the same
   parts/labour/total breakdown as M4 - verified live, a real PDF downloads
   correctly and the route is auth-protected like every other page.
+- M6 (vehicle history + reference image): done. Search by registration
+  (no VIN column exists - see CLAUDE.md) shows every matching booking with
+  its job history. Vehicle reference image is a direct port of mobile's
+  Wikimedia lookup - fixed a real bug found by testing (not just building):
+  .NET's HttpClient sends no User-Agent by default, so Wikimedia was
+  returning 403 on every request, silently swallowed and indistinguishable
+  from a genuine "no match" until checked against curl directly.
