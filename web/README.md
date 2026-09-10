@@ -71,3 +71,16 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
   (speed) and NFR-03 (Supabase down) were actually tested, not just
   reviewed in code, and both pass. NFR-06 (cross-browser): only tested in
   Chromium here - someone needs to check Firefox/Safari before the demo.
+- M8 (testing, bug fixes, demo prep): done. Fixed 2 build warnings
+  (obsolete Realtime API attempt reverted after it broke subscriptions -
+  see CLAUDE.md; a nullable-reference warning on the invoice filename).
+  Full first-time-user walkthrough with no dead ends: login through
+  invoice download through vehicle search, all verified live. Demo script
+  at `docs/demo-script.md`, built around a real booking (Volkswagen Polo,
+  `CY 45 KL GP`) that's deliberately left in the database as sample data.
+
+## Milestones M0-M8
+
+All done - see `CLAUDE.md` for the full build log, and `docs/demo-script.md`
+for the demo walkthrough. Every milestone landed on its own feature branch
+with its own PR; none have been merged to `main` yet as of M8.

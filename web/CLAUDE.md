@@ -293,3 +293,33 @@ standard form posts - is broadly supported across evergreen browsers, so
 risk is low, but this is a real gap: someone on the team should open the
 app in Firefox (and ideally Safari) before the M8 demo. Don't report this
 as "done" without actually doing it.
+
+### M8 (testing, bug fixes, demo prep)
+
+Also fixed two build warnings found while running the app for this pass
+(`dotnet build` had been checked for errors throughout M0-M7, but warnings
+weren't being read closely): `RealtimeChangeNotifier`'s subscription used
+an obsolete Supabase Realtime API. Tried migrating to the non-obsolete
+`OnPostgresChange()` - it silently built the wrong subscription topic
+(confirmed against the real server: "unmatched topic"), so reverted to the
+obsolete-but-actually-correct `Register()`/`AddPostgresChangeHandler()`
+pair with a `#pragma warning disable CS0618` and a comment explaining why.
+Also fixed a real nullable-reference warning on `Invoice.cshtml.cs`
+(`booking.Registration` is nullable; the invoice filename now falls back
+to the booking id). Build is 0 warnings, 0 errors.
+
+Full walkthrough done as a first-time staff member, start to end, no dead
+ends found: logged out and back in, booked in a real vehicle (Volkswagen
+Polo, `CY 45 KL GP`), added a job, linked a part (stock correctly dropped
+9→8), entered labour and marked the job complete (1.5h × R480 = R720,
+verified by hand), confirmed the booking total (R4,500 + R720 = R5,220),
+downloaded the invoice PDF, found the booking via vehicle history search
+(with a Wikimedia reference image), and confirmed the stock page and
+dashboard both reflect the change. **This booking was deliberately kept**,
+not cleaned up like every other milestone's test data - it's now the demo
+dataset. See `web/docs/demo-script.md`.
+
+No mobile demo script or sample-data convention existed to align with
+(checked `/mobile` and `/project-docs` directly) - the demo script notes
+this so whoever eventually scripts mobile's side points at the same
+Volkswagen Polo booking instead of inventing separate data.

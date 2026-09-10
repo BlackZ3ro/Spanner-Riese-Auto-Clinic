@@ -34,7 +34,8 @@ public class InvoiceModel(Supabase.Client supabase) : PageModel
         var document = new BookingInvoiceDocument(booking, jobs, parts, stockItems);
         var pdfBytes = document.GeneratePdf();
 
-        var fileName = $"invoice-{booking.Registration.Replace(" ", "")}-{DateTime.Now:yyyyMMdd}.pdf";
+        var registrationSlug = booking.Registration?.Replace(" ", "") ?? booking.Id.ToString();
+        var fileName = $"invoice-{registrationSlug}-{DateTime.Now:yyyyMMdd}.pdf";
         return File(pdfBytes, "application/pdf", fileName);
     }
 }

@@ -58,12 +58,21 @@ public class RealtimeChangeNotifier(IConfiguration configuration, ILogger<Realti
             return;
         }
 
+        // The non-obsolete OnPostgresChange() API mis-builds the subscription topic
+        // when paired with the 3-arg Channel(name, schema, table) overload (tested:
+        // Supabase rejects it with "unmatched topic"). This Register()+
+        // AddPostgresChangeHandler() combination is the one that actually works
+        // (verified against the real Supabase Realtime server) - keeping it despite
+        // the obsolete warning rather than shipping something that silently doesn't
+        // subscribe to anything.
+#pragma warning disable CS0618
         var channel = _client.Realtime.Channel($"{table}-changes");
         channel.Register(new PostgresChangesOptions("public", table));
         channel.AddPostgresChangeHandler(PostgresChangesOptions.ListenType.All, (_, _) =>
         {
             Changed?.Invoke(table);
         });
+#pragma warning restore CS0618
         await channel.Subscribe();
     }
 
