@@ -60,6 +60,11 @@ builder.Services.AddScoped(sp =>
     return new Supabase.Client(settings.Url, settings.AnonKey, options);
 });
 
+// FR-09: one long-lived Realtime subscription shared by every browser tab (via SSE
+// in Pages/Realtime/Stream), not a per-request one.
+builder.Services.AddSingleton<RealtimeChangeNotifier>();
+builder.Services.AddHostedService(sp => sp.GetRequiredService<RealtimeChangeNotifier>());
+
 // Wikimedia rejects requests with no User-Agent (403, "please set a user-agent") -
 // this isn't optional, per their robot policy: https://w.wiki/4wJS.
 builder.Services.AddHttpClient<VehicleImageService>(client =>
@@ -105,6 +110,12 @@ using (var scope = app.Services.CreateScope())
         {
             var client = scope.ServiceProvider.GetRequiredService<Supabase.Client>();
             await client.InitializeAsync();
+
+            // InitializeAsync() only sets up local client state - it succeeds even
+            // against an unreachable host (found while testing NFR-03). A real
+            // lightweight query is what actually proves the connection works.
+            await client.From<Spanner.Web.Models.Booking>().Limit(1).Get();
+
             Console.WriteLine($"[Supabase] Connected successfully to {settings.Url}");
         }
         catch (Exception ex)

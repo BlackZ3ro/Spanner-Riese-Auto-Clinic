@@ -229,3 +229,67 @@ correctly-spelled query finds and displays a real Wikimedia image; a
 misspelled one ("Corrola") still found a reasonable fuzzy match (expected -
 FR-13 doesn't require authoritative accuracy). Test bookings cleaned up
 afterward.
+
+### M7 (Realtime sync check, NFR polish)
+
+**Mobile has no Realtime subscriptions at all** (`grep -rl "realtime\|
+channel\|stream(" mobile/lib` - zero matches). It's one-shot fetches only,
+same as its missing auth (see M1's note). So FR-09 as literally scoped -
+"confirm a change appears on the mobile app without a manual refresh, and
+vice versa" - **cannot be verified**, because only one side could possibly
+implement it right now. What I could and did build: `Services/
+RealtimeChangeNotifier` (a singleton `IHostedService` holding one long-lived
+Supabase Realtime subscription - separate from the per-request scoped
+client used everywhere else, since Realtime needs a persistent connection)
+fans out `bookings`/`stock_items` changes to every open browser tab via
+Server-Sent Events (`Pages/Realtime/Stream`), and the dashboard
+live-reloads on any such event. That's the web half of FR-09, real and
+working. The mobile half is Gary's to build whenever he's ready
+(`.stream()` subscriptions in the repositories) - flagged to the team, not
+something I built into `/mobile` myself, since it's outside this app's
+folder and outside what was asked.
+
+**Second schema-adjacent gap found by testing, not by reading the plan**:
+subscribing failed outright with an explicit Supabase error - "Please
+check Realtime is enabled for the given connect parameters" - because
+Realtime isn't enabled for these tables in this project's publication yet.
+Not a code bug (confirmed by first ruling out my own channel-topic mistake,
+which gave a different, clearly client-side "unmatched topic" error before
+the fix). Wrote `supabase/migrations/0002_enable_realtime.sql` for Gary,
+same pattern as the jobs table. Until it's applied, the dashboard works
+exactly as before, just without live-reload - `RealtimeChangeNotifier`
+catches the subscribe failure and logs a warning instead of crashing
+startup.
+
+**Bug found while testing NFR-03, fixed same pass**: M0's startup
+"[Supabase] Connected successfully" log was actually meaningless -
+`InitializeAsync()` only sets up local client state and succeeds even
+against a nonexistent host. Caught by deliberately pointing the app at a
+bad URL to test connection-loss handling, and noticing the log still
+claimed success. Fixed by adding a real lightweight query
+(`From<Booking>().Limit(1).Get()`) after `InitializeAsync()` before
+declaring success.
+
+**NFR-02** (core actions complete within a few seconds): measured, not
+assumed - login page ~0.35s, vehicle history search (the slowest page -
+does N+1 job queries per matching booking, plus an external Wikimedia
+call) ~2.0s, invoice PDF generation ~1.7s. All well within "a few
+seconds". The N+1 pattern on vehicle search is a real thing to revisit if
+search results ever get large, not urgent at this data volume.
+
+**NFR-03** (behaves reasonably when Supabase is briefly unreachable):
+actually tested by pointing the app at a nonexistent Supabase host, not
+just inspected in code - dashboard shows "Couldn't load live data from
+Supabase: No such host is known" and still renders (empty-state tables,
+no crash, no 500); login shows the same style of clean error instead of
+throwing. Both already worked because of the try/catch pattern used
+consistently since M0 - this pass proved it holds under a real failure,
+not just in theory.
+
+**NFR-06** (basic cross-browser check): only Chromium-based browsers were
+available in this environment (the sandboxed Browser pane; no Firefox/
+Safari/WebKit). Everything used - Bootstrap 5, `fetch`, `EventSource`,
+standard form posts - is broadly supported across evergreen browsers, so
+risk is low, but this is a real gap: someone on the team should open the
+app in Firefox (and ideally Safari) before the M8 demo. Don't report this
+as "done" without actually doing it.

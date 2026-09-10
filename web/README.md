@@ -62,3 +62,12 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
   .NET's HttpClient sends no User-Agent by default, so Wikimedia was
   returning 403 on every request, silently swallowed and indistinguishable
   from a genuine "no match" until checked against curl directly.
+- M7 (Realtime + NFR polish): the web half is done - the dashboard
+  live-reloads on bookings/stock_items changes via Server-Sent Events, but
+  it's currently a no-op because Realtime isn't enabled for those tables in
+  Supabase yet (new migration sent to Gary). **The mobile half of FR-09
+  can't be verified - mobile has zero Realtime subscriptions**, so "sync
+  between the two apps" isn't something either app fully does yet. NFR-02
+  (speed) and NFR-03 (Supabase down) were actually tested, not just
+  reviewed in code, and both pass. NFR-06 (cross-browser): only tested in
+  Chromium here - someone needs to check Firefox/Safari before the demo.

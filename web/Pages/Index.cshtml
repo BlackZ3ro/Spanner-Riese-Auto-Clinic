@@ -83,7 +83,18 @@
     </section>
 </div>
 
-<div class="alert alert-info">
-    There isn't a dedicated "jobs" table in Supabase yet (see <code>web/CLAUDE.md</code>) -
-    once one exists, a "jobs in progress" panel belongs here alongside bookings and stock.
-</div>
+<p class="text-muted small">
+    See a booking's own page for its jobs, parts and running total, or
+    <a asp-page="/Vehicles/Search">search vehicle history</a>.
+</p>
+
+@section Scripts {
+    <script>
+        // FR-09: live-refresh the dashboard when bookings/stock change anywhere -
+        // this browser, another tab, or (once mobile adds its own Realtime
+        // subscriptions) the mobile app. Reload-on-change is the simplest correct
+        // approach (NFR-01) rather than hand-patching individual table rows.
+        const liveSource = new EventSource('/Realtime/Stream');
+        liveSource.onmessage = () => location.reload();
+    </script>
+}
