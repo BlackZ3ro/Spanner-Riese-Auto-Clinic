@@ -323,3 +323,20 @@ No mobile demo script or sample-data convention existed to align with
 (checked `/mobile` and `/project-docs` directly) - the demo script notes
 this so whoever eventually scripts mobile's side points at the same
 Volkswagen Polo booking instead of inventing separate data.
+
+### Correction: "test data cleaned up" was wrong for `jobs`, M2 onward
+
+Every "test job cleaned up afterward" claim above (M2, M3, M4, M5) is
+**false for the `jobs` table specifically**. `0001_create_jobs_table.sql`
+granted `authenticated` staff SELECT/INSERT/UPDATE but never DELETE. With
+RLS enabled and no matching policy, every `DELETE` against `jobs` since M2
+has silently affected zero rows - PostgREST returns 204 either way, so
+this went unnoticed through several rounds of manual cleanup that looked
+successful but weren't. Confirmed directly during M8 demo-data reset: a
+delete returns 204, the row is still there on the very next authenticated
+read. (Reads and deletes on `bookings`, `stock_items`, `booking_parts` and
+`stock_movements` were never affected - only `jobs` was missing the
+policy.) Fixed in `supabase/migrations/0003_add_jobs_delete_policy.sql` -
+another one for Gary to run. Until it's applied, test/junk rows accumulate
+in `jobs` and can't be removed by the app or by curl, only from the
+Supabase dashboard directly (which uses `service_role`, bypassing RLS).

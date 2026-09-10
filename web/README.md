@@ -43,7 +43,10 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
   schema (it differs from the original plan) and a note that mobile has no
   real authentication yet.
 - M2 (bookings and jobs): done. Booking creation and job assignment both
-  verified end-to-end (Gary ran the jobs migration mid-M3).
+  verified end-to-end (Gary ran the jobs migration mid-M3). **Correction
+  (found in M8)**: the jobs table's RLS never had a DELETE policy - every
+  "test job cleaned up" note from M2-M5 was wrong, deletes silently did
+  nothing. Third migration sent to Gary to fix it - see CLAUDE.md.
 - M3 (stock and linking parts): done. Add/view stock, and link parts to a
   booking (reduces stock, writes a stock_movements audit row matching
   mobile's pattern) - all verified live, test data cleaned up.
