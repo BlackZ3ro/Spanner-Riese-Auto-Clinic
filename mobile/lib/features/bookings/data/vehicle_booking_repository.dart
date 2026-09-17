@@ -12,6 +12,11 @@ class VehicleBookingRepository {
   }
 
   Future<VehicleBooking> add({
+    String? customerId,
+    required String customerName,
+    required String customerPhone,
+    String? customerEmail,
+    String? customerCompany,
     required String brand,
     required String model,
     required int year,
@@ -25,6 +30,11 @@ class VehicleBookingRepository {
     final row = await _client
       .from('bookings')
       .insert({
+        if (customerId != null) 'customer_id' : customerId,
+        'customer_name' : customerName,
+        'customer_phone' : customerPhone,
+        if (customerEmail != null) 'customer_email' : customerEmail,
+        if (customerCompany != null) 'customer_company' : customerCompany,
         'brand' : brand,
         'model' : model,
         'year' : year,
@@ -55,5 +65,18 @@ class VehicleBookingRepository {
       case TransmissionType.semiAutomatic:
         return 'semi_automatic';
     }
+  }
+
+  Future<VehicleBooking> close(String id) async {
+    final row = await _client
+      .from('bookings')
+      .update({
+        'status': 'closed',
+        'closed_at' : DateTime.now().toIso8601String(),
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    return VehicleBooking.fromJson(row);
   }
 }

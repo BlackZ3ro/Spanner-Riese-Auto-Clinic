@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'features/bookings/providers/home_screen.dart';
+import 'features/home/presentation/home_screen.dart';
 
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
