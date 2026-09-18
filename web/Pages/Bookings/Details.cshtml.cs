@@ -24,8 +24,13 @@ public record AddBookingPartResult(
     [property: JsonPropertyName("ok")] bool Ok,
     [property: JsonPropertyName("quantity_on_hand")] int? QuantityOnHand);
 
-public class DetailsModel(Supabase.Client supabase) : PageModel
+public class DetailsModel(Supabase.Client supabase, IConfiguration config) : PageModel
 {
+    // Admin-only gating (Finalize, Delete) checks this, server-side, on every
+    // POST that needs it - never just hide the button. See Auth/AdminAccess.cs
+    // for why this is a config allowlist and not a real roles table.
+    public bool IsAdmin => config.IsAdmin(User.Identity?.Name);
+
     public Booking? Booking { get; private set; }
     public List<Job> Jobs { get; private set; } = new();
     public string? LoadError { get; private set; }
@@ -78,6 +83,15 @@ public class DetailsModel(Supabase.Client supabase) : PageModel
             return NotFound();
         }
 
+        if (!IsAdmin)
+        {
+            // Server-side, not just a hidden button - a non-admin POSTing this
+            // handler directly must be rejected the same as one who never saw
+            // the button at all.
+            LoadError = "Only an admin can finalize a booking.";
+            return Page();
+        }
+
         try
         {
             await supabase.From<Booking>()
@@ -93,6 +107,44 @@ public class DetailsModel(Supabase.Client supabase) : PageModel
         }
 
         return RedirectToPage(new { id });
+    }
+
+    // Deleting a booking restocks every part used on it, removes all labour
+    // (jobs), then removes the parts and the booking itself - one atomic RPC
+    // call so a partial failure can't leave stock restocked with the booking
+    // still there, or vice versa. Admin-only, confirmed client-side (matches
+    // Finalize's confirm() pattern) and rejected server-side for anyone else.
+    // See supabase/migrations/0005_delete_booking_with_restock.sql.
+    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+    {
+        ModelState.Clear();
+        await LoadAsync(id);
+        if (Booking is null)
+        {
+            return NotFound();
+        }
+
+        if (!IsAdmin)
+        {
+            LoadError = "Only an admin can delete a booking.";
+            return Page();
+        }
+
+        try
+        {
+            await supabase.Rpc("delete_booking_and_restock", new
+            {
+                p_booking_id = id,
+                p_user_id = supabase.Auth.CurrentUser?.Id,
+            });
+        }
+        catch (Exception ex)
+        {
+            LoadError = $"Couldn't delete this booking: {ex.Message}";
+            return Page();
+        }
+
+        return RedirectToPage("/Index");
     }
 
     [BindProperty]

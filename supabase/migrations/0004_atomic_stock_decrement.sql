@@ -25,12 +25,34 @@
 --
 -- security invoker (the default) - runs under the calling staff member's own
 -- role/RLS, same as every other write this app already makes to these tables.
+--
+-- Bug found live after Gary applied this (not by testing, since we have no
+-- access to run it ourselves): "column reference quantity_on_hand is
+-- ambiguous" (Postgres 42702). RETURNS TABLE (..., quantity_on_hand integer)
+-- declares an output variable of that name, which collides with the bare
+-- (unqualified) quantity_on_hand references inside the UPDATE below - fixed
+-- by qualifying every one of them with stock_items. create or replace is
+-- safe to re-run over the broken version already live.
+--
+-- Second bug found live after THAT fix: "column user_id is of type uuid but
+-- expression is of type text" (Postgres 42804). Guessed stock_movements.
+-- user_id was text (matching the C# model's `string? UserId`, which is just
+-- how C# holds a GUID-as-text - it doesn't say what the actual column type
+-- is). It's uuid. p_user_id below changed from text to uuid to match.
+--
+-- A changed parameter TYPE is a different function overload to Postgres, not
+-- a replacement - `create or replace` alone would leave the old broken
+-- text-param version sitting alongside this one, and PostgREST would then
+-- have two candidates to choose between for the same call. Drop the old
+-- signature explicitly first.
+drop function if exists public.add_booking_part(uuid, uuid, integer, numeric, text, text);
+
 create or replace function public.add_booking_part(
   p_booking_id uuid,
   p_stock_item_id uuid,
   p_qty integer,
   p_unit_price numeric,
-  p_user_id text,
+  p_user_id uuid,
   p_reference text
 )
 returns table (ok boolean, quantity_on_hand integer)
@@ -42,8 +64,8 @@ declare
   v_cost_price numeric;
 begin
   update public.stock_items
-  set quantity_on_hand = quantity_on_hand - p_qty
-  where id = p_stock_item_id and quantity_on_hand >= p_qty;
+  set quantity_on_hand = stock_items.quantity_on_hand - p_qty
+  where id = p_stock_item_id and stock_items.quantity_on_hand >= p_qty;
 
   get diagnostics v_affected = row_count;
 
@@ -67,4 +89,4 @@ begin
 end;
 $$;
 
-grant execute on function public.add_booking_part(uuid, uuid, integer, numeric, text, text) to authenticated;
+grant execute on function public.add_booking_part(uuid, uuid, integer, numeric, uuid, text) to authenticated;

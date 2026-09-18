@@ -194,10 +194,16 @@
         <a asp-page="/Bookings/Invoice" asp-route-id="@booking.Id" class="btn btn-outline-secondary" target="_blank">
             Download invoice (PDF)
         </a>
-        @if (isOpen)
+        @if (isOpen && Model.IsAdmin)
         {
             <form method="post" asp-page-handler="Finalize" onsubmit="return confirm('Finalize and close this booking? Parts and labour can no longer be added after this.');">
                 <button type="submit" class="btn btn-outline-danger">Finalize &amp; close</button>
+            </form>
+        }
+        @if (Model.IsAdmin)
+        {
+            <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Are you sure? This deletes the booking, restocks its parts, and removes its labour. This can\'t be undone.');">
+                <button type="submit" class="btn btn-danger">Delete booking</button>
             </form>
         }
     </p>

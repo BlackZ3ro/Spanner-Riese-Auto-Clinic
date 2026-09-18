@@ -36,9 +36,13 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
 
 ## Try this build (new since M8 - quick checklist for anyone testing)
 
-Needs migration `0004` applied first for the "Add part" step below to fully
-work (see "Still pending" at the end of this file) - everything else works
-without it.
+Needs migrations `0004` and `0005` applied first for the "Add part" and
+"Delete booking" steps below to fully work (see "Still pending" at the end of
+this file) - everything else works without them.
+
+There are now two kinds of login: an **admin** account and a **mechanic**
+account (ask whoever's coordinating the group for the current credentials -
+not written down here on purpose). Log in as each to see the difference:
 
 1. Log in, click **Book in a vehicle**. Fill in a customer name - if it
    matches (or nearly matches) someone already booked in before, phone/email/
@@ -46,14 +50,22 @@ without it.
 2. On the booking's page, add a job and link a part - stock drops
    automatically. Try leaving the job type blank and submitting: you get
    "Enter a job type." right there, not a silent no-op.
-3. Click **Finalize & close**. The booking becomes read-only (no more
-   add-job/add-part) and drops off the dashboard's open list.
-4. Go to **Closed bookings** (nav bar) to find it again. Open it and try
+3. As the **mechanic** account: open a booking and confirm there's no
+   **Finalize & close** or **Delete booking** button - just the normal
+   add-job/add-part forms.
+4. As the **admin** account: same booking now shows both buttons. Click
+   **Finalize & close** - the booking becomes read-only and drops off the
+   dashboard's open list.
+5. Go to **Closed bookings** (nav bar) to find it again. Open it and try
    **Reopen** with the wrong password (rejected, stays closed) then the right
    one (booking reopens, editable again).
-5. Go to **Vehicle history** and search by a customer's name or phone instead
+6. As **admin**, on an open booking with a part linked, click **Delete
+   booking** (asks "are you sure" first). Confirms: the part's quantity is
+   back on the Stock page, any labour/jobs are gone, and the booking itself
+   is gone from the dashboard.
+7. Go to **Vehicle history** and search by a customer's name or phone instead
    of the registration plate.
-6. Go to **Stock > Add a part** and type a brand-new category or supplier
+8. Go to **Stock > Add a part** and type a brand-new category or supplier
    name instead of picking one from the dropdown.
 
 ## Status
@@ -119,11 +131,20 @@ finalize/reopen, multi-column vehicle search, inline category/supplier
 creation). Full detail in `CLAUDE.md`'s "Schema drift" section; the checklist
 above is the fast way to see it working.
 
-**Still pending** - migrations `0002` (Realtime), `0003` (jobs DELETE
-policy), and `0004` (atomic stock decrement, added this pass) all need
-someone with Supabase dashboard access to run them. Until `0004` is applied,
-linking a part to a booking shows a clean "function not found" error instead
-of crashing - that's expected, not a bug.
+Also added: an **admin** vs **mechanic** distinction (config-based email
+allowlist, see `web/Auth/AdminAccess.cs` - no roles table exists in the
+schema, so this doesn't touch the database). Only an admin sees **Finalize &
+close** or **Delete booking** on a booking's page, and both are rejected
+server-side too if posted directly, not just hidden in the UI. Deleting a
+booking restocks every part it used, removes its jobs/labour, then removes
+the booking - one atomic database call (`0005` migration) so a failure
+partway through can't leave stock restocked with the booking still there.
+
+**Still pending** - migrations `0002` (Realtime) and `0003` (jobs DELETE
+policy) are applied. `0004` (atomic stock decrement) and `0005` (bookings
+DELETE policy + delete-and-restock) still need someone with Supabase
+dashboard access to run them. Until then, linking a part or deleting a
+booking shows a clean error instead of crashing - that's expected, not a bug.
 
 **Flagged, not fixed - needs a team decision**: mobile's invoice now totals
 `parts + booking_labor`; web's still totals `parts + jobs.labour_hours ×
