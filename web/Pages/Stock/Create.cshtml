@@ -27,14 +27,14 @@
         <select asp-for="CategoryId" class="form-select" asp-items="Model.CategoryOptions">
             <option value="">-- Select --</option>
         </select>
-        <span asp-validation-for="CategoryId" class="text-danger"></span>
+        <input asp-for="NewCategoryName" class="form-control mt-1" placeholder="Or add a new category" />
     </div>
     <div class="mb-3">
         <label asp-for="SupplierId" class="form-label">Supplier</label>
         <select asp-for="SupplierId" class="form-select" asp-items="Model.SupplierOptions">
             <option value="">-- Select --</option>
         </select>
-        <span asp-validation-for="SupplierId" class="text-danger"></span>
+        <input asp-for="NewSupplierName" class="form-control mt-1" placeholder="Or add a new supplier" />
     </div>
     <div class="mb-3">
         <label asp-for="CostPrice" class="form-label"></label>

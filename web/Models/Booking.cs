@@ -46,4 +46,26 @@ public class Booking : BaseModel
 
     [Column("closed_at")]
     public DateTime? ClosedAt { get; set; }
+
+    // Added to the live schema by mobile (Sept 2026, see web/CLAUDE.md "Schema
+    // drift" section) - not created by any migration in this repo. InvoiceNumber
+    // is DB-generated (a sequence, e.g. "INV-00005") - ignoreOnInsert so a blank
+    // C# default doesn't overwrite it, same reasoning as CreatedAt above.
+    [Column("invoice_number", ignoreOnInsert: true)]
+    public string? InvoiceNumber { get; set; }
+
+    [Column("customer_id")]
+    public Guid? CustomerId { get; set; }
+
+    [Column("customer_name")]
+    public string CustomerName { get; set; } = string.Empty;
+
+    [Column("customer_phone")]
+    public string CustomerPhone { get; set; } = string.Empty;
+
+    [Column("customer_email")]
+    public string? CustomerEmail { get; set; }
+
+    [Column("customer_company")]
+    public string? CustomerCompany { get; set; }
 }

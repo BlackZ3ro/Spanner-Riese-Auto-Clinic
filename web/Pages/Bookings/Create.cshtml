@@ -12,6 +12,30 @@
 }
 
 <form method="post" class="col-md-6">
+    <h2 class="h5">Customer details</h2>
+    <input asp-for="CustomerId" type="hidden" />
+    <div class="mb-3">
+        <label asp-for="CustomerName" class="form-label"></label>
+        <input asp-for="CustomerName" class="form-control" list="customerList" autocomplete="off" />
+        <datalist id="customerList"></datalist>
+        <div id="customerHint" class="form-text"></div>
+        <span asp-validation-for="CustomerName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CustomerPhone" class="form-label"></label>
+        <input asp-for="CustomerPhone" class="form-control" />
+        <span asp-validation-for="CustomerPhone" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CustomerEmail" class="form-label"></label>
+        <input asp-for="CustomerEmail" class="form-control" type="email" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="CustomerCompany" class="form-label"></label>
+        <input asp-for="CustomerCompany" class="form-control" />
+    </div>
+
+    <h2 class="h5 mt-4">Vehicle details</h2>
     <div class="mb-3">
         <label asp-for="Brand" class="form-label"></label>
         <input asp-for="Brand" class="form-control" />
@@ -59,4 +83,82 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // Quick entry from past clients: native <datalist> autocomplete on the
+        // customer name field, backed by OnGetSearchCustomersAsync. Selecting a
+        // known name auto-fills phone/email/company and links CustomerId; typing
+        // a name that doesn't match anything just books in a new customer, same
+        // as before this existed.
+        (function () {
+            var nameInput = document.querySelector('[name="CustomerName"]');
+            var phoneInput = document.querySelector('[name="CustomerPhone"]');
+            var emailInput = document.querySelector('[name="CustomerEmail"]');
+            var companyInput = document.querySelector('[name="CustomerCompany"]');
+            var idInput = document.querySelector('[name="CustomerId"]');
+            var datalist = document.getElementById('customerList');
+            var hint = document.getElementById('customerHint');
+            // name -> array of candidates, not a single value - a name can be
+            // shared by more than one real customer (no dedupe on create, see
+            // CLAUDE.md). A <datalist> option's value is both what's shown and
+            // what fills the input, so there's no way to disambiguate in the
+            // dropdown itself - applyMatch() below refuses to guess when a name
+            // is ambiguous instead of silently picking one (a review finding:
+            // the original version picked whichever duplicate loaded last).
+            var known = {};
+            var timer;
+            var requestSeq = 0;
+
+            function applyMatch() {
+                var candidates = known[nameInput.value];
+                if (!candidates || candidates.length === 0) {
+                    idInput.value = '';
+                    hint.textContent = '';
+                    return;
+                }
+                if (candidates.length > 1) {
+                    idInput.value = '';
+                    hint.textContent = candidates.length + ' customers share this name - enter phone/email to add as new, or include the phone number in the search to find the right one.';
+                    return;
+                }
+                var match = candidates[0];
+                idInput.value = match.id;
+                phoneInput.value = match.phone || '';
+                emailInput.value = match.email || '';
+                companyInput.value = match.company || '';
+                hint.textContent = 'Existing customer - details filled in.';
+            }
+
+            nameInput.addEventListener('input', function () {
+                clearTimeout(timer);
+                var q = nameInput.value.trim();
+                if (q.length < 2) { datalist.innerHTML = ''; return; }
+                timer = setTimeout(function () {
+                    var thisRequest = ++requestSeq;
+                    fetch('?handler=SearchCustomers&q=' + encodeURIComponent(q))
+                        .then(function (r) { return r.json(); })
+                        .then(function (customers) {
+                            // Drop stale responses - a later keystroke's request
+                            // may resolve before this one (variable network/
+                            // payload timing), which would otherwise overwrite
+                            // newer results with older ones.
+                            if (thisRequest !== requestSeq) return;
+                            known = {};
+                            datalist.innerHTML = '';
+                            var seen = {};
+                            customers.forEach(function (c) {
+                                (known[c.name] = known[c.name] || []).push(c);
+                                if (!seen[c.name]) {
+                                    seen[c.name] = true;
+                                    var opt = document.createElement('option');
+                                    opt.value = c.name;
+                                    datalist.appendChild(opt);
+                                }
+                            });
+                            applyMatch();
+                        });
+                }, 250);
+            });
+            nameInput.addEventListener('change', applyMatch);
+        })();
+    </script>
 }

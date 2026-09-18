@@ -11,7 +11,26 @@
 
 @if (Model.Booking is { } booking)
 {
-    <h1 class="mb-4">@booking.Brand @booking.Model (@booking.Year)</h1>
+    var isOpen = booking.Status != "closed";
+
+    <h1 class="mb-1">@booking.Brand @booking.Model (@booking.Year)</h1>
+    @if (!string.IsNullOrEmpty(booking.InvoiceNumber))
+    {
+        <p class="text-muted mb-4">Invoice @booking.InvoiceNumber</p>
+    }
+
+    @if (!string.IsNullOrEmpty(booking.CustomerName))
+    {
+        <dl class="row col-md-8 mb-2">
+            <dt class="col-sm-3">Customer</dt>
+            <dd class="col-sm-9">
+                @booking.CustomerName
+                @if (!string.IsNullOrEmpty(booking.CustomerPhone)) { <text> · @booking.CustomerPhone</text> }
+                @if (!string.IsNullOrEmpty(booking.CustomerEmail)) { <text> · @booking.CustomerEmail</text> }
+                @if (!string.IsNullOrEmpty(booking.CustomerCompany)) { <text> · @booking.CustomerCompany</text> }
+            </dd>
+        </dl>
+    }
 
     <dl class="row col-md-8">
         <dt class="col-sm-3">Registration</dt>
@@ -27,11 +46,28 @@
         <dd class="col-sm-9">@booking.Kilometers?.ToString("N0")</dd>
 
         <dt class="col-sm-3">Status</dt>
-        <dd class="col-sm-9">@booking.Status</dd>
+        <dd class="col-sm-9">
+            <span class="badge @(isOpen ? "bg-success" : "bg-secondary")">@booking.Status</span>
+            @if (!isOpen && booking.ClosedAt is { } closedAt)
+            {
+                <span class="text-muted"> - finalized @closedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</span>
+            }
+        </dd>
 
         <dt class="col-sm-3">Booked</dt>
         <dd class="col-sm-9">@booking.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</dd>
     </dl>
+
+    @if (!isOpen)
+    {
+        <form method="post" asp-page-handler="Reopen" class="col-md-6 mt-2 mb-3 p-3 bg-light border rounded">
+            <label class="form-label">Reopen this booking - enter your password to confirm</label>
+            <div class="input-group">
+                <input asp-for="ReopenPassword" type="password" class="form-control" placeholder="Your password" />
+                <button type="submit" class="btn btn-outline-danger">Reopen</button>
+            </div>
+        </form>
+    }
 
     <h2 class="h4 mt-4">Jobs</h2>
 
@@ -68,13 +104,16 @@
         </table>
     }
 
-    <form method="post" asp-page-handler="AddJob" class="col-md-6 mt-3">
-        <div class="input-group">
-            <input asp-for="NewJobType" class="form-control" placeholder="e.g. Brake pad replacement" />
-            <button type="submit" class="btn btn-outline-primary">Add job</button>
-        </div>
-        <span asp-validation-for="NewJobType" class="text-danger"></span>
-    </form>
+    @if (isOpen)
+    {
+        <form method="post" asp-page-handler="AddJob" class="col-md-6 mt-3">
+            <div class="input-group">
+                <input asp-for="NewJobType" class="form-control" placeholder="e.g. Brake pad replacement" />
+                <button type="submit" class="btn btn-outline-primary">Add job</button>
+            </div>
+            <span asp-validation-for="NewJobType" class="text-danger"></span>
+        </form>
+    }
 
     <h2 class="h4 mt-4">Parts used</h2>
 
@@ -114,23 +153,26 @@
         </table>
     }
 
-    <form method="post" asp-page-handler="AddPart" class="col-md-6 mt-3">
-        <div class="row g-2">
-            <div class="col-7">
-                <select asp-for="NewPartStockItemId" class="form-select" asp-items="Model.StockItemOptions">
-                    <option value="">-- Select a part --</option>
-                </select>
-                <span asp-validation-for="NewPartStockItemId" class="text-danger"></span>
+    @if (isOpen)
+    {
+        <form method="post" asp-page-handler="AddPart" class="col-md-6 mt-3">
+            <div class="row g-2">
+                <div class="col-7">
+                    <select asp-for="NewPartStockItemId" class="form-select" asp-items="Model.StockItemOptions">
+                        <option value="">-- Select a part --</option>
+                    </select>
+                    <span asp-validation-for="NewPartStockItemId" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <input asp-for="NewPartQuantity" class="form-control" type="number" min="1" placeholder="Qty" />
+                    <span asp-validation-for="NewPartQuantity" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-outline-primary w-100">Add</button>
+                </div>
             </div>
-            <div class="col-3">
-                <input asp-for="NewPartQuantity" class="form-control" type="number" min="1" placeholder="Qty" />
-                <span asp-validation-for="NewPartQuantity" class="text-danger"></span>
-            </div>
-            <div class="col-2">
-                <button type="submit" class="btn btn-outline-primary w-100">Add</button>
-            </div>
-        </div>
-    </form>
+        </form>
+    }
 
     <div class="col-md-8 mt-3 p-3 bg-light border rounded">
         <div class="d-flex justify-content-between">
@@ -148,10 +190,16 @@
         </div>
     </div>
 
-    <p class="mt-3">
+    <p class="mt-3 d-flex gap-2">
         <a asp-page="/Bookings/Invoice" asp-route-id="@booking.Id" class="btn btn-outline-secondary" target="_blank">
             Download invoice (PDF)
         </a>
+        @if (isOpen)
+        {
+            <form method="post" asp-page-handler="Finalize" onsubmit="return confirm('Finalize and close this booking? Parts and labour can no longer be added after this.');">
+                <button type="submit" class="btn btn-outline-danger">Finalize &amp; close</button>
+            </form>
+        }
     </p>
 
     <p class="mt-4"><a asp-page="/Index">&larr; Back to dashboard</a></p>

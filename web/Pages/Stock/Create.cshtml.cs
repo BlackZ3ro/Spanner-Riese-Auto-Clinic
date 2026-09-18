@@ -14,11 +14,21 @@ public class CreateModel(Supabase.Client supabase) : PageModel
     [BindProperty, Required(ErrorMessage = "Required")]
     public string Name { get; set; } = string.Empty;
 
-    [BindProperty, Required(ErrorMessage = "Required")]
+    // Not [Required] - either an existing id OR a new-name text box below must be
+    // filled, checked manually in OnPostAsync (see there for why).
+    [BindProperty]
     public Guid? CategoryId { get; set; }
 
-    [BindProperty, Required(ErrorMessage = "Required")]
+    [BindProperty]
+    [Display(Name = "Or add a new category")]
+    public string? NewCategoryName { get; set; }
+
+    [BindProperty]
     public Guid? SupplierId { get; set; }
+
+    [BindProperty]
+    [Display(Name = "Or add a new supplier")]
+    public string? NewSupplierName { get; set; }
 
     [BindProperty, Required(ErrorMessage = "Required")]
     [Range(0, double.MaxValue, ErrorMessage = "Enter a valid amount")]
@@ -54,14 +64,40 @@ public class CreateModel(Supabase.Client supabase) : PageModel
             return Page();
         }
 
+        if (CategoryId is null && string.IsNullOrWhiteSpace(NewCategoryName))
+        {
+            ErrorMessage = "Select a category or enter a new one.";
+            return Page();
+        }
+        if (SupplierId is null && string.IsNullOrWhiteSpace(NewSupplierName))
+        {
+            ErrorMessage = "Select a supplier or enter a new one.";
+            return Page();
+        }
+
         try
         {
+            // Independent inserts (different tables, no FK between them) - run
+            // together instead of one after another when both are new.
+            var categoryTask = CategoryId is null
+                ? supabase.From<Category>().Insert(new Category { Name = NewCategoryName!.Trim() })
+                : null;
+            var supplierTask = SupplierId is null
+                ? supabase.From<Supplier>().Insert(new Supplier { Name = NewSupplierName!.Trim() })
+                : null;
+            if (categoryTask is not null && supplierTask is not null) await Task.WhenAll(categoryTask, supplierTask);
+            else if (categoryTask is not null) await categoryTask;
+            else if (supplierTask is not null) await supplierTask;
+
+            var categoryId = CategoryId ?? categoryTask!.Result.Models.First().Id;
+            var supplierId = SupplierId ?? supplierTask!.Result.Models.First().Id;
+
             await supabase.From<StockItem>().Insert(new StockItem
             {
                 Sku = Sku.Trim(),
                 Name = Name.Trim(),
-                CategoryId = CategoryId,
-                SupplierId = SupplierId,
+                CategoryId = categoryId,
+                SupplierId = supplierId,
                 CostPrice = CostPrice!.Value,
                 SellPrice = SellPrice!.Value,
                 QuantityOnHand = QuantityOnHand!.Value,
@@ -79,14 +115,24 @@ public class CreateModel(Supabase.Client supabase) : PageModel
 
     private async Task LoadOptionsAsync()
     {
-        var categories = await supabase.From<Category>().Order("name", Supabase.Postgrest.Constants.Ordering.Ascending).Get();
-        CategoryOptions = categories.Models
-            .Select(c => new SelectListItem(c.Name, c.Id.ToString()))
-            .ToList();
+        try
+        {
+            var categoriesTask = supabase.From<Category>().Order("name", Supabase.Postgrest.Constants.Ordering.Ascending).Get();
+            var suppliersTask = supabase.From<Supplier>().Order("name", Supabase.Postgrest.Constants.Ordering.Ascending).Get();
+            await Task.WhenAll(categoriesTask, suppliersTask);
 
-        var suppliers = await supabase.From<Supplier>().Order("name", Supabase.Postgrest.Constants.Ordering.Ascending).Get();
-        SupplierOptions = suppliers.Models
-            .Select(s => new SelectListItem(s.Name, s.Id.ToString()))
-            .ToList();
+            CategoryOptions = categoriesTask.Result.Models
+                .Select(c => new SelectListItem(c.Name, c.Id.ToString()))
+                .ToList();
+            SupplierOptions = suppliersTask.Result.Models
+                .Select(s => new SelectListItem(s.Name, s.Id.ToString()))
+                .ToList();
+        }
+        catch (Exception ex)
+        {
+            // Matches Stock/Index's NFR-03 handling - a Supabase hiccup shouldn't
+            // 500 the "add stock item" page.
+            ErrorMessage = $"Couldn't load categories/suppliers from Supabase: {ex.Message}";
+        }
     }
 }

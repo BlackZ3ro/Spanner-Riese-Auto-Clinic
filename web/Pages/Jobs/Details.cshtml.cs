@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Spanner.Web.Models;
+using Spanner.Web.Services;
 using Supabase.Postgrest;
 
 namespace Spanner.Web.Pages.Jobs;
@@ -53,12 +54,7 @@ public class DetailsModel(Supabase.Client supabase) : PageModel
 
         try
         {
-            await supabase.From<Job>()
-                .Filter("id", Constants.Operator.Equals, id.ToString())
-                .Set(x => x.LabourHours!, LabourHours)
-                .Set(x => x.LabourRate!, LabourRate)
-                .Update();
-
+            await UpdateLabourAsync(id, markComplete: false);
             return RedirectToPage(new { id });
         }
         catch (Exception ex)
@@ -83,14 +79,7 @@ public class DetailsModel(Supabase.Client supabase) : PageModel
 
         try
         {
-            await supabase.From<Job>()
-                .Filter("id", Constants.Operator.Equals, id.ToString())
-                .Set(x => x.LabourHours!, LabourHours)
-                .Set(x => x.LabourRate!, LabourRate)
-                .Set(x => x.Status!, "completed")
-                .Set(x => x.CompletedAt!, DateTime.UtcNow)
-                .Update();
-
+            await UpdateLabourAsync(id, markComplete: true);
             return RedirectToPage(new { id });
         }
         catch (Exception ex)
@@ -100,19 +89,32 @@ public class DetailsModel(Supabase.Client supabase) : PageModel
         }
     }
 
+    private Task UpdateLabourAsync(Guid id, bool markComplete)
+    {
+        var query = supabase.From<Job>()
+            .Filter("id", Constants.Operator.Equals, id.ToString())
+            .Set(x => x.LabourHours!, LabourHours)
+            .Set(x => x.LabourRate!, LabourRate);
+
+        if (markComplete)
+        {
+            query = query
+                .Set(x => x.Status!, "completed")
+                .Set(x => x.CompletedAt!, DateTime.UtcNow);
+        }
+
+        return query.Update();
+    }
+
     private async Task LoadAsync(Guid id)
     {
         try
         {
-            Job = await supabase.From<Job>()
-                .Filter("id", Constants.Operator.Equals, id.ToString())
-                .Single();
+            Job = await supabase.From<Job>().GetByIdAsync(id);
 
             if (Job is not null)
             {
-                Booking = await supabase.From<Booking>()
-                    .Filter("id", Constants.Operator.Equals, Job.BookingId.ToString())
-                    .Single();
+                Booking = await supabase.From<Booking>().GetByIdAsync(Job.BookingId);
             }
         }
         catch (Exception ex)

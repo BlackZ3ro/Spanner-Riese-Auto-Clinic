@@ -58,3 +58,6 @@ Thumbs.db
 *.log
 *.tmp
 *.temp                                                                                                                            
+
+# Claude Code tool config (local, not shared)
+.claude/

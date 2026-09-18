@@ -34,6 +34,28 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
    Without credentials configured, it still starts (read-only pages that need
    Supabase just won't have data yet).
 
+## Try this build (new since M8 - quick checklist for anyone testing)
+
+Needs migration `0004` applied first for the "Add part" step below to fully
+work (see "Still pending" at the end of this file) - everything else works
+without it.
+
+1. Log in, click **Book in a vehicle**. Fill in a customer name - if it
+   matches (or nearly matches) someone already booked in before, phone/email/
+   company auto-fill. Save the booking.
+2. On the booking's page, add a job and link a part - stock drops
+   automatically. Try leaving the job type blank and submitting: you get
+   "Enter a job type." right there, not a silent no-op.
+3. Click **Finalize & close**. The booking becomes read-only (no more
+   add-job/add-part) and drops off the dashboard's open list.
+4. Go to **Closed bookings** (nav bar) to find it again. Open it and try
+   **Reopen** with the wrong password (rejected, stays closed) then the right
+   one (booking reopens, editable again).
+5. Go to **Vehicle history** and search by a customer's name or phone instead
+   of the registration plate.
+6. Go to **Stock > Add a part** and type a brand-new category or supplier
+   name instead of picking one from the dropdown.
+
 ## Status
 
 - M0 (project setup, Supabase client wiring): done. Live connection confirmed.
@@ -87,3 +109,23 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
 All done - see `CLAUDE.md` for the full build log, and `docs/demo-script.md`
 for the demo walkthrough. Every milestone landed on its own feature branch
 with its own PR; none have been merged to `main` yet as of M8.
+
+## Post-M8: schema reconciliation + new features (Sept 2026)
+
+Mobile's latest build added real customer/invoice-number support directly to
+the live schema without a heads-up - reconciled on web's side too, plus a few
+features added to close the resulting gaps (customer capture/lookup,
+finalize/reopen, multi-column vehicle search, inline category/supplier
+creation). Full detail in `CLAUDE.md`'s "Schema drift" section; the checklist
+above is the fast way to see it working.
+
+**Still pending** - migrations `0002` (Realtime), `0003` (jobs DELETE
+policy), and `0004` (atomic stock decrement, added this pass) all need
+someone with Supabase dashboard access to run them. Until `0004` is applied,
+linking a part to a booking shows a clean "function not found" error instead
+of crashing - that's expected, not a bug.
+
+**Flagged, not fixed - needs a team decision**: mobile's invoice now totals
+`parts + booking_labor`; web's still totals `parts + jobs.labour_hours ×
+labour_rate`. Two disconnected labour ledgers on the same live bookings - see
+CLAUDE.md before this is used for more real invoices.

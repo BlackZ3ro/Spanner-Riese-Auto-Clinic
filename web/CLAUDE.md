@@ -340,3 +340,55 @@ policy.) Fixed in `supabase/migrations/0003_add_jobs_delete_policy.sql` -
 another one for Gary to run. Until it's applied, test/junk rows accumulate
 in `jobs` and can't be removed by the app or by curl, only from the
 Supabase dashboard directly (which uses `service_role`, bypassing RLS).
+
+### Schema drift found 2026-09-17 - mobile added tables/columns web didn't know about
+
+`main` moved (`e31d64e..dc2c8cc`, "Add files via upload") with a large mobile
+build: real booking CRUD, a `customer_provider`, and an `invoice_pdf_service.dart`.
+Checked the **live** schema directly (curl + anon key, same method as M0)
+rather than trusting the Dart models alone, since mobile's models have been
+ahead of the real schema before (see M1's note on commented-out fields). This
+time the opposite happened - the schema changed and only mobile's code was
+updated to match.
+
+**Confirmed live**, all additive (nothing dropped or renamed, nothing here
+broke web - booking creation was tested end-to-end after this was found and
+still works, using DB-side defaults for the new columns):
+
+- `bookings` gained `invoice_number` (DB-generated, e.g. `"INV-00005"` - has a
+  default, confirmed by inserting without setting it), `customer_id`
+  (nullable FK, presumably to the new `customers` table), `customer_name`,
+  `customer_phone` (both default to `""`, not null), `customer_email`,
+  `customer_company`.
+- A new `customers` table exists with real data (`id, name, phone, email,
+  company, created_at`).
+- **Fixed same pass**: `Booking.cs` had none of these five columns. Added
+  them (`InvoiceNumber` as `ignoreOnInsert: true`, same reasoning as
+  `CreatedAt` - it's DB-generated, a blank C# default must never overwrite
+  it). Added customer name/phone (required) + email/company (optional) to
+  `Pages/Bookings/Create`, matching mobile's own required/optional split, and
+  display customer info + invoice number on `Pages/Bookings/Details` and the
+  invoice PDF. This closes the immediate gap (web bookings had zero customer
+  info) but is deliberately minimal - it does **not** replicate mobile's
+  customer search/autocomplete against the `customers` table; a web booking
+  currently always writes a fresh name/phone onto the booking row without
+  linking `customer_id`. Revisit if the team wants one shared customer
+  directory instead of denormalized per-booking contact info.
+
+**Not fixed, flagged instead - needs a team decision, not a guess**: a new
+`booking_labor` table also exists live, with real data. Mobile's
+`invoice_pdf_service.dart` totals `parts + booking_labor` and never reads
+`jobs` at all. Web's invoice (`BookingInvoiceDocument.cs`) totals
+`parts + jobs.labour_hours x jobs.labour_rate` and has never heard of
+`booking_labor`. **These are two independent, disconnected labour ledgers on
+the same live bookings** - if a booking gets labour entered from both apps
+(or even just from mobile, on a booking a web-using mechanic assumes is
+tracked via `jobs`), the web invoice and the mobile invoice will show two
+different totals for the same booking, and neither is wrong per its own
+data, they're just reading different tables. This is a real billing-accuracy
+risk on a live workshop's real invoices, not a cosmetic mismatch - flagging
+as the top priority for the team to resolve (pick one ledger as canonical
+and migrate the other, or have both apps write to both) before this gets
+used for more real invoices. Did not attempt to silently merge them into one
+total myself since that's a real business-logic/data-migration decision, not
+something to guess at from the app layer.
