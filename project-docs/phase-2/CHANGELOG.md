@@ -12,15 +12,25 @@ separate from the Progress Tracker's task/owner view.
   Supabase schema and real app behaviour rather than designed from scratch
   (web dev was already ahead of the design docs going into Unit 3).
 - Added Ofentse Rammutla and Breyton Rossouw to `CONTRIBUTORS.md` with
-  their student numbers; added Kia and Kumo as existing members (confirmed
-  via the 2026-09-18 on-campus meeting, previously not recorded in the repo).
+  their student numbers.
 - Assigned Phase 2 tasks to the new members so their GitHub activity shows
   real individual contribution.
 - **Revised same day**: moved the use case + sequence diagrams from a
   one-each split to a paired task for Ofentse and Breyton, since we don't
   yet know either of their skill levels and Breyton had already offered to
   take it on solo. ASP.NET wireframes and navigation-flow tasks reassigned
-  off Breyton, pending a confirmed owner from Kia/Kumo.
+  off Breyton to Kea and Khumo.
+- **Revised again**: roster corrected against the group's actual official
+  Phase 1 submission (`Group Y - ITC327W Progress Checker.xlsx`, from
+  `Group Y Phase 1_2.zip`). Two names in earlier drafts of these docs were
+  wrong — "Kia" and "Kumo" were phonetic mis-transcriptions of
+  **Keamogetse Ogone Kgosi (Kea)** and **Moremi KE (Khumo)** — and
+  **Mathye MD (Denny)** was missing entirely. Denny is now assigned the
+  stakeholder-reconfirmation task, which matches the group's own stated
+  top priority for Phase 2 from the Phase 1 Group Reflection. The official
+  Progress Checker workbook was continued (not replaced) as
+  `Group Y - ITC327W Progress Checker (Phase 2 update).xlsx`, same sheet
+  structure as the submitted original, Phase 1 rows preserved verbatim.
 
 **Web app — admin/mechanic access control (post-M8)**
 - Added a config-based admin/mechanic distinction (`web/Auth/AdminAccess.cs`,

@@ -1,7 +1,13 @@
 # Phase 2 Roles and Assignments
 
-**Group Y — ITC327W — Spanner (Riese Auto-Clinic)**
-Updated: 2026-09-19 (revision 2 — see "Revision history" at the bottom)
+**Group Y ("The Zealots") — ITC327W — Spanner (Riese Auto-Clinic)**
+Updated: 2026-09-19 (revision 3 — see "Revision history" at the bottom)
+
+Roster corrected against the official Phase 1 submission
+(`Group Y - ITC327W Progress Checker.xlsx`) — earlier drafts of this
+document had two names wrong (transcribed as "Kia"/"Kumo" instead of
+Kea/Khumo) and were missing Denny entirely. See `CONTRIBUTORS.md` for the
+full roster with student numbers.
 
 Two new members were added to the group on 2026-09-17 at Ms Mbele's
 request: **Ofentse Rammutla** (223056856) and **Breyton Rossouw**
@@ -10,34 +16,36 @@ request: **Ofentse Rammutla** (223056856) and **Breyton Rossouw**
 genuine contribution from day one, per the module's individual-participation
 rules.
 
-> Fill in/correct names below if this doesn't match who's actually on the
-> group — this is a first draft based on what's confirmed in chat and email.
-
 ## Assignment table
 
 | Deliverable (Unit 3) | Owner | Reviewer | Notes |
 |---|---|---|---|
 | Activity 3.1 — System Architecture Diagram | **Ofentse Rammutla** | Wisani | Draft is already in `system-architecture.md` (Mermaid, grounded in real code) — Ofentse's job is to turn it into a proper diagram (draw.io / Lucidchart / Figma export), check it against the video's requirements, and present it at the consultation. Good onboarding task: low risk, high learning value. |
-| Activity 3.2, Part 1 & 2 — Use Case Diagram + Sequence Diagrams ("the UML diagrams") | **Ofentse Rammutla and Breyton Rossouw, working together** | Wisani | **Changed 2026-09-19**: originally split one-each, now a paired task instead. We don't have a read yet on either of their skill levels, so rather than have Breyton (who'd already offered to take "the UML diagrams" since he had no other task yet) do it solo, both of them work through it together — draw case diagram + both sequence diagrams as a pair, both push commits, both can be assessed on it. Drafts for both are already in `uml-and-erd.md` Parts 1 & 2 to work from; Gary should confirm the Flutter-side sequence diagram matches mobile's actual code path. |
-| Activity 3.2, Part 3 — ERD | **Wisani** | Gary | Drafted directly from the live Postgres schema (`web/Models/*.cs` + migrations) — Gary should sanity-check nothing's missing (e.g. any mobile-only columns not yet reflected on web). |
-| Activity 3.3 — Flutter interface wireframes | **Gary** | Ofentse or Breyton | Screens already exist and are live — this is "wireframe the existing screens", not design-from-scratch. Export a few real screenshots + label them, or trace them in Figma per the required video. |
-| Activity 3.3 — ASP.NET interface wireframes | **Kia or Kumo** (to confirm) | Wisani | Same idea on the web side — Pages/Bookings, Pages/Stock, Pages/Vehicles screenshots, labelled and tied back to the use cases they satisfy. Reassigned off Breyton now that he's paired with Ofentse on the UML diagrams — needs an owner from Kia/Kumo, confirm at the next meeting. |
-| Activity 3.3 — Navigation flow | **Kia or Kumo** (to confirm) | Wisani | How a staff member moves between dashboard -> booking -> add job/part -> invoice/finalize, and admin-only branches (delete, reopen). Same reassignment note as above. |
+| Activity 3.2, Part 1 & 2 — Use Case Diagram + Sequence Diagrams ("the UML diagrams") | **Ofentse Rammutla and Breyton Rossouw, working together** | Wisani | Originally split one-each, changed to a paired task instead. We don't have a read yet on either of their skill levels, so rather than have Breyton (who'd already offered to take "the UML diagrams" solo since he had no other task yet) do it alone, both of them work through it together — draw the use case diagram + both sequence diagrams as a pair, both push commits, both can be assessed on it. Drafts for both are already in `uml-and-erd.md` Parts 1 & 2 to work from; Gary should confirm the Flutter-side sequence diagram matches mobile's actual code path. |
+| Activity 3.2, Part 3 — ERD | **Wisani** | Gary van Wyk | Drafted directly from the live Postgres schema (`web/Models/*.cs` + migrations) — Gary should sanity-check nothing's missing (e.g. any mobile-only columns not yet reflected on web). |
+| Activity 3.3 — Flutter interface wireframes | **Gary van Wyk** | Kea or Khumo | Screens already exist and are live — this is "wireframe the existing screens", not design-from-scratch. Export a few real screenshots + label them, or trace them in Figma per the required video. |
+| Activity 3.3 — ASP.NET interface wireframes | **Keamogetse Ogone Kgosi (Kea)** | Wisani | Same idea on the web side — Pages/Bookings, Pages/Stock, Pages/Vehicles screenshots, labelled and tied back to the use cases they satisfy. Reassigned off Breyton now that he's paired with Ofentse on the UML diagrams. |
+| Activity 3.3 — Navigation flow | **Moremi KE (Khumo)** | Wisani | How a staff member moves between dashboard → booking → add job/part → invoice/finalize, and admin-only branches (delete, reopen). Reassigned off Breyton for the same reason as above — a good fit for Khumo given her Phase 1 role coordinating and distributing shared work across the group. |
+| Reconfirm requirements with the stakeholder before finalizing the design | **Mathye MD (Denny)**, with Wisani | — | This is literally the group's own stated priority for Phase 2 from the Phase 1 Group Reflection ("confirm the requirements directly with Michael Riese before starting UML, ERD and interface design"). Good fit for Denny given his Phase 1 strength — he's the one who chased down and secured the Ms Mbele consultation after email stalled. |
 | Stakeholder design feedback | **Wisani** | — | Coordinating with Riese Auto-Clinic; will capture feedback in `project-docs/meeting-notes/`. |
 | Microsoft Project update | **Wisani** | — | Add Unit 3 tasks/owners from this table; mark M0–M8 (dev) as already complete since it finished ahead of design docs. |
 | GitHub evidence | **All** | — | Everyone commits their own piece under `project-docs/phase-2/` on a `phase2/design-docs` branch — don't have one person commit for everyone, that's exactly what individual GitHub activity tracking is meant to catch. For the paired UML task, both Ofentse and Breyton should have commits on it, not just one. |
-| Progress Tracker | **Wisani** | — | Log each person's Phase 2 task against their name with today's date as the start. |
+| Progress Tracker | **Wisani** | — | Official workbook continued as `Group Y - ITC327W Progress Checker (Phase 2 update).xlsx`, same structure as the Phase 1 submission. |
 
 ## Revision history
 
+- **2026-09-19 (rev 3)**: Corrected the roster against the actual Phase 1
+  submission workbook. "Kia" → **Keamogetse Ogone Kgosi (Kea)**, "Kumo" →
+  **Moremi KE (Khumo)** — both were phonetic mis-transcriptions from a
+  voice message, not real names. Added **Mathye MD (Denny)**, who was
+  missing from earlier drafts entirely, and gave him the stakeholder
+  reconfirmation task — which the group had already identified as its own
+  top Phase 2 priority at the end of Phase 1, and which plays to his
+  demonstrated strength (securing the Ms Mbele consultation in Phase 1).
+  Gary's surname (van Wyk) and student number added.
 - **2026-09-19 (rev 2)**: Moved the use case + sequence diagrams from a
   one-each split (Ofentse / Breyton) to a joint paired task for both of
-  them. Reason: unknown skill level for two members who just joined, and
-  Breyton had already offered to take "the UML diagrams" solo since he had
-  no other task yet — pairing reduces the risk of one person getting stuck
-  alone on unfamiliar UML notation. Freed up the ASP.NET wireframes and
-  navigation-flow tasks, provisionally reassigned to Kia/Kumo pending
-  confirmation at the next meeting.
+  them, since we don't yet know either of their skill levels.
 - **2026-09-19 (rev 1)**: Initial draft, one task each for Ofentse and
   Breyton.
 
@@ -50,4 +58,5 @@ rules.
    the architecture diagram, use case diagram, and progress tracker per the
    Unit 3 Group Progress Checkpoint (`6.pdf`).
 3. **After feedback**: adjust diagrams, do the wireframes (Activity 3.3),
-   finalize the design baseline.
+   Denny reconfirms requirements with Michael Riese, finalize the design
+   baseline.

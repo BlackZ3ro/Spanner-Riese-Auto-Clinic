@@ -1,27 +1,30 @@
 # Contributors
 
+**Group Y ("The Zealots") — ITC327W**
+
 | Area              | Owner          |
 |-------------------|----------------|
-| Mobile (Flutter)  | Gary           |
-| Web (ASP.NET)     | Gary / Wisani (post-M8 changes, see web/CLAUDE.md) |
-| Supabase          | Gary           |
+| Mobile (Flutter)  | Gary van Wyk   |
+| Web (ASP.NET)     | Gary van Wyk / Wisani (post-M8 changes, see web/CLAUDE.md) |
+| Supabase          | Gary van Wyk   |
+| GitHub setup      | Keamogetse Ogone Kgosi (Kea) |
 | Project Docs      | Wisani         |
 | Overall           | Group          |
 
 ## Group members
 
+Source of truth: `Group Y - ITC327W Progress Checker.xlsx` (Phase 1
+submission, 2026-09-04) and the group chat, 2026-09-19.
+
 | Name | Student number | Joined |
 |---|---|---|
 | Wisani Nkuna | 222010787 | Phase 1 |
-| Gary | — | Phase 1 |
-| Kia | — | Phase 1 |
-| Kumo | — | Phase 1 |
+| Gary van Wyk | 222048911 | Phase 1 |
+| Keamogetse Ogone Kgosi (Kea) | 222003092 | Phase 1 |
+| Moremi KE (Khumo) | 222062729 | Phase 1 |
+| Mathye MD (Denny) | 221014861 | Phase 1 |
 | Ofentse Rammutla | 223056856 | 2026-09-17 |
 | Breyton Rossouw | 222069744 | 2026-09-17 |
-
-Kia and Kumo were on record as group members but hadn't shown up yet in
-this repo's docs — added here after the 2026-09-18 on-campus meeting.
-Surnames/roles to confirm and fill in.
 
 Phase 2 task assignments (Unit 3 — System Architecture and Design):
 see `project-docs/phase-2/roles-and-assignments.md`.

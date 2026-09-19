@@ -1,19 +1,22 @@
 # Phase 2 Progress Tracker (Unit 3 — System Architecture and Design)
 
-Mirror this into the official Progress Tracker / Microsoft Project — this
-file is the GitHub-visible copy so individual contribution shows up in
-commit history too, not just in an external tool.
+GitHub-readable mirror of the official workbook, `Group Y - ITC327W
+Progress Checker (Phase 2 update).xlsx` — continues the real Phase 1
+submission (`Group Y - ITC327W Progress Checker.xlsx`) rather than
+replacing it. That workbook is the actual document to submit; this file is
+just so the same information is visible/diffable on GitHub.
 
 **Phase 1 result:** 80% (Planning, Requirements and Feasibility).
 **Group as of 2026-09-17:** added Ofentse Rammutla (223056856) and Breyton
-Rossouw (222069744) — Kia and Kumo confirmed as existing members (see
-CONTRIBUTORS.md).
+Rossouw (222069744) to the existing five: Wisani Nkuna, Gary van Wyk,
+Keamogetse Ogone Kgosi (Kea), Moremi KE (Khumo), Mathye MD (Denny). Full
+roster with student numbers in `CONTRIBUTORS.md`.
 
 ## Meeting log
 
 | Date | Attendees | Location | What was covered |
 |---|---|---|---|
-| 2026-09-18 (approx. — confirm exact date) | Wisani, Kia, Kumo, Gary | On campus | Worked through Phase 2 design/dev work together |
+| 2026-09-18 (approx. — confirm exact date) | Wisani, Kea, Khumo, Gary | On campus | Worked through Phase 2 design/dev work together |
 | 2026-09-22, 12:00 (upcoming) | All (Group Y's slot) | With Ms Mbele | Phase 2 consultation — see `consultation-prep-2026-09-22.md` |
 
 ## Task list
@@ -29,27 +32,18 @@ CONTRIBUTORS.md).
 | 7 | ERD from live schema | Wisani | Done | 2026-09-19 | 2026-09-19 |
 | 8 | ERD sanity-check against mobile's actual columns | Gary | Not started | — | 2026-09-21 |
 | 9 | Flutter interface wireframes (from real screens) | Gary | Not started | — | 2026-09-23 |
-| 10 | ASP.NET interface wireframes (from real screens) | Kia or Kumo (to confirm) | Not started | — | 2026-09-23 |
-| 11 | Navigation flow diagram | Kia or Kumo (to confirm) | Not started | — | 2026-09-23 |
-| 12 | Consultation with Ms Mbele | All (attend) | Scheduled | — | 2026-09-22 12:00 |
-| 13 | Apply consultation feedback, finalize design baseline | All | Not started | — | 2026-09-25 |
-| 14 | Update Microsoft Project with Unit 3 tasks | Wisani | Not started | — | 2026-09-20 |
-| 15 | Update official Progress Tracker | Wisani | Done (this file) | 2026-09-19 | 2026-09-19 |
+| 10 | ASP.NET interface wireframes (from real screens) | Kea | Not started | — | 2026-09-23 |
+| 11 | Navigation flow diagram | Khumo | Not started | — | 2026-09-23 |
+| 12 | Reconfirm requirements with Michael Riese before finalizing the design | Denny (with Wisani) | Not started | — | 2026-09-25 |
+| 13 | Consultation with Ms Mbele | All (attend) | Scheduled | — | 2026-09-22 12:00 |
+| 14 | Apply consultation feedback, finalize design baseline | All | Not started | — | 2026-09-25 |
+| 15 | Update Microsoft Project with Unit 3 tasks | Wisani | Not started | — | 2026-09-20 |
+| 16 | Update official Progress Checker | Wisani | Done (this pass) | 2026-09-19 | 2026-09-19 |
 
-*Task 4 was originally two separate one-each tasks (architecture diagram to
-Ofentse, use case diagram to Breyton); revised 2026-09-19 to pair Ofentse
-and Breyton on the use case + sequence diagrams together, since we don't
-yet know either of their individual skill levels — see
+*Task 4 was originally two separate one-each tasks; revised 2026-09-19 to
+pair Ofentse and Breyton on the use case + sequence diagrams together,
+since we don't yet know either of their individual skill levels — see
 `roles-and-assignments.md` revision history. Tasks 10–11 were reassigned
-off Breyton for the same reason and need a confirmed owner from Kia/Kumo.*
-
-## Known open items carried over from web build (not Phase 2 blockers, but relevant to design accuracy)
-
-- Migrations `0004` (atomic stock decrement) and `0005` (bookings delete +
-  restock) still need to be applied to Supabase by whoever has dashboard
-  access — see `web/README.md` "Still pending".
-- Mobile vs web have two different labour-total calculations
-  (`booking_labor` vs `jobs.labour_hours × labour_rate`) — needs a team
-  decision, flagged in `uml-and-erd.md`.
-- Mobile has no admin/mechanic distinction yet (web does) — worth deciding
-  whether that's in scope before the Phase 2 design is called final.
+off Breyton for the same reason, to Kea and Khumo. Task 12 is the group's
+own stated top priority for this phase from the Phase 1 Group Reflection,
+given to Denny.*
