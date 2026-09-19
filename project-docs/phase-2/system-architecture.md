@@ -46,7 +46,7 @@ flowchart LR
 
 ## Data flows worth calling out
 
-1. **Booking created on mobile → visible on web immediately** (and vice
+1. **Booking created on mobile -> visible on web immediately** (and vice
    versa) — both apps read/write the same `bookings` table; only the web
    dashboard currently has a Realtime subscription (mobile doesn't — see
    `web/README.md`'s M7 note, a known gap, not a bug).

@@ -1,9 +1,11 @@
 # Activity 3.2 — UML and Database Design
 
-Draft owners: Breyton Rossouw (use case diagram), Wisani + Gary (sequence
-diagrams), Wisani (ERD). Everything below is grounded in the real app and
-the real Postgres schema — not invented, so the diagrams should mostly need
-re-drawing in a proper tool, not re-designing.
+Draft owners: Ofentse Rammutla and Breyton Rossouw, working together
+(use case diagram + both sequence diagrams — see
+`roles-and-assignments.md` revision history), Wisani (ERD). Everything
+below is grounded in the real app and the real Postgres schema — not
+invented, so the diagrams should mostly need re-drawing in a proper tool,
+not re-designing.
 
 ## Part 1 — Use Case Diagram
 
@@ -27,7 +29,7 @@ course example's "Manager is a specialised Staff User".
 - Log in
 - Book in a vehicle (with customer auto-fill/lookup)
 - Add a job to a booking
-- Add a part to a booking → **`<<include>>`** Decrement stock (always
+- Add a part to a booking -> **`<<include>>`** Decrement stock (always
   happens together — see `add_booking_part`)
 - Record labour hours/rate on a job
 - View live dashboard (Realtime updates)
@@ -35,9 +37,9 @@ course example's "Manager is a specialised Staff User".
 - Download invoice (PDF)
 - Add/view stock; create a new stock category or supplier inline
 - Finalize & close a booking *(Admin only)*
-- Delete a booking → **`<<include>>`** Restock parts, **`<<include>>`**
+- Delete a booking -> **`<<include>>`** Restock parts, **`<<include>>`**
   Remove labour/jobs *(Admin only — one atomic call, `delete_booking_and_restock`)*
-- Reopen a closed booking → **`<<extend>>`** Display "incorrect password"
+- Reopen a closed booking -> **`<<extend>>`** Display "incorrect password"
   error *(Admin only, only when the password check fails)*
 
 ### Diagram (Mermaid; redraw as proper UML in draw.io/Lucid)
@@ -90,7 +92,7 @@ flowchart TB
 
 ## Part 2 — Sequence Diagrams (at least one Flutter, one ASP.NET)
 
-### Diagram 1 — Mechanic adds a job (Flutter → Supabase)
+### Diagram 1 — Mechanic adds a job (Flutter -> Supabase)
 
 ```mermaid
 sequenceDiagram
@@ -105,7 +107,7 @@ sequenceDiagram
     F-->>M: Job appears in the list
 ```
 
-### Diagram 2 — Admin finalizes a booking (ASP.NET → Supabase)
+### Diagram 2 — Admin finalizes a booking (ASP.NET -> Supabase)
 
 ```mermaid
 sequenceDiagram
@@ -132,7 +134,7 @@ sequenceDiagram
     participant W as ASP.NET Web App
     participant S as Supabase (Postgres function)
 
-    A->>W: Confirm "Are you sure?" → POST Delete
+    A->>W: Confirm "Are you sure?" -> POST Delete
     W->>W: Check IsAdmin
     W->>S: RPC delete_booking_and_restock(booking_id, user_id)
     Note over S: single transaction:<br/>restock every part,<br/>log stock_movements,<br/>delete jobs, booking_parts, booking
