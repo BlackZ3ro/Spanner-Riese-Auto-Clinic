@@ -9,6 +9,13 @@ Phase 3 (Assessment 3, due 2026-11-02, 50% of the module) **continues the
 same SRS, design and GitHub repo** — nothing here is throwaway. Get Phase 2
 right and Phase 3 starts from a working baseline instead of a redo.
 
+**Updated 2026-09-20**: Wisani's task load was checked and rebalanced (see
+`roles-and-assignments.md` rev 5) — the ERD redraw, navigation flow, and
+design-alignment table moved to Gary, Kea and Denny respectively.
+[Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov)
+(worked architecture + UML diagram examples) was shared with the group as
+a reference, not the submission.
+
 ## The 8 things that must exist in the actual submission
 
 | # | Submission item | Format | Status |
@@ -39,12 +46,12 @@ group stays in sync, not extra meetings.
 |---|---|---|---|---|
 | System architecture diagram — redraw in a real tool + share link | Ofentse | Gary | System Architecture Design (10) | 21 Sept |
 | Use case diagram + 2 sequence diagrams ("the UML diagrams") — redraw + share links | Ofentse & Breyton, together | Wisani (content), Gary (Flutter sequence matches real code) | Use Case Diagram (10), Sequence Diagrams (10) | 21 Sept |
-| ERD — redraw in a real tool + share link | Wisani | Gary (columns match the real schema, incl. mobile-only ones) | ERD and Database Design (10) | 23 Sept |
+| ERD — redraw in a real tool + share link, and sanity-check vs mobile's columns | **Gary** (moved off Wisani 20 Sept) | Wisani | ERD and Database Design (10) | 23 Sept |
 | Flutter interface wireframes (from the real, live screens) | Gary | Kea | Flutter Interface Design (10) | 25 Sept |
 | ASP.NET interface wireframes (from the real, live screens) | Kea | Wisani | ASP.NET Interface Design (10) | 25 Sept |
-| Navigation flow diagram | Wisani | Khumo | feeds Design Alignment (5) | 25 Sept |
-| Design-alignment table (requirement → use case → sequence → ERD → interface) | Wisani | Denny | Design Alignment, Documentation and Source Links (5) | 27 Sept |
-| Reconfirm requirements with Michael Riese before the design is called final | Denny, with Wisani | — | feeds Design Alignment + credibility of the whole section | After 22 Sept consultation |
+| Navigation flow diagram | **Kea** (moved off Wisani 20 Sept) | Wisani | feeds Design Alignment (5) | 25 Sept |
+| Design-alignment table (requirement → use case → sequence → ERD → interface) | **Denny** (moved off Wisani 20 Sept) | Wisani | Design Alignment, Documentation and Source Links (5) | 27 Sept |
+| Reconfirm requirements with Michael Riese before the design is called final | **Denny** (sole owner from 20 Sept) | Wisani (informed) | feeds Design Alignment + credibility of the whole section | After 22 Sept consultation |
 | Merge everything into the existing SRS as one new section (no separate doc) | Wisani | Denny | Design Alignment (5), all design criteria depend on this existing | 30 Sept |
 | Microsoft Project — update schedule + screenshot into the SRS | **Khumo** | Wisani | MS Project, GitHub and Progress Tracker (5) | 3 Oct |
 | Excel Progress Tracker — final top-up (tasks, contributions, challenges, Phase 2 reflection) | Wisani | Whole group sign-off | MS Project, GitHub and Progress Tracker (5) | 8 Oct |

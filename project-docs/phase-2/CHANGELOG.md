@@ -4,6 +4,32 @@ Dated log of real changes/decisions — web app, Supabase, and Phase 2 docs.
 Kept here so there's one place showing what actually happened and why,
 separate from the Progress Tracker's task/owner view.
 
+## 2026-09-20
+
+**Shared Phase 2 tracker**
+- Published [Zealots Tracker](https://claude.ai/artifact/3TeRkof9dpEMUGjAiz2iDo) —
+  a live, shared task board + updates feed for the group, seeded with the
+  real 20-task Phase 2 checklist. Two separate design-plan documents
+  written alongside it: `tracker/team-guide.md` (for the group) and
+  `tracker/build-spec.md` (internal, for maintaining the artifact's code).
+- Built [Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov) —
+  worked examples of the architecture diagram and the UML diagrams (use
+  case + both sequence diagrams), initially kept private as a personal
+  safety net. **Later shared with the group as reference examples** — not
+  the submission; Ofentse, Breyton and Gary still produce and share-link
+  their own versions.
+
+**Load check and rebalance**
+- Wisani was the owner on ~10 active Phase 2 items plus reviewer on most
+  others — the same solo-overload pattern as her Phase 1 SRS/tracker/
+  reflection load. Moved the ERD redraw to Gary (merged with his existing
+  sanity-check task), the navigation flow diagram to Kea (pairs with her
+  ASP.NET wireframes), and the design-alignment table to Denny (matches
+  his Phase 1 content-support role); dropped her as co-owner of the
+  stakeholder reconfirmation (Denny now sole owner, she stays informed).
+  She keeps the SRS merge and tracker top-up. Logged as a real Challenges
+  & Actions entry in the official tracker, not just noted here.
+
 ## 2026-09-19
 
 **Phase 2 design docs**

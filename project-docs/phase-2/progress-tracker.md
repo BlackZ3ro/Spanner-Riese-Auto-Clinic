@@ -33,13 +33,13 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 5 | Sequence diagram — Flutter (add a job), draft | Wisani (draft) / Gary (verify) | Draft done, needs mobile sign-off | 2026-09-19 | 2026-09-21 |
 | 6 | Sequence diagram — ASP.NET (finalize booking), draft | Wisani | Done | 2026-09-19 | 2026-09-19 |
 | 7 | ERD from live schema (draft) | Wisani | Done | 2026-09-19 | 2026-09-19 |
-| 8 | ERD — redraw in a proper tool + share link | Wisani | Not started | — | 2026-09-23 |
-| 9 | ERD sanity-check against mobile's actual columns | Gary | Not started | — | 2026-09-23 |
+| 8 | ERD — redraw in a proper tool + share link, and sanity-check vs mobile's columns | **Gary** (moved from Wisani 20 Sept) | Not started | — | 2026-09-23 |
+| 9 | (merged into task 8 — Gary now does the redraw and the sanity-check in one pass) | — | — | — | — |
 | 10 | Flutter interface wireframes (from real screens) | Gary | Not started | — | 2026-09-25 |
 | 11 | ASP.NET interface wireframes (from real screens) | Kea | Not started | — | 2026-09-25 |
-| 12 | Navigation flow diagram | Wisani | Not started | — | 2026-09-25 |
-| 13 | Design-alignment table (requirement → use case → sequence → ERD → interface) | Wisani | Not started | — | 2026-09-27 |
-| 14 | Reconfirm requirements with Michael Riese before finalizing the design | Denny (with Wisani) | Not started | — | After 22 Sept |
+| 12 | Navigation flow diagram | **Kea** (moved from Wisani 20 Sept) | Not started | — | 2026-09-25 |
+| 13 | Design-alignment table (requirement → use case → sequence → ERD → interface) | **Denny** (moved from Wisani 20 Sept) | Not started | — | 2026-09-27 |
+| 14 | Reconfirm requirements with Michael Riese before finalizing the design | **Denny** (sole owner from 20 Sept; Wisani kept informed, not co-owner) | Not started | — | After 22 Sept |
 | 15 | Merge everything into the existing SRS as one new section | Wisani | Not started | — | 2026-09-30 |
 | 16 | Consultation with Ms Mbele | All (attend) | Scheduled | — | 2026-09-22 12:00 |
 | 17 | Apply consultation feedback | All | Not started | — | After 22 Sept |
@@ -50,8 +50,18 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 *Task 4 was originally two separate one-each tasks; revised to pair
 Ofentse and Breyton on the use case + sequence diagrams together, since we
 don't yet know either of their individual skill levels — see
-`roles-and-assignments.md` revision history. Tasks 11–12 were reassigned
-off Breyton for the same reason, to Kea and Wisani. Task 18 (Microsoft
-Project) moved from Wisani to Khumo on 2026-09-20 — continues her Phase 1
-role coordinating that schedule. Task 14 is the group's own stated top
-priority for this phase from the Phase 1 Group Reflection.*
+`roles-and-assignments.md` revision history. Task 18 (Microsoft Project)
+moved from Wisani to Khumo on 2026-09-20 — continues her Phase 1 role
+coordinating that schedule. Task 14 is the group's own stated top priority
+for this phase from the Phase 1 Group Reflection.*
+
+**2026-09-20 load check:** Wisani was carrying ~10 active items — the same
+pattern as her Phase 1 solo SRS/tracker/reflection load. Tasks 8, 12 and 13
+moved off her to Gary, Kea and Denny respectively (each already had
+related work — see the note on each row), and she came off task 14 as
+co-owner. She keeps tasks 15 and 19, both direct continuations of her
+established Phase 1 role, plus reviewing the moved tasks. Also:
+[Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov)
+(architecture + UML diagram examples) shared with the group as reference —
+not the submission, still needs everyone's own redraws with real share
+links.
