@@ -26,14 +26,28 @@ rules.
 | Activity 3.3 — Flutter interface wireframes | **Gary van Wyk** | Kea or Khumo | Screens already exist and are live — this is "wireframe the existing screens", not design-from-scratch. Export a few real screenshots + label them, or trace them in Figma per the required video. |
 | Activity 3.3 — ASP.NET interface wireframes | **Keamogetse Ogone Kgosi (Kea)** | Wisani | Same idea on the web side — Pages/Bookings, Pages/Stock, Pages/Vehicles screenshots, labelled and tied back to the use cases they satisfy. Reassigned off Breyton now that he's paired with Ofentse on the UML diagrams. |
 | Activity 3.3 — Navigation flow | **Moremi KE (Khumo)** | Wisani | How a staff member moves between dashboard → booking → add job/part → invoice/finalize, and admin-only branches (delete, reopen). Reassigned off Breyton for the same reason as above — a good fit for Khumo given her Phase 1 role coordinating and distributing shared work across the group. |
+| Navigation flow diagram | **Wisani** | Khumo | Freed up once Khumo took Microsoft Project (below) — how a staff member moves between dashboard → booking → add job/part → invoice/finalize, and admin-only branches (delete, reopen). |
+| Design-alignment table (requirement → use case → sequence → ERD → interface) | **Wisani** | Denny | Required by the official Phase 2 assessment brief, item 4: "include a simple design-alignment table linking requirements, use cases, sequence diagrams, ERD elements and interfaces." |
 | Reconfirm requirements with the stakeholder before finalizing the design | **Mathye MD (Denny)**, with Wisani | — | This is literally the group's own stated priority for Phase 2 from the Phase 1 Group Reflection ("confirm the requirements directly with Michael Riese before starting UML, ERD and interface design"). Good fit for Denny given his Phase 1 strength — he's the one who chased down and secured the Ms Mbele consultation after email stalled. |
-| Stakeholder design feedback | **Wisani** | — | Coordinating with Riese Auto-Clinic; will capture feedback in `project-docs/meeting-notes/`. |
-| Microsoft Project update | **Wisani** | — | Add Unit 3 tasks/owners from this table; mark M0–M8 (dev) as already complete since it finished ahead of design docs. |
+| Merge Phase 2 content into the existing SRS (single PDF, no separate document) | **Wisani** | Denny | The official brief is explicit: "do not create a separate System Design Document" — everything above gets inserted as a new section into the SRS Wisani and Denny already compiled for Phase 1. |
+| Microsoft Project — update schedule + screenshot | **Moremi KE (Khumo)** | Wisani | Reassigned to Khumo (was Wisani) — she led getting the Phase 1 schedule finished and distributed, so this is a direct continuation of that role, not a new task for her. |
+| Progress Tracker — final top-up before submission | **Wisani** | Whole group sign-off | Official workbook continued as `Group Y - ITC327W Progress Checker (Phase 2 update).xlsx`, same structure as the Phase 1 submission. Needs Task Progress, Individual Contributions, Stakeholder Engagement and Challenges kept current, and the Phase 2 Group Reflection completed honestly at the end of the phase — not before. |
 | GitHub evidence | **All** | — | Everyone commits their own piece under `project-docs/phase-2/` on a `phase2/design-docs` branch — don't have one person commit for everyone, that's exactly what individual GitHub activity tracking is meant to catch. For the paired UML task, both Ofentse and Breyton should have commits on it, not just one. |
-| Progress Tracker | **Wisani** | — | Official workbook continued as `Group Y - ITC327W Progress Checker (Phase 2 update).xlsx`, same structure as the Phase 1 submission. |
+| Presentation & defence rehearsal | **All** | — | 30 of the 100 Phase 2 marks — the single biggest line item. The rubric explicitly expects every member to be able to explain the *whole* design, not just their own piece — questions in the defence can go to anyone about any part. |
+
+Full deliverable list, rubric mapping and deadlines: see
+`phase2-checklist.md`.
 
 ## Revision history
 
+- **2026-09-20 (rev 4)**: Pulled in the official Phase 2 assessment brief
+  and rubric (issued 2026-09-19, due **2026-10-12**, 30% of the module,
+  presentation/defence alone 30/100 marks). Khumo now owns the Microsoft
+  Project update (was Wisani) — she led the Phase 1 schedule work, so this
+  continues that rather than being a new task. Freed-up navigation flow
+  diagram moved to Wisani. Added the design-alignment table and the
+  SRS-merge task, both explicit requirements in the official brief. Full
+  breakdown in `phase2-checklist.md`.
 - **2026-09-19 (rev 3)**: Corrected the roster against the actual Phase 1
   submission workbook. "Kia" → **Keamogetse Ogone Kgosi (Kea)**, "Kumo" →
   **Moremi KE (Khumo)** — both were phonetic mis-transcriptions from a
