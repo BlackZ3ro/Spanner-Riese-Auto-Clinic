@@ -36,7 +36,7 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 8 | ERD — redraw in a proper tool + share link, and sanity-check vs mobile's columns | **Gary** (moved from Wisani 20 Sept) | Not started | — | 2026-09-23 |
 | 9 | (merged into task 8 — Gary now does the redraw and the sanity-check in one pass) | — | — | — | — |
 | 10 | Flutter interface wireframes (from real screens) | Gary | Not started | — | 2026-09-25 |
-| 11 | ASP.NET interface wireframes (from real screens) | Kea | Not started | — | 2026-09-25 |
+| 11 | ASP.NET interface wireframes (from real screens) | Kea (assigned) — **produced by Wisani 2026-09-20**: real screenshots + a low-fi wireframe flow, both in [Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov) | Done | 2026-09-20 | 2026-09-25 |
 | 12 | Navigation flow diagram | **Kea** (moved from Wisani 20 Sept) | Not started | — | 2026-09-25 |
 | 13 | Design-alignment table (requirement → use case → sequence → ERD → interface) | **Denny** (moved from Wisani 20 Sept) | Not started | — | 2026-09-27 |
 | 14 | Reconfirm requirements with Michael Riese before finalizing the design | **Denny** (sole owner from 20 Sept; Wisani kept informed, not co-owner) | Not started | — | After 22 Sept |
@@ -46,6 +46,13 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 18 | Update Microsoft Project + screenshot into the SRS | **Khumo** | Not started | — | 2026-10-03 |
 | 19 | Final top-up of the Progress Checker (incl. Phase 2 Group Reflection) | Wisani | Not started | — | 2026-10-08 |
 | 20 | Presentation & defence rehearsal — everyone must be able to explain the whole design | All | Not started | — | Week of 2026-10-06 |
+
+**Task 11 note:** checked off at Wisani's explicit instruction (20 Sept) —
+the real screenshots and wireframe flow satisfy the deliverable, but they
+were built by Wisani, not Kea. If individual-contribution evidence for Kea
+matters for the Progress Tracker/peer evaluation, she should still add her
+own commit or touch on this before submission — flagged here rather than
+silently left implicit.
 
 *Task 4 was originally two separate one-each tasks; revised to pair
 Ofentse and Breyton on the use case + sequence diagrams together, since we

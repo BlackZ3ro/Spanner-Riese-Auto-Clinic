@@ -1,5 +1,25 @@
 # Change Log
 
+## 2026-09-20 (later)
+
+- **ASP.NET wireframes checked off** at Wisani's explicit instruction —
+  real screenshots (login, admin/mechanic dashboards, booking details,
+  stock, add a part, book in a vehicle, closed bookings, a real invoice
+  PDF) plus the earlier wireframe flow, both in
+  [Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov).
+  Produced by Wisani, not Kea (the assigned owner) — flagged in
+  `progress-tracker.md` in case individual-contribution evidence matters.
+- **Use case diagram corrected against the live app**: `Reopen booking`
+  is not actually admin-gated in the code (`OnPostReopenAsync` never
+  checks `IsAdmin` — confirmed live with a mechanic login) and `View
+  closed bookings` is on the shared nav for both roles. Both moved from
+  the admin-only cluster to shared Mechanic use cases in
+  `uml-and-erd.md` and the backups artifact. Only Finalize & close and
+  Delete booking are genuinely admin-gated. Worth a team decision on
+  whether Reopen should be locked down too, for consistency.
+- Architecture diagram reviewed against the live app and the real
+  screenshots — no structural change needed.
+
 Dated log of real changes/decisions — web app, Supabase, and Phase 2 docs.
 Kept here so there's one place showing what actually happened and why,
 separate from the Progress Tracker's task/owner view.

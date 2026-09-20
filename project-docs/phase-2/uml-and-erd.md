@@ -18,8 +18,17 @@ staff.
 
 | Actor | What they need to do |
 |---|---|
-| **Mechanic** (staff, both apps) | Book in a vehicle, add jobs, link parts, record labour, view stock, search vehicle history, download invoices |
-| **Admin** (staff, web only, specialised Mechanic) | Everything a Mechanic can do, **plus**: finalize & close a booking, delete a booking (with restock), reopen a closed booking (password-confirmed) |
+| **Mechanic** (staff, both apps) | Book in a vehicle, add jobs, link parts, record labour, view stock, search vehicle history, download invoices, view closed bookings, reopen a closed booking (password-confirmed) |
+| **Admin** (staff, web only, specialised Mechanic) | Everything a Mechanic can do, **plus**: finalize & close a booking, delete a booking (with restock) |
+
+**Corrected 2026-09-20 against the live app**: Reopen was assumed admin-only
+when this doc was first drafted, but `OnPostReopenAsync` in
+`Details.cshtml.cs` never checks `IsAdmin` — confirmed live with a
+mechanic login, which can open and reopen a closed booking with their own
+password. `View closed bookings` is also on the shared nav for both roles.
+Only **Finalize & close** and **Delete booking** are actually admin-gated
+server-side. Worth a team decision: was Reopen meant to be admin-only too,
+for consistency?
 
 `Admin` is a **generalization** of `Mechanic` — same relationship as the
 course example's "Manager is a specialised Staff User".
@@ -36,11 +45,12 @@ course example's "Manager is a specialised Staff User".
 - Search vehicle history (by registration, name, or phone)
 - Download invoice (PDF)
 - Add/view stock; create a new stock category or supplier inline
+- View closed bookings
+- Reopen a closed booking -> **`<<extend>>`** Display "incorrect password"
+  error (only when the password check fails) — **shared, not admin-only**
 - Finalize & close a booking *(Admin only)*
 - Delete a booking -> **`<<include>>`** Restock parts, **`<<include>>`**
   Remove labour/jobs *(Admin only — one atomic call, `delete_booking_and_restock`)*
-- Reopen a closed booking -> **`<<extend>>`** Display "incorrect password"
-  error *(Admin only, only when the password check fails)*
 
 ### Diagram (Mermaid; redraw as proper UML in draw.io/Lucid)
 
@@ -57,12 +67,13 @@ flowchart TB
         UC7(Search vehicle history)
         UC8(Download invoice)
         UC9(Add/view stock)
+        UC13(View closed bookings)
+        UC12(Reopen booking)
+        UC12b(Display incorrect-password error)
         UC10(Finalize and close booking)
         UC11(Delete booking)
         UC11b(Restock parts)
         UC11c(Remove labour/jobs)
-        UC12(Reopen booking)
-        UC12b(Display incorrect-password error)
     end
 
     Mechanic((Mechanic))
@@ -79,16 +90,23 @@ flowchart TB
     Mechanic --> UC7
     Mechanic --> UC8
     Mechanic --> UC9
+    Mechanic --> UC13
+    Mechanic --> UC12
 
     Admin --> UC10
     Admin --> UC11
-    Admin --> UC12
 
     UC4 -. include .-> UC4b
     UC11 -. include .-> UC11b
     UC11 -. include .-> UC11c
     UC12 -. extend .-> UC12b
 ```
+
+Confirmed live 2026-09-20 (see `tracker/` screenshots and
+[Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov)):
+only Finalize/Delete are actually gated to `Admin` — `Reopen booking` and
+`View closed bookings` were moved to `Mechanic` above, correcting the
+original draft.
 
 ## Part 2 — Sequence Diagrams (at least one Flutter, one ASP.NET)
 

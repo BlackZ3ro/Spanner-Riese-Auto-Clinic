@@ -48,7 +48,7 @@ group stays in sync, not extra meetings.
 | Use case diagram + 2 sequence diagrams ("the UML diagrams") — redraw + share links | Ofentse & Breyton, together | Wisani (content), Gary (Flutter sequence matches real code) | Use Case Diagram (10), Sequence Diagrams (10) | 21 Sept |
 | ERD — redraw in a real tool + share link, and sanity-check vs mobile's columns | **Gary** (moved off Wisani 20 Sept) | Wisani | ERD and Database Design (10) | 23 Sept |
 | Flutter interface wireframes (from the real, live screens) | Gary | Kea | Flutter Interface Design (10) | 25 Sept |
-| ASP.NET interface wireframes (from the real, live screens) | Kea | Wisani | ASP.NET Interface Design (10) | 25 Sept |
+| ASP.NET interface wireframes (from the real, live screens) | ~~Kea~~ **Done** — Wisani produced it 20 Sept (real screenshots + wireframe flow) | Wisani | ASP.NET Interface Design (10) | Done 20 Sept |
 | Navigation flow diagram | **Kea** (moved off Wisani 20 Sept) | Wisani | feeds Design Alignment (5) | 25 Sept |
 | Design-alignment table (requirement → use case → sequence → ERD → interface) | **Denny** (moved off Wisani 20 Sept) | Wisani | Design Alignment, Documentation and Source Links (5) | 27 Sept |
 | Reconfirm requirements with Michael Riese before the design is called final | **Denny** (sole owner from 20 Sept) | Wisani (informed) | feeds Design Alignment + credibility of the whole section | After 22 Sept consultation |
