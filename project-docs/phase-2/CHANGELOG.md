@@ -1,5 +1,20 @@
 # Change Log
 
+## 2026-09-20 (later still)
+
+- Everything now lives in one artifact:
+  [Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov)
+  — architecture, use case (corrected), sequence diagrams, web wireframes
+  (mockup + real screenshots), a new mobile wireframe mockup mirroring
+  Gary's real flow, Gary's real Flutter screenshots embedded directly, and
+  a full Status & Checklist dashboard (every Phase 2 task, grouped by
+  activity, with owner/status/notes and a "behind the scenes" section
+  covering the roster fix, the UML pairing, the load rebalance and the
+  Reopen finding).
+- Gary's Individual Contributions entry updated to note the mobile
+  wireframe backup exists alongside his real work — his Obsidian Canvas
+  flow is still the deliverable that counts for Activity 3.3.
+
 ## 2026-09-20 (later)
 
 - **ASP.NET wireframes checked off** at Wisani's explicit instruction —
