@@ -56,7 +56,9 @@ group stays in sync, not extra meetings.
 | Microsoft Project — update schedule + screenshot into the SRS | **Khumo** | Wisani | MS Project, GitHub and Progress Tracker (5) | 3 Oct |
 | Excel Progress Tracker — final top-up (tasks, contributions, challenges, Phase 2 reflection) | Wisani | Whole group sign-off | MS Project, GitHub and Progress Tracker (5) | 8 Oct |
 | GitHub — keep current, no secrets, README up to date | Whoever changes something, pushes it themselves | — | MS Project, GitHub and Progress Tracker (5) | Ongoing |
-| Consultation with Ms Mbele | All | — | de-risks everything above | 22 Sept, 12:00 |
+| Consultation with Ms Mbele | All | — | de-risks everything above | **Done** — 22 Sept, Lab 226 |
+| Restructure use case diagram per consultation feedback | **Wisani** | — | Use Case Diagram (10) | **Done 22 Sept** — see `uml-and-erd.md` |
+| **New:** Customer repair-status lookup (reference code, no login) | **Unassigned — needs an owner** | — | new FR, feeds Design Alignment | 23 Sept (group's own target) |
 | Presentation & defence rehearsal — **everyone must be able to explain the whole design, not just their own piece** (rubric's own wording) | All | — | Presentation and Defence (30 — the single biggest line item) | Week of 6 Oct |
 
 ## Full 100-mark breakdown (for reference)

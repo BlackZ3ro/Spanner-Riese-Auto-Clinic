@@ -60,6 +60,14 @@ flowchart LR
    flag as a design gap to raise with Ms Mbele or fix before the demo.
 4. **Auth is Supabase's own** (JWT-based), not a custom login system — RLS
    policies key off the authenticated user, not a separate roles table.
+5. **New 22 Sept, not yet built**: a customer-facing repair-status lookup
+   is a confirmed requirement (see `uml-and-erd.md`'s "New feature"
+   section) — the first genuinely **unauthenticated** route in the system.
+   Everything above sits behind Supabase Auth; this one screen
+   deliberately doesn't, so it needs its own RLS read policy scoped to
+   "anyone who has the reference code," not "anyone signed in." Which app
+   hosts it (web page vs. a mobile screen) and what the reference code
+   actually is are both still open — see `uml-and-erd.md`.
 
 ## Confirm before finalizing (per the Unit 3 checklist)
 

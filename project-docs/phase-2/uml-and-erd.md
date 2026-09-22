@@ -9,104 +9,154 @@ not re-designing.
 
 ## Part 1 — Use Case Diagram
 
-### Actors
+**Restructured 2026-09-22 per Ms Mbele's consultation feedback** (see
+`consultation-prep-2026-09-22.md` for what was asked, and the "Consultation
+outcomes" note below this section for the raw notes and how each point was
+read). The base use cases are now fewer and more concise — `Manage
+Bookings` and `Manage Stock` each carry a cluster of `«extend»` points
+instead of every sub-action being its own top-level oval, `View dashboard`
+folded into `Login` as an extension rather than standing alone, and a new
+`Customer` actor was added for a same-day feature request.
 
-Important correction vs. the generic "salon" example in the course
-material: **customers are not system actors**. They're walk-in clients —
-front-desk staff capture their details on their behalf. The real actors are
-staff.
+### Actors
 
 | Actor | What they need to do |
 |---|---|
-| **Mechanic** (staff, both apps) | Book in a vehicle, add jobs, link parts, record labour, view stock, search vehicle history, download invoices, view closed bookings, reopen a closed booking (password-confirmed) |
-| **Admin** (staff, web only, specialised Mechanic) | Everything a Mechanic can do, **plus**: finalize & close a booking, delete a booking (with restock) |
+| **Mechanic** (staff, both apps) | Log in, manage bookings (search, update, filter open/closed, download invoice, reopen), manage stock |
+| **Admin** (staff, web only, specialised Mechanic) | Everything a Mechanic can do, **plus**: finalize & close a booking, delete a booking (with restock) — both require re-authenticating as Admin |
+| **Customer** (walk-in, public, **no login**) — *new, confirmed at the 22 Sept consultation* | Check their vehicle's repair status/phase using a reference code, no account needed |
 
-**Corrected 2026-09-20 against the live app**: Reopen was assumed admin-only
-when this doc was first drafted, but `OnPostReopenAsync` in
-`Details.cshtml.cs` never checks `IsAdmin` — confirmed live with a
-mechanic login, which can open and reopen a closed booking with their own
-password. `View closed bookings` is also on the shared nav for both roles.
-Only **Finalize & close** and **Delete booking** are actually admin-gated
-server-side. Worth a team decision: was Reopen meant to be admin-only too,
-for consistency?
+`Admin` is a **generalization** of `Mechanic`. `Customer` is a separate,
+unconnected actor — deliberately not reachable from `Login`, since the
+whole point of the new feature is that customers never authenticate.
 
-`Admin` is a **generalization** of `Mechanic` — same relationship as the
-course example's "Manager is a specialised Staff User".
+### Use cases (restructured, base + extend points)
 
-### Use cases (from the real app, not hypothetical)
-
-- Log in
-- Book in a vehicle (with customer auto-fill/lookup)
-- Add a job to a booking
-- Add a part to a booking -> **`<<include>>`** Decrement stock (always
-  happens together — see `add_booking_part`)
-- Record labour hours/rate on a job
-- View live dashboard (Realtime updates)
-- Search vehicle history (by registration, name, or phone)
-- Download invoice (PDF)
-- Add/view stock; create a new stock category or supplier inline
-- View closed bookings
-- Reopen a closed booking -> **`<<extend>>`** Display "incorrect password"
-  error (only when the password check fails) — **shared, not admin-only**
-- Finalize & close a booking *(Admin only)*
-- Delete a booking -> **`<<include>>`** Restock parts, **`<<include>>`**
-  Remove labour/jobs *(Admin only — one atomic call, `delete_booking_and_restock`)*
+- **Login** *(Mechanic, Admin)*
+  - `«extend»` View dashboard — happens immediately on a successful login, not a separately-triggered use case
+- **Manage Bookings** *(Mechanic, Admin)*
+  - `«extend»` Search bookings / vehicle history (by registration, name, or phone)
+  - `«extend»` View a different booking
+  - `«extend»` Filter open vs. closed jobs
+  - `«extend»` Update a booking (add a job; add a part `«include»`s Decrement stock — see `add_booking_part`)
+  - `«extend»` Download invoice (PDF)
+  - `«extend»` Reopen a closed booking `«extend»`s Display "incorrect password" error (only when the password check fails) — **shared with Admin, not admin-only**, confirmed live 20 Sept (`OnPostReopenAsync` never checks `IsAdmin`)
+  - `«extend»` Finalize & close a booking — **{requires re-authentication as Admin}**
+  - `«extend»` Delete a booking — **{requires re-authentication as Admin}**, `«include»`s Restock parts and Remove labour/jobs (one atomic call, `delete_booking_and_restock`)
+- **Manage Stock** *(Mechanic, Admin)*
+  - `«extend»` Search / filter stock
+  - `«extend»` Add or restock an item
+  - `«extend»` Manage categories and suppliers (create inline)
+- **Check repair status** *(Customer only — no `«extend»` from Login)*
+  - Enter a reference code, view the booking's current phase — nothing else, no account
 
 ### Diagram (Mermaid; redraw as proper UML in draw.io/Lucid)
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph Boundary["Spanner System"]
-        UC1(Log in)
-        UC2(Book in a vehicle)
-        UC3(Add a job)
-        UC4(Add a part)
-        UC4b(Decrement stock)
-        UC5(Record labour)
-        UC6(View live dashboard)
-        UC7(Search vehicle history)
-        UC8(Download invoice)
-        UC9(Add/view stock)
-        UC13(View closed bookings)
-        UC12(Reopen booking)
-        UC12b(Display incorrect-password error)
-        UC10(Finalize and close booking)
-        UC11(Delete booking)
-        UC11b(Restock parts)
-        UC11c(Remove labour/jobs)
+        direction LR
+        UC1(Login)
+        UC1b(View dashboard)
+
+        subgraph BookingCluster[" "]
+            direction TB
+            UCB(Manage Bookings)
+            UCB1(Search bookings)
+            UCB2(View a different booking)
+            UCB3(Filter open/closed jobs)
+            UCB4(Update a booking)
+            UCB4b(Decrement stock)
+            UCB5(Download invoice)
+            UCB6(Reopen closed booking)
+            UCB6b(Display incorrect-password error)
+            UCB7("Finalize and close<br/>{Admin auth}")
+            UCB8("Delete booking<br/>{Admin auth}")
+            UCB8b(Restock parts)
+            UCB8c(Remove labour/jobs)
+        end
+
+        subgraph StockCluster[" "]
+            direction TB
+            UCS(Manage Stock)
+            UCS1(Search/filter stock)
+            UCS2(Add or restock item)
+            UCS3(Manage categories and suppliers)
+        end
+
+        UC2("Check repair status<br/>by reference code")
     end
 
     Mechanic((Mechanic))
     Admin((Admin))
+    Customer((Customer))
 
     Admin --> Mechanic
 
     Mechanic --> UC1
-    Mechanic --> UC2
-    Mechanic --> UC3
-    Mechanic --> UC4
-    Mechanic --> UC5
-    Mechanic --> UC6
-    Mechanic --> UC7
-    Mechanic --> UC8
-    Mechanic --> UC9
-    Mechanic --> UC13
-    Mechanic --> UC12
+    Mechanic --> UCB
+    Mechanic --> UCS
+    Customer --> UC2
 
-    Admin --> UC10
-    Admin --> UC11
+    UC1 -. extend .-> UC1b
 
-    UC4 -. include .-> UC4b
-    UC11 -. include .-> UC11b
-    UC11 -. include .-> UC11c
-    UC12 -. extend .-> UC12b
+    UCB -. extend .-> UCB1
+    UCB -. extend .-> UCB2
+    UCB -. extend .-> UCB3
+    UCB -. extend .-> UCB4
+    UCB -. extend .-> UCB5
+    UCB -. extend .-> UCB6
+    UCB -. extend .-> UCB7
+    UCB -. extend .-> UCB8
+    UCB4 -. include .-> UCB4b
+    UCB6 -. extend .-> UCB6b
+    UCB8 -. include .-> UCB8b
+    UCB8 -. include .-> UCB8c
+
+    UCS -. extend .-> UCS1
+    UCS -. extend .-> UCS2
+    UCS -. extend .-> UCS3
 ```
 
-Confirmed live 2026-09-20 (see `tracker/` screenshots and
-[Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov)):
-only Finalize/Delete are actually gated to `Admin` — `Reopen booking` and
-`View closed bookings` were moved to `Mechanic` above, correcting the
-original draft.
+### Consultation outcomes — 22 Sept, raw notes and how they were read
+
+Straight from the consultation notes, so the group can correct any
+misreading before this goes in the SRS:
+
+| Note (as written) | How it was applied |
+|---|---|
+| "booking and stock both have extensions" | `Manage Bookings` and `Manage Stock` are now base use cases, each with its own `«extend»` cluster, instead of every sub-action (add a job, add a part, add stock, …) being its own top-level oval. |
+| "Ovals — limit them and try them closer and more concise" | Collapsed ~14 top-level ovals down to 4 base use cases (Login, Manage Bookings, Manage Stock, Check repair status) plus their extension points. |
+| "logins go to bookings (extended to different booking, search and update)" | Read as: after Login, the natural landing point is Bookings — modelled `Manage Bookings` with `«extend»` points for viewing a different booking, searching, and updating. (Login itself only extends to the dashboard, per the next point — Bookings is reached from the dashboard, not directly from Login.) |
+| "Split them both on each side and draw lines to the specific things they do" | Bookings cluster and Stock cluster drawn as two separate groups, each fanning out to its own specific extend points. |
+| "authentication on the use case extension" | Finalize & close and Delete booking are labelled `{Admin auth}` directly on the extension — the point being that re-authentication, not a separate use case, is what gates them. |
+| "Remove viewing dashboard, make it an extension from login" | Done — `View dashboard` is now `«extend»` of `Login`, not a standalone use case. |
+| "*Filtering* through open and closed jobs" | Added as `«extend»` "Filter open/closed jobs" under Manage Bookings — wasn't in the diagram before. |
+| "Should I add the reference code thing that the customer can enter to view the phase of their car? ... Yes, they don't need to login, even just a screen with updates" | New use case, new `Customer` actor, no login. See "New feature" below. |
+
+### New feature — customer repair-status lookup (confirmed 22 Sept)
+
+A customer enters a reference code (no account, no login) and sees their
+vehicle's current repair phase. This is **narrower than** the real-time
+customer tracking the group explicitly excluded from scope back in Phase 1
+(see the SRS Requirements Change Log) — that was full push-based tracking;
+this is a single pull/lookup screen with no live updates and no account.
+Worth stating that distinction explicitly in the SRS so it doesn't read as
+a scope reversal.
+
+**Open question, not yet decided — needs Gary before this is built:** what
+is the reference code? Two real options against the live schema:
+1. Reuse `bookings.invoice_number` (already a DB-generated sequence,
+   `INV-00005` style) — no new column, but need to confirm it's assigned
+   at check-in and not only once an invoice is downloaded.
+2. Add a new short `reference_code` column, generated at booking time,
+   deliberately not the same as the registration plate (so the lookup
+   screen doesn't become a way to search by plate without logging in).
+
+Whichever is chosen, the lookup page itself is a new **unauthenticated**
+route — a real addition to `system-architecture.md`'s access-control story
+(everything else in the app sits behind Supabase Auth; this one screen
+deliberately doesn't). Target: working by end of day 23 Sept.
 
 ## Part 2 — Sequence Diagrams (at least one Flutter, one ASP.NET)
 

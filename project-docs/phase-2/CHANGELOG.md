@@ -1,5 +1,27 @@
 # Change Log
 
+## 2026-09-22 — Ms Mbele consultation (Lab 226)
+
+- **Use case diagram restructured** per direct feedback: fewer, more
+  concise base use cases (`Manage Bookings`, `Manage Stock`) each fanning
+  out to `«extend»` points instead of one oval per action; `View
+  dashboard` folded into `Login` as an extension instead of standing
+  alone; `Filter open/closed jobs` added (wasn't modelled before); the
+  Admin-only extension points now label the authentication requirement
+  directly. Full before/after mapping of each consultation note to what
+  changed is in `uml-and-erd.md`, "Consultation outcomes."
+- **New requirement confirmed:** a customer-facing repair-status lookup —
+  enter a reference code, see the vehicle's phase, no login. Deliberately
+  narrower than the real-time tracking excluded from scope in Phase 1 (see
+  SRS Requirements Change Log) — a single lookup, not push updates or an
+  account. New `Customer` actor added to the use case diagram; new
+  unauthenticated route flagged in `system-architecture.md`. **Not yet
+  assigned an owner** — the group's own target is end of day 23 Sept.
+  Open implementation question: what the reference code actually is
+  (reuse `invoice_number` vs. a new dedicated column) — needs Gary.
+- `consultation-prep-2026-09-22.md` updated with the actual meeting notes
+  in place of the pre-meeting question list.
+
 ## 2026-09-20 (later still)
 
 - Everything now lives in one artifact:

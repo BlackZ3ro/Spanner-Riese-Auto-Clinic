@@ -41,11 +41,12 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 13 | Design-alignment table (requirement → use case → sequence → ERD → interface) | **Denny** (moved from Wisani 20 Sept) | Not started | — | 2026-09-27 |
 | 14 | Reconfirm requirements with Michael Riese before finalizing the design | **Denny** (sole owner from 20 Sept; Wisani kept informed, not co-owner) | Not started | — | After 22 Sept |
 | 15 | Merge everything into the existing SRS as one new section | Wisani | Not started | — | 2026-09-30 |
-| 16 | Consultation with Ms Mbele | All (attend) | Scheduled | — | 2026-09-22 12:00 |
-| 17 | Apply consultation feedback | All | Not started | — | After 22 Sept |
+| 16 | Consultation with Ms Mbele | All (attend) | **Done** | 2026-09-22 | 2026-09-22 12:00 |
+| 17 | Apply consultation feedback — use case diagram restructure | Wisani | **Done** | 2026-09-22 | 2026-09-22 |
 | 18 | Update Microsoft Project + screenshot into the SRS | **Khumo** | Not started | — | 2026-10-03 |
 | 19 | Final top-up of the Progress Checker (incl. Phase 2 Group Reflection) | Wisani | Not started | — | 2026-10-08 |
 | 20 | Presentation & defence rehearsal — everyone must be able to explain the whole design | All | Not started | — | Week of 2026-10-06 |
+| 21 | **New:** Customer repair-status lookup (reference code, no login) — confirmed at the consultation | **Unassigned — needs an owner** | Not started | — | 2026-09-23 (group's own target) |
 
 **Task 11 note:** checked off at Wisani's explicit instruction (20 Sept) —
 the real screenshots and wireframe flow satisfy the deliverable, but they

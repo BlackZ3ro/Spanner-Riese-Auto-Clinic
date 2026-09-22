@@ -39,6 +39,32 @@ bring evidence of each item, don't just describe it.
 5. Anything specific she wants corrected before the diagrams are finalized
    for submission, based on what the group brings to this consultation.
 
-## Notes from the meeting (fill in after)
+## Notes from the meeting (22 Sept, Lab 226 — lecture halls in BHP were closed)
 
--
+Feedback focused on the use case diagram and one new requirement, rather
+than the five questions above being answered one by one — worth a follow-up
+email or the next consultation if those still need direct answers.
+
+**Use case diagram — restructure:**
+- Too many top-level ovals; consolidate into base use cases (`Manage
+  Bookings`, `Manage Stock`) with `«extend»` points fanning out to specific
+  actions, rather than one oval per action.
+- `View dashboard` shouldn't be standalone — make it an `«extend»` of
+  `Login`.
+- Add filtering between open and closed jobs as an explicit use case.
+- Label the Admin-only extension points with the authentication
+  requirement itself, not just "(Admin only)" in prose.
+- Full restructure applied same day — see `uml-and-erd.md` Part 1 and the
+  "Consultation outcomes" table there mapping each note to what changed.
+
+**New requirement, confirmed:** a customer-facing repair-status lookup —
+enter a reference code, see the vehicle's phase, **no login required**.
+Deliberately narrower than the real-time tracking the group excluded from
+scope in Phase 1 (see SRS Requirements Change Log) — this is a single
+lookup screen, not push updates or an account. Target: working by end of
+day 23 Sept. Implementation details (which app, what the reference code
+actually is) still open — see `uml-and-erd.md`'s "New feature" section and
+`system-architecture.md` point 5.
+
+**Attendance:** held in Lab 226 (BHP lecture halls were all booked/closed).
+Lusandla Cloud Systems confirmed attending.
