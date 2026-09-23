@@ -164,6 +164,14 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
             return NotFound();
         }
 
+        if (!IsAdmin)
+        {
+            // Design decision 23 Sept 2026: only an admin can reopen a closed booking.
+            // Enforced server-side, not just by hiding the form.
+            LoadError = "Only an admin can reopen a booking.";
+            return Page();
+        }
+
         var email = User.Identity?.Name;
         if (string.IsNullOrEmpty(email) || string.IsNullOrWhiteSpace(ReopenPassword))
         {

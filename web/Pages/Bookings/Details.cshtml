@@ -58,7 +58,7 @@
         <dd class="col-sm-9">@booking.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</dd>
     </dl>
 
-    @if (!isOpen)
+    @if (!isOpen && Model.IsAdmin)
     {
         <form method="post" asp-page-handler="Reopen" class="col-md-6 mt-2 mb-3 p-3 bg-light border rounded">
             <label class="form-label">Reopen this booking - enter your password to confirm</label>
