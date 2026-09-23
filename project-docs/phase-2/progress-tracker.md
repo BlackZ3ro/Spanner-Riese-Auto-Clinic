@@ -30,7 +30,7 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 2 | Redraw architecture diagram in a proper tool + share link | Ofentse | Not started | — | 2026-09-21 |
 | 3 | Draft use case diagram (actors + use cases) | Wisani | Done | 2026-09-19 | 2026-09-19 |
 | 4 | Redraw use case diagram + both sequence diagrams in a proper tool + share links ("the UML diagrams") | **Ofentse and Breyton, paired** | Not started | — | 2026-09-21 |
-| 5 | Sequence diagram — Flutter (add a job), draft | Wisani (draft) / Gary (verify) | Draft done, needs mobile sign-off | 2026-09-19 | 2026-09-21 |
+| 5 | Sequence diagrams — book in a vehicle (Flutter + web), Supabase login; reference versions in `diagrams/` | Wisani (reference) / Gary (verify) | Done (reference); students redraw | 2026-09-19 | 2026-09-21 |
 | 6 | Sequence diagram — ASP.NET (finalize booking), draft | Wisani | Done | 2026-09-19 | 2026-09-19 |
 | 7 | ERD from live schema (draft) | Wisani | Done | 2026-09-19 | 2026-09-19 |
 | 8 | ERD — redraw in a proper tool + share link, and sanity-check vs mobile's columns | **Gary** (moved from Wisani 20 Sept) | Not started | — | 2026-09-23 |
@@ -42,11 +42,13 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 14 | Reconfirm requirements with Michael Riese before finalizing the design | **Denny** (sole owner from 20 Sept; Wisani kept informed, not co-owner) | Not started | — | After 22 Sept |
 | 15 | Merge everything into the existing SRS as one new section | Wisani | Not started | — | 2026-09-30 |
 | 16 | Consultation with Ms Mbele | All (attend) | **Done** | 2026-09-22 | 2026-09-22 12:00 |
-| 17 | Apply consultation feedback — use case diagram restructure | Wisani | **Done** | 2026-09-22 | 2026-09-22 |
+| 17 | Apply consultation feedback — use case restructure + sequence corrections (reference versions done 23 Sept; Ofentse & Breyton redraw pending) | Wisani / Ofentse & Breyton | In progress | 2026-09-22 | 2026-09-26 |
 | 18 | Update Microsoft Project + screenshot into the SRS | **Khumo** | Not started | — | 2026-10-03 |
 | 19 | Final top-up of the Progress Checker (incl. Phase 2 Group Reflection) | Wisani | Not started | — | 2026-10-08 |
 | 20 | Presentation & defence rehearsal — everyone must be able to explain the whole design | All | Not started | — | Week of 2026-10-06 |
 | 21 | **New:** Customer repair-status lookup (reference code, no login) — confirmed at the consultation | **Unassigned — needs an owner** | Not started | — | 2026-09-23 (group's own target) |
+| 22 | **New:** Mobile login validated by Supabase Auth (replace role picker; picker kept for testing only) | **Unassigned** (suggest Gary) | Not started | — | 2026-10-01 |
+| 23 | **New:** Apply agreed permissions in web + mobile — only Admin can finalize, delete, reopen, remove jobs; both restock | Wisani (review: Gary) | Not started | — | 2026-10-01 |
 
 **Task 11 note:** checked off at Wisani's explicit instruction (20 Sept) —
 the real screenshots and wireframe flow satisfy the deliverable, but they

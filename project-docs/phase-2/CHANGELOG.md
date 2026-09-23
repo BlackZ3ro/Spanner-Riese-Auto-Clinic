@@ -1,5 +1,25 @@
 # Change Log
 
+## 2026-09-23 — Diagram review against the real code, final permissions
+
+- Reviewed Ofentse & Breyton's `SpannerUML.pdf` and `Spanner System Sequence
+  Diagram V2.pdf` against the web code and the mobile code on `origin/main`.
+  Findings and fixes in `diagram-review-2026-09-23.md`; corrected reference
+  diagrams in `diagrams/`.
+- **Use case diagram redrawn**: Admin left / Mechanic right, shared ovals connect
+  to both, admin-only ovals only to Admin, Dashboard is one separate include from
+  Login, Login includes "Validate with Supabase Auth", Customer unchanged.
+- **Sequence diagrams**: Login first, then working with the system; `Alt` not
+  `Loop`; Flutter diagram is now "book in a vehicle" (mobile writes
+  `booking_labor`, not `jobs`); no "Check IsAdmin" call to Supabase (web checks the
+  `AdminEmails` allowlist in-app); web book-in and Reopen diagrams added; mobile
+  book-in validated through Supabase.
+- **Permissions agreed** (Wisani, 23 Sept): only Admin can finalize, delete, reopen
+  a closed booking and remove jobs; both roles can restock parts and do the rest.
+  This changes the earlier "Reopen is shared" finding (20 Sept). New tasks: U3-22
+  mobile Supabase login, U3-23 apply the permissions in code. Zealots Tracker
+  updated.
+
 ## 2026-09-22 — Ms Mbele consultation (Lab 226)
 
 - **Use case diagram restructured** per direct feedback: fewer, more

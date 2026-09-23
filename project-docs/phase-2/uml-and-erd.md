@@ -9,6 +9,35 @@ not re-designing.
 
 ## Part 1 — Use Case Diagram
 
+> **FINAL STRUCTURE — 23 Sept 2026 (supersedes the layout described below).**
+> Reference image: `diagrams/usecase-restructured.png`. Sequence references:
+> `diagrams/seq-1-book-in-vehicle-flutter.png`, `seq-1b-book-in-vehicle-web.png`,
+> `seq-2-admin-finalize-web.png`, `seq-3-admin-delete-web.png`,
+> `seq-4-admin-reopen-web.png`.
+>
+> - **Admin on the left, Mechanic on the right** (separate actors). Ovals in the
+>   middle; every shared use case has its own line to each actor.
+> - **Dashboard** is one separate box, `«include»`d from Login. Nothing else links
+>   back to it (it is a landing screen, not a hub).
+> - **Login** `«include»`s "Validate with Supabase Auth" (web and mobile; the mobile
+>   role picker stays for testing only).
+> - **Customer** (no login) -> "Check repair status by reference code" (unchanged).
+> - **Permissions agreed 23 Sept:**
+>
+> | Use case | Mechanic | Admin |
+> |---|---|---|
+> | Login, book in a vehicle, search / view bookings (open/closed filter), download invoice, manage stock (incl. restock), update booking (labour/parts) | yes | yes |
+> | Finalize & close booking | no | **yes** |
+> | Delete booking (includes restock parts, remove jobs) | no | **yes** |
+> | Reopen closed booking (re-enter password) | no | **yes** |
+> | Remove a job | no | **yes** |
+>
+> **Gap between this design and the code (task U3-23):** the web app does not yet
+> gate Reopen or job removal to admins, and the mobile app has no admin gate at
+> all (role picker only, no authentication; U3-22 adds Supabase login).
+> Sequence diagrams use `Alt` (never `Loop`), Login first, then "Working with
+> the system".
+
 **Restructured 2026-09-22 per Ms Mbele's consultation feedback** (see
 `consultation-prep-2026-09-22.md` for what was asked, and the "Consultation
 outcomes" note below this section for the raw notes and how each point was
@@ -40,7 +69,7 @@ whole point of the new feature is that customers never authenticate.
   - `«extend»` Filter open vs. closed jobs
   - `«extend»` Update a booking (add a job; add a part `«include»`s Decrement stock — see `add_booking_part`)
   - `«extend»` Download invoice (PDF)
-  - `«extend»` Reopen a closed booking `«extend»`s Display "incorrect password" error (only when the password check fails) — **shared with Admin, not admin-only**, confirmed live 20 Sept (`OnPostReopenAsync` never checks `IsAdmin`)
+  - `«extend»` Reopen a closed booking `«extend»`s Display "incorrect password" error (only when the password check fails) — **shared with Admin, not admin-only (superseded 23 Sept: now admin-only)**, confirmed live 20 Sept (`OnPostReopenAsync` never checks `IsAdmin`)
   - `«extend»` Finalize & close a booking — **{requires re-authentication as Admin}**
   - `«extend»` Delete a booking — **{requires re-authentication as Admin}**, `«include»`s Restock parts and Remove labour/jobs (one atomic call, `delete_booking_and_restock`)
 - **Manage Stock** *(Mechanic, Admin)*
