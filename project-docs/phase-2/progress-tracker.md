@@ -46,9 +46,9 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 18 | Update Microsoft Project + screenshot into the SRS | **Khumo** | Not started | — | 2026-10-03 |
 | 19 | Final top-up of the Progress Checker (incl. Phase 2 Group Reflection) | Wisani | Not started | — | 2026-10-08 |
 | 20 | Presentation & defence rehearsal — everyone must be able to explain the whole design | All | Not started | — | Week of 2026-10-06 |
-| 21 | **New:** Customer repair-status lookup (reference code, no login) — confirmed at the consultation | **Unassigned — needs an owner** | Not started | — | 2026-09-23 (group's own target) |
+| 21 | **New:** Customer repair-status lookup (reference code, no login) — confirmed at the consultation (plan: `u3-21-repair-status-lookup-plan.md`) | **Unassigned — needs an owner** | Not started | — | 2026-09-23 (group's own target) |
 | 22 | **New:** Mobile login validated by Supabase Auth (replace role picker; picker kept for testing only) | **Unassigned** (suggest Gary) | Not started | — | 2026-10-01 |
-| 23 | **New:** Apply agreed permissions in web + mobile — only Admin can finalize, delete, reopen, remove jobs; both restock | Wisani (review: Gary) | Not started | — | 2026-10-01 |
+| 23 | **New:** Apply agreed permissions in web + mobile — only Admin can finalize, delete, reopen, remove jobs; both restock | Wisani (review: Gary) | In progress: web done 24 Sept (Reopen gated, 209fd0b); mobile outstanding | — | 2026-10-01 |
 
 **Task 11 note:** checked off at Wisani's explicit instruction (20 Sept) —
 the real screenshots and wireframe flow satisfy the deliverable, but they

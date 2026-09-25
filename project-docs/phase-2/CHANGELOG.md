@@ -1,5 +1,13 @@
 # Change Log
 
+## 2026-09-25 — Editable sources, Reopen gate, U3-21 plan, branch merged with main
+
+- **Editable diagram sources**: `diagrams/editable/*.drawio` for the use case and all five sequence diagrams, generated from the same definitions as the PNGs and checked to open and render in diagrams.net. README explains how to get a Google Drive share link, which is the editable-source link the brief asks for.
+- **Web: Reopen is now admin-only** (commit 209fd0b). The form is hidden for mechanics and a direct POST is rejected server-side. Build clean; live mechanic-login check still to be done by a person.
+- Use case oval "Remove a job (single)" renamed "Remove a job (labour line)". The web has no single-job remove; this matches mobile's remove-labour action.
+- **U3-21 plan**: `u3-21-repair-status-lookup-plan.md`. Lookup by invoice number **plus** registration (invoice numbers are a guessable sequence), through one `security definer` RPC with no public read on `bookings`. Draft SQL, not applied; needs Gary and an owner.
+- Merged `main` into `phase2/design-docs` (brings in the current mobile app); resolved `CONTRIBUTORS.md` by keeping main's table and adding Ofentse and Breyton.
+
 ## 2026-09-23 — Diagram review against the real code, final permissions
 
 - Reviewed Ofentse & Breyton's `SpannerUML.pdf` and `Spanner System Sequence
