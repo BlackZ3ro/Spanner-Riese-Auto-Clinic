@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stock_system_riese_auto_clinic/stock/presentation/manage_categories_suppliers_screen.dart';
+import 'package:stock_system_riese_auto_clinic/features/stock/presentation/manage_categories_suppliers_screen.dart';
 import '../providers/stock_item_provider.dart';
 import '../providers/supplier_provider.dart';
 import '../providers/category_provider.dart';

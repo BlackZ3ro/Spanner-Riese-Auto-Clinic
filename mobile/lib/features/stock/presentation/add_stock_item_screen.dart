@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../core/widgets/prompt_dialog.dart';
+import '../../../core/widgets/prompt_dialog.dart';
 import '../models/category.dart';
 import '../models/supplier.dart';
 import '../providers/category_provider.dart';

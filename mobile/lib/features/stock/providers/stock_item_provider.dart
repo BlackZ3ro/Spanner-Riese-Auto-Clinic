@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:stock_system_riese_auto_clinic/stock/data/stock_item_repository.dart';
+import 'package:stock_system_riese_auto_clinic/features/stock/data/stock_item_repository.dart';
 import '../models/stock_item.dart';
 
 final stockItemRepositoryProvider = Provider((ref) => StockItemRepository());

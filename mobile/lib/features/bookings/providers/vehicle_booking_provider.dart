@@ -12,6 +12,11 @@ class VehicleBookingNotifier extends AsyncNotifier<List<VehicleBooking>> {
   }
 
   Future<void> addBooking({
+    String? customerId,
+    required customerName,
+    required customerPhone,
+    String? customerEmail,
+    String? customerCompany,
     required String brand,
     required String model,
     required int year,
@@ -24,6 +29,11 @@ class VehicleBookingNotifier extends AsyncNotifier<List<VehicleBooking>> {
   }) async {
     final repo = ref.read(vehicleBookingRepositoryProvider);
     final newBooking = await repo.add(
+      customerId: customerId,
+      customerName: customerName,
+      customerPhone: customerPhone,
+      customerEmail: customerEmail,
+      customerCompany: customerCompany,
       brand: brand, 
       model: model, 
       year: year, 
@@ -43,6 +53,16 @@ class VehicleBookingNotifier extends AsyncNotifier<List<VehicleBooking>> {
     await repo.remove(id);
     final current = state.value ?? [];
     state = AsyncData(current.where((b) => b.id != id).toList());
+  }
+
+  Future<void> closeBooking(String id) async {
+    final repo = ref.read(vehicleBookingRepositoryProvider);
+    final updated =  await repo.close(id);
+    final current = state.value ?? [];
+    state = AsyncData([
+      for (final b in current)
+        if (b.id == id) updated else b,
+    ]);
   }
 }
 

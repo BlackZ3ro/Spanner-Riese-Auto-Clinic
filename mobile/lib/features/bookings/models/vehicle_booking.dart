@@ -9,6 +9,12 @@ part 'vehicle_booking.g.dart';
 abstract class VehicleBooking with _$VehicleBooking{
   const factory VehicleBooking({
     required String id,
+    required String invoiceNumber,
+    String? customerId,
+    required String customerName,
+    required String customerPhone,
+    String? customerEmail,
+    String? customerCompany,
     required String brand,
     required String model,
     required int year,
@@ -18,9 +24,9 @@ abstract class VehicleBooking with _$VehicleBooking{
     required int kilometers,
     String? engineCode,
     String? imageUrl,
-   // @Default(BookingStatus.checkedIn) BookingStatus status,
+    @Default(BookingStatus.checkedIn) BookingStatus status,
     DateTime? closedAt,
-    //DateTime? createdAt,
+    DateTime? createdAt,
   }) = _VehicleBooking;
 
   factory VehicleBooking.fromJson(Map<String,dynamic> json) =>
