@@ -28,6 +28,7 @@ class InvoicePdfService {
             pw.Text('Invoice'),
             pw.Text('Invoice #: ${booking.invoiceNumber}',
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+            pw.Text('Reference: ${booking.referenceCode}'),
             if (booking.customerName.isNotEmpty) ...[
               pw.SizedBox(height: 8),
               pw.Text('Bill to: ', style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),

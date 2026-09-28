@@ -13,13 +13,23 @@ class BookingsListScreen extends ConsumerStatefulWidget {
   ConsumerState<BookingsListScreen> createState() => _BookingsListScreenState();
 }
 
-class _BookingsListScreenState extends ConsumerState<BookingsListScreen> {
+class _BookingsListScreenState extends ConsumerState<BookingsListScreen>
+    with SingleTickerProviderStateMixin {
   final _searchController = TextEditingController();
   String _query = '';
+  late final TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    // Tab order: Completed (left) / Open (right) — Open shown by default.
+    _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
+  }
 
   @override
   void dispose() {
     _searchController.dispose();
+    _tabController.dispose();
     super.dispose();
   }
 
@@ -31,29 +41,40 @@ class _BookingsListScreenState extends ConsumerState<BookingsListScreen> {
       appBar: AppBar(
         title: const Text('Checked-in vehicles'),
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(56),
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search by invoice number',
-                prefixIcon: const Icon(Icons.search),
-                isDense: true,
-                filled: true,
-                border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
-                suffixIcon: _query.isEmpty
-                    ? null
-                    : IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          _searchController.clear();
-                          setState(() => _query = '');
-                        },
-                      ),
+          preferredSize: const Size.fromHeight(104),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                child: TextField(
+                  controller: _searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Search by invoice number',
+                    prefixIcon: const Icon(Icons.search),
+                    isDense: true,
+                    filled: true,
+                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                    suffixIcon: _query.isEmpty
+                        ? null
+                        : IconButton(
+                            icon: const Icon(Icons.clear),
+                            onPressed: () {
+                              _searchController.clear();
+                              setState(() => _query = '');
+                            },
+                          ),
+                  ),
+                  onChanged: (value) => setState(() => _query = value),
+                ),
               ),
-              onChanged: (value) => setState(() => _query = value),
-            ),
+              TabBar(
+                controller: _tabController,
+                tabs: const [
+                  Tab(text: 'Open'),
+                  Tab(text: 'Completed'),
+                ],
+              ),
+            ],
           ),
         ),
       ),
@@ -72,29 +93,14 @@ class _BookingsListScreenState extends ConsumerState<BookingsListScreen> {
                       b.invoiceNumber.toLowerCase().contains(_query.trim().toLowerCase()))
                   .toList();
 
-          if (filtered.isEmpty) {
-            return const Center(child: Text('No bookings match that invoice number.'));
-          }
-
-          final checkedIn = filtered.where((b) => b.status == BookingStatus.checkedIn).toList();
           final closed = filtered.where((b) => b.status == BookingStatus.closed).toList();
+          final open = filtered.where((b) => b.status == BookingStatus.checkedIn).toList();
 
-          return ListView(
+          return TabBarView(
+            controller: _tabController,
             children: [
-              if (checkedIn.isNotEmpty) ...[
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
-                  child: Text('Checked in', style: TextStyle(fontWeight: FontWeight.bold)),
-                ),
-                for (final booking in checkedIn) _BookingTile(booking: booking),
-              ],
-              if (closed.isNotEmpty) ...[
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(16, 16, 16, 4),
-                  child: Text('Closed', style: TextStyle(fontWeight: FontWeight.bold)),
-                ),
-                for (final booking in closed) _BookingTile(booking: booking),
-              ],
+              _BookingListView(bookings: open, emptyMessage: 'No open bookings.'),
+              _BookingListView(bookings: closed, emptyMessage: 'No completed bookings.'),
             ],
           );
         },
@@ -104,6 +110,23 @@ class _BookingsListScreenState extends ConsumerState<BookingsListScreen> {
             Navigator.of(context).push(MaterialPageRoute(builder: (_) => const BookInScreen())),
         child: const Icon(Icons.add),
       ),
+    );
+  }
+}
+
+class _BookingListView extends StatelessWidget {
+  const _BookingListView({required this.bookings, required this.emptyMessage});
+
+  final List<VehicleBooking> bookings;
+  final String emptyMessage;
+
+  @override
+  Widget build(BuildContext context) {
+    if (bookings.isEmpty) {
+      return Center(child: Text(emptyMessage));
+    }
+    return ListView(
+      children: [for (final booking in bookings) _BookingTile(booking: booking)],
     );
   }
 }

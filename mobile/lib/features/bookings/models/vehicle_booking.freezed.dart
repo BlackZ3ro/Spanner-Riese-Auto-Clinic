@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$VehicleBooking {
 
- String get id; String get invoiceNumber; String? get customerId; String get customerName; String get customerPhone; String? get customerEmail; String? get customerCompany; String get brand; String get model; int get year; String? get engineSize; TransmissionType get transmissionType; String get registration; int get kilometers; String? get engineCode; String? get imageUrl; BookingStatus get status; DateTime? get closedAt; DateTime? get createdAt;
+ String get id; String get invoiceNumber; String get referenceCode; String? get customerId; String get customerName; String get customerPhone; String? get customerEmail; String? get customerCompany; String get brand; String get model; int get year; String? get engineSize; TransmissionType get transmissionType; String get registration; int get kilometers; String? get engineCode; String? get imageUrl; BookingStatus get status; BookingPhase get phase; DateTime? get closedAt; DateTime? get createdAt;
 /// Create a copy of VehicleBooking
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $VehicleBookingCopyWith<VehicleBooking> get copyWith => _$VehicleBookingCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is VehicleBooking&&(identical(other.id, id) || other.id == id)&&(identical(other.invoiceNumber, invoiceNumber) || other.invoiceNumber == invoiceNumber)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.customerName, customerName) || other.customerName == customerName)&&(identical(other.customerPhone, customerPhone) || other.customerPhone == customerPhone)&&(identical(other.customerEmail, customerEmail) || other.customerEmail == customerEmail)&&(identical(other.customerCompany, customerCompany) || other.customerCompany == customerCompany)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.model, model) || other.model == model)&&(identical(other.year, year) || other.year == year)&&(identical(other.engineSize, engineSize) || other.engineSize == engineSize)&&(identical(other.transmissionType, transmissionType) || other.transmissionType == transmissionType)&&(identical(other.registration, registration) || other.registration == registration)&&(identical(other.kilometers, kilometers) || other.kilometers == kilometers)&&(identical(other.engineCode, engineCode) || other.engineCode == engineCode)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.status, status) || other.status == status)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is VehicleBooking&&(identical(other.id, id) || other.id == id)&&(identical(other.invoiceNumber, invoiceNumber) || other.invoiceNumber == invoiceNumber)&&(identical(other.referenceCode, referenceCode) || other.referenceCode == referenceCode)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.customerName, customerName) || other.customerName == customerName)&&(identical(other.customerPhone, customerPhone) || other.customerPhone == customerPhone)&&(identical(other.customerEmail, customerEmail) || other.customerEmail == customerEmail)&&(identical(other.customerCompany, customerCompany) || other.customerCompany == customerCompany)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.model, model) || other.model == model)&&(identical(other.year, year) || other.year == year)&&(identical(other.engineSize, engineSize) || other.engineSize == engineSize)&&(identical(other.transmissionType, transmissionType) || other.transmissionType == transmissionType)&&(identical(other.registration, registration) || other.registration == registration)&&(identical(other.kilometers, kilometers) || other.kilometers == kilometers)&&(identical(other.engineCode, engineCode) || other.engineCode == engineCode)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.status, status) || other.status == status)&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,invoiceNumber,customerId,customerName,customerPhone,customerEmail,customerCompany,brand,model,year,engineSize,transmissionType,registration,kilometers,engineCode,imageUrl,status,closedAt,createdAt]);
+int get hashCode => Object.hashAll([runtimeType,id,invoiceNumber,referenceCode,customerId,customerName,customerPhone,customerEmail,customerCompany,brand,model,year,engineSize,transmissionType,registration,kilometers,engineCode,imageUrl,status,phase,closedAt,createdAt]);
 
 @override
 String toString() {
-  return 'VehicleBooking(id: $id, invoiceNumber: $invoiceNumber, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, customerEmail: $customerEmail, customerCompany: $customerCompany, brand: $brand, model: $model, year: $year, engineSize: $engineSize, transmissionType: $transmissionType, registration: $registration, kilometers: $kilometers, engineCode: $engineCode, imageUrl: $imageUrl, status: $status, closedAt: $closedAt, createdAt: $createdAt)';
+  return 'VehicleBooking(id: $id, invoiceNumber: $invoiceNumber, referenceCode: $referenceCode, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, customerEmail: $customerEmail, customerCompany: $customerCompany, brand: $brand, model: $model, year: $year, engineSize: $engineSize, transmissionType: $transmissionType, registration: $registration, kilometers: $kilometers, engineCode: $engineCode, imageUrl: $imageUrl, status: $status, phase: $phase, closedAt: $closedAt, createdAt: $createdAt)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $VehicleBookingCopyWith<$Res>  {
   factory $VehicleBookingCopyWith(VehicleBooking value, $Res Function(VehicleBooking) _then) = _$VehicleBookingCopyWithImpl;
 @useResult
 $Res call({
- String id, String invoiceNumber, String? customerId, String customerName, String customerPhone, String? customerEmail, String? customerCompany, String brand, String model, int year, String? engineSize, TransmissionType transmissionType, String registration, int kilometers, String? engineCode, String? imageUrl, BookingStatus status, DateTime? closedAt, DateTime? createdAt
+ String id, String invoiceNumber, String referenceCode, String? customerId, String customerName, String customerPhone, String? customerEmail, String? customerCompany, String brand, String model, int year, String? engineSize, TransmissionType transmissionType, String registration, int kilometers, String? engineCode, String? imageUrl, BookingStatus status, BookingPhase phase, DateTime? closedAt, DateTime? createdAt
 });
 
 
@@ -65,10 +65,11 @@ class _$VehicleBookingCopyWithImpl<$Res>
 
 /// Create a copy of VehicleBooking
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? invoiceNumber = null,Object? customerId = freezed,Object? customerName = null,Object? customerPhone = null,Object? customerEmail = freezed,Object? customerCompany = freezed,Object? brand = null,Object? model = null,Object? year = null,Object? engineSize = freezed,Object? transmissionType = null,Object? registration = null,Object? kilometers = null,Object? engineCode = freezed,Object? imageUrl = freezed,Object? status = null,Object? closedAt = freezed,Object? createdAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? invoiceNumber = null,Object? referenceCode = null,Object? customerId = freezed,Object? customerName = null,Object? customerPhone = null,Object? customerEmail = freezed,Object? customerCompany = freezed,Object? brand = null,Object? model = null,Object? year = null,Object? engineSize = freezed,Object? transmissionType = null,Object? registration = null,Object? kilometers = null,Object? engineCode = freezed,Object? imageUrl = freezed,Object? status = null,Object? phase = null,Object? closedAt = freezed,Object? createdAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,invoiceNumber: null == invoiceNumber ? _self.invoiceNumber : invoiceNumber // ignore: cast_nullable_to_non_nullable
+as String,referenceCode: null == referenceCode ? _self.referenceCode : referenceCode // ignore: cast_nullable_to_non_nullable
 as String,customerId: freezed == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
 as String?,customerName: null == customerName ? _self.customerName : customerName // ignore: cast_nullable_to_non_nullable
 as String,customerPhone: null == customerPhone ? _self.customerPhone : customerPhone // ignore: cast_nullable_to_non_nullable
@@ -84,7 +85,8 @@ as String,kilometers: null == kilometers ? _self.kilometers : kilometers // igno
 as int,engineCode: freezed == engineCode ? _self.engineCode : engineCode // ignore: cast_nullable_to_non_nullable
 as String?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as BookingStatus,closedAt: freezed == closedAt ? _self.closedAt : closedAt // ignore: cast_nullable_to_non_nullable
+as BookingStatus,phase: null == phase ? _self.phase : phase // ignore: cast_nullable_to_non_nullable
+as BookingPhase,closedAt: freezed == closedAt ? _self.closedAt : closedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));
@@ -171,10 +173,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String invoiceNumber,  String? customerId,  String customerName,  String customerPhone,  String? customerEmail,  String? customerCompany,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  BookingStatus status,  DateTime? closedAt,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String invoiceNumber,  String referenceCode,  String? customerId,  String customerName,  String customerPhone,  String? customerEmail,  String? customerCompany,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  BookingStatus status,  BookingPhase phase,  DateTime? closedAt,  DateTime? createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _VehicleBooking() when $default != null:
-return $default(_that.id,_that.invoiceNumber,_that.customerId,_that.customerName,_that.customerPhone,_that.customerEmail,_that.customerCompany,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.status,_that.closedAt,_that.createdAt);case _:
+return $default(_that.id,_that.invoiceNumber,_that.referenceCode,_that.customerId,_that.customerName,_that.customerPhone,_that.customerEmail,_that.customerCompany,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.status,_that.phase,_that.closedAt,_that.createdAt);case _:
   return orElse();
 
 }
@@ -192,10 +194,10 @@ return $default(_that.id,_that.invoiceNumber,_that.customerId,_that.customerName
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String invoiceNumber,  String? customerId,  String customerName,  String customerPhone,  String? customerEmail,  String? customerCompany,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  BookingStatus status,  DateTime? closedAt,  DateTime? createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String invoiceNumber,  String referenceCode,  String? customerId,  String customerName,  String customerPhone,  String? customerEmail,  String? customerCompany,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  BookingStatus status,  BookingPhase phase,  DateTime? closedAt,  DateTime? createdAt)  $default,) {final _that = this;
 switch (_that) {
 case _VehicleBooking():
-return $default(_that.id,_that.invoiceNumber,_that.customerId,_that.customerName,_that.customerPhone,_that.customerEmail,_that.customerCompany,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.status,_that.closedAt,_that.createdAt);case _:
+return $default(_that.id,_that.invoiceNumber,_that.referenceCode,_that.customerId,_that.customerName,_that.customerPhone,_that.customerEmail,_that.customerCompany,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.status,_that.phase,_that.closedAt,_that.createdAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -212,10 +214,10 @@ return $default(_that.id,_that.invoiceNumber,_that.customerId,_that.customerName
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String invoiceNumber,  String? customerId,  String customerName,  String customerPhone,  String? customerEmail,  String? customerCompany,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  BookingStatus status,  DateTime? closedAt,  DateTime? createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String invoiceNumber,  String referenceCode,  String? customerId,  String customerName,  String customerPhone,  String? customerEmail,  String? customerCompany,  String brand,  String model,  int year,  String? engineSize,  TransmissionType transmissionType,  String registration,  int kilometers,  String? engineCode,  String? imageUrl,  BookingStatus status,  BookingPhase phase,  DateTime? closedAt,  DateTime? createdAt)?  $default,) {final _that = this;
 switch (_that) {
 case _VehicleBooking() when $default != null:
-return $default(_that.id,_that.invoiceNumber,_that.customerId,_that.customerName,_that.customerPhone,_that.customerEmail,_that.customerCompany,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.status,_that.closedAt,_that.createdAt);case _:
+return $default(_that.id,_that.invoiceNumber,_that.referenceCode,_that.customerId,_that.customerName,_that.customerPhone,_that.customerEmail,_that.customerCompany,_that.brand,_that.model,_that.year,_that.engineSize,_that.transmissionType,_that.registration,_that.kilometers,_that.engineCode,_that.imageUrl,_that.status,_that.phase,_that.closedAt,_that.createdAt);case _:
   return null;
 
 }
@@ -227,11 +229,12 @@ return $default(_that.id,_that.invoiceNumber,_that.customerId,_that.customerName
 @JsonSerializable()
 
 class _VehicleBooking implements VehicleBooking {
-  const _VehicleBooking({required this.id, required this.invoiceNumber, this.customerId, required this.customerName, required this.customerPhone, this.customerEmail, this.customerCompany, required this.brand, required this.model, required this.year, this.engineSize, required this.transmissionType, required this.registration, required this.kilometers, this.engineCode, this.imageUrl, this.status = BookingStatus.checkedIn, this.closedAt, this.createdAt});
+  const _VehicleBooking({required this.id, required this.invoiceNumber, required this.referenceCode, this.customerId, required this.customerName, required this.customerPhone, this.customerEmail, this.customerCompany, required this.brand, required this.model, required this.year, this.engineSize, required this.transmissionType, required this.registration, required this.kilometers, this.engineCode, this.imageUrl, this.status = BookingStatus.checkedIn, this.phase = BookingPhase.bookedIn, this.closedAt, this.createdAt});
   factory _VehicleBooking.fromJson(Map<String, dynamic> json) => _$VehicleBookingFromJson(json);
 
 @override final  String id;
 @override final  String invoiceNumber;
+@override final  String referenceCode;
 @override final  String? customerId;
 @override final  String customerName;
 @override final  String customerPhone;
@@ -247,6 +250,7 @@ class _VehicleBooking implements VehicleBooking {
 @override final  String? engineCode;
 @override final  String? imageUrl;
 @override@JsonKey() final  BookingStatus status;
+@override@JsonKey() final  BookingPhase phase;
 @override final  DateTime? closedAt;
 @override final  DateTime? createdAt;
 
@@ -263,16 +267,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VehicleBooking&&(identical(other.id, id) || other.id == id)&&(identical(other.invoiceNumber, invoiceNumber) || other.invoiceNumber == invoiceNumber)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.customerName, customerName) || other.customerName == customerName)&&(identical(other.customerPhone, customerPhone) || other.customerPhone == customerPhone)&&(identical(other.customerEmail, customerEmail) || other.customerEmail == customerEmail)&&(identical(other.customerCompany, customerCompany) || other.customerCompany == customerCompany)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.model, model) || other.model == model)&&(identical(other.year, year) || other.year == year)&&(identical(other.engineSize, engineSize) || other.engineSize == engineSize)&&(identical(other.transmissionType, transmissionType) || other.transmissionType == transmissionType)&&(identical(other.registration, registration) || other.registration == registration)&&(identical(other.kilometers, kilometers) || other.kilometers == kilometers)&&(identical(other.engineCode, engineCode) || other.engineCode == engineCode)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.status, status) || other.status == status)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _VehicleBooking&&(identical(other.id, id) || other.id == id)&&(identical(other.invoiceNumber, invoiceNumber) || other.invoiceNumber == invoiceNumber)&&(identical(other.referenceCode, referenceCode) || other.referenceCode == referenceCode)&&(identical(other.customerId, customerId) || other.customerId == customerId)&&(identical(other.customerName, customerName) || other.customerName == customerName)&&(identical(other.customerPhone, customerPhone) || other.customerPhone == customerPhone)&&(identical(other.customerEmail, customerEmail) || other.customerEmail == customerEmail)&&(identical(other.customerCompany, customerCompany) || other.customerCompany == customerCompany)&&(identical(other.brand, brand) || other.brand == brand)&&(identical(other.model, model) || other.model == model)&&(identical(other.year, year) || other.year == year)&&(identical(other.engineSize, engineSize) || other.engineSize == engineSize)&&(identical(other.transmissionType, transmissionType) || other.transmissionType == transmissionType)&&(identical(other.registration, registration) || other.registration == registration)&&(identical(other.kilometers, kilometers) || other.kilometers == kilometers)&&(identical(other.engineCode, engineCode) || other.engineCode == engineCode)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.status, status) || other.status == status)&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,invoiceNumber,customerId,customerName,customerPhone,customerEmail,customerCompany,brand,model,year,engineSize,transmissionType,registration,kilometers,engineCode,imageUrl,status,closedAt,createdAt]);
+int get hashCode => Object.hashAll([runtimeType,id,invoiceNumber,referenceCode,customerId,customerName,customerPhone,customerEmail,customerCompany,brand,model,year,engineSize,transmissionType,registration,kilometers,engineCode,imageUrl,status,phase,closedAt,createdAt]);
 
 @override
 String toString() {
-  return 'VehicleBooking(id: $id, invoiceNumber: $invoiceNumber, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, customerEmail: $customerEmail, customerCompany: $customerCompany, brand: $brand, model: $model, year: $year, engineSize: $engineSize, transmissionType: $transmissionType, registration: $registration, kilometers: $kilometers, engineCode: $engineCode, imageUrl: $imageUrl, status: $status, closedAt: $closedAt, createdAt: $createdAt)';
+  return 'VehicleBooking(id: $id, invoiceNumber: $invoiceNumber, referenceCode: $referenceCode, customerId: $customerId, customerName: $customerName, customerPhone: $customerPhone, customerEmail: $customerEmail, customerCompany: $customerCompany, brand: $brand, model: $model, year: $year, engineSize: $engineSize, transmissionType: $transmissionType, registration: $registration, kilometers: $kilometers, engineCode: $engineCode, imageUrl: $imageUrl, status: $status, phase: $phase, closedAt: $closedAt, createdAt: $createdAt)';
 }
 
 
@@ -283,7 +287,7 @@ abstract mixin class _$VehicleBookingCopyWith<$Res> implements $VehicleBookingCo
   factory _$VehicleBookingCopyWith(_VehicleBooking value, $Res Function(_VehicleBooking) _then) = __$VehicleBookingCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String invoiceNumber, String? customerId, String customerName, String customerPhone, String? customerEmail, String? customerCompany, String brand, String model, int year, String? engineSize, TransmissionType transmissionType, String registration, int kilometers, String? engineCode, String? imageUrl, BookingStatus status, DateTime? closedAt, DateTime? createdAt
+ String id, String invoiceNumber, String referenceCode, String? customerId, String customerName, String customerPhone, String? customerEmail, String? customerCompany, String brand, String model, int year, String? engineSize, TransmissionType transmissionType, String registration, int kilometers, String? engineCode, String? imageUrl, BookingStatus status, BookingPhase phase, DateTime? closedAt, DateTime? createdAt
 });
 
 
@@ -300,10 +304,11 @@ class __$VehicleBookingCopyWithImpl<$Res>
 
 /// Create a copy of VehicleBooking
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? invoiceNumber = null,Object? customerId = freezed,Object? customerName = null,Object? customerPhone = null,Object? customerEmail = freezed,Object? customerCompany = freezed,Object? brand = null,Object? model = null,Object? year = null,Object? engineSize = freezed,Object? transmissionType = null,Object? registration = null,Object? kilometers = null,Object? engineCode = freezed,Object? imageUrl = freezed,Object? status = null,Object? closedAt = freezed,Object? createdAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? invoiceNumber = null,Object? referenceCode = null,Object? customerId = freezed,Object? customerName = null,Object? customerPhone = null,Object? customerEmail = freezed,Object? customerCompany = freezed,Object? brand = null,Object? model = null,Object? year = null,Object? engineSize = freezed,Object? transmissionType = null,Object? registration = null,Object? kilometers = null,Object? engineCode = freezed,Object? imageUrl = freezed,Object? status = null,Object? phase = null,Object? closedAt = freezed,Object? createdAt = freezed,}) {
   return _then(_VehicleBooking(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,invoiceNumber: null == invoiceNumber ? _self.invoiceNumber : invoiceNumber // ignore: cast_nullable_to_non_nullable
+as String,referenceCode: null == referenceCode ? _self.referenceCode : referenceCode // ignore: cast_nullable_to_non_nullable
 as String,customerId: freezed == customerId ? _self.customerId : customerId // ignore: cast_nullable_to_non_nullable
 as String?,customerName: null == customerName ? _self.customerName : customerName // ignore: cast_nullable_to_non_nullable
 as String,customerPhone: null == customerPhone ? _self.customerPhone : customerPhone // ignore: cast_nullable_to_non_nullable
@@ -319,7 +324,8 @@ as String,kilometers: null == kilometers ? _self.kilometers : kilometers // igno
 as int,engineCode: freezed == engineCode ? _self.engineCode : engineCode // ignore: cast_nullable_to_non_nullable
 as String?,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
 as String?,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as BookingStatus,closedAt: freezed == closedAt ? _self.closedAt : closedAt // ignore: cast_nullable_to_non_nullable
+as BookingStatus,phase: null == phase ? _self.phase : phase // ignore: cast_nullable_to_non_nullable
+as BookingPhase,closedAt: freezed == closedAt ? _self.closedAt : closedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdAt: freezed == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
   ));

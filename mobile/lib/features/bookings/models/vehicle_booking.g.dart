@@ -10,6 +10,7 @@ _VehicleBooking _$VehicleBookingFromJson(Map<String, dynamic> json) =>
     _VehicleBooking(
       id: json['id'] as String,
       invoiceNumber: json['invoice_number'] as String,
+      referenceCode: json['reference_code'] as String,
       customerId: json['customer_id'] as String?,
       customerName: json['customer_name'] as String,
       customerPhone: json['customer_phone'] as String,
@@ -30,6 +31,9 @@ _VehicleBooking _$VehicleBookingFromJson(Map<String, dynamic> json) =>
       status:
           $enumDecodeNullable(_$BookingStatusEnumMap, json['status']) ??
           BookingStatus.checkedIn,
+      phase:
+          $enumDecodeNullable(_$BookingPhaseEnumMap, json['phase']) ??
+          BookingPhase.bookedIn,
       closedAt: json['closed_at'] == null
           ? null
           : DateTime.parse(json['closed_at'] as String),
@@ -43,6 +47,7 @@ Map<String, dynamic> _$VehicleBookingToJson(
 ) => <String, dynamic>{
   'id': instance.id,
   'invoice_number': instance.invoiceNumber,
+  'reference_code': instance.referenceCode,
   'customer_id': instance.customerId,
   'customer_name': instance.customerName,
   'customer_phone': instance.customerPhone,
@@ -58,6 +63,7 @@ Map<String, dynamic> _$VehicleBookingToJson(
   'engine_code': instance.engineCode,
   'image_url': instance.imageUrl,
   'status': _$BookingStatusEnumMap[instance.status]!,
+  'phase': _$BookingPhaseEnumMap[instance.phase]!,
   'closed_at': instance.closedAt?.toIso8601String(),
   'created_at': instance.createdAt?.toIso8601String(),
 };
@@ -72,4 +78,12 @@ const _$TransmissionTypeEnumMap = {
 const _$BookingStatusEnumMap = {
   BookingStatus.checkedIn: 'checked_in',
   BookingStatus.closed: 'closed',
+};
+
+const _$BookingPhaseEnumMap = {
+  BookingPhase.bookedIn: 'booked_in',
+  BookingPhase.laborInProgress: 'labor_in_progress',
+  BookingPhase.reassembly: 'reassembly',
+  BookingPhase.readyForPickup: 'ready_for_pickup',
+  BookingPhase.finalized: 'finalized',
 };

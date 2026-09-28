@@ -32,7 +32,14 @@ class BookingPartRepository {
     return BookingPart.fromJson(row);
   }
 
+
+  Future<void> removeAllForBooking(String bookingId) async {
+    await _client.from('booking_parts').delete().eq('booking_id', bookingId);
+  }
+
   Future<void> remove(String id) async {
     await _client.from('booking_parts').delete().eq('id', id);
   }
+
+  
 }
