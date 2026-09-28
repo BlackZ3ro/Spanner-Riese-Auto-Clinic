@@ -97,6 +97,7 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
             await supabase.From<Booking>()
                 .Filter("id", Constants.Operator.Equals, id.ToString())
                 .Set(x => x.Status!, "closed")
+                .Set(x => x.Phase!, "finalized")
                 .Set(x => x.ClosedAt!, DateTime.UtcNow)
                 .Update();
         }
@@ -207,6 +208,7 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
             await supabase.From<Booking>()
                 .Filter("id", Constants.Operator.Equals, id.ToString())
                 .Set(x => x.Status!, "checked_in")
+                .Set(x => x.Phase!, "ready_for_pickup") // same as mobile's reopen
                 .Set(x => x.ClosedAt!, (DateTime?)null)
                 .Update();
         }

@@ -54,6 +54,17 @@ public class Booking : BaseModel
     [Column("invoice_number", ignoreOnInsert: true)]
     public string? InvoiceNumber { get; set; }
 
+    // Added by mobile (Sept 2026, recorded in supabase/migrations/0006): the
+    // customer-facing phase and the random reference code customers use to
+    // look their car up. Both DB-defaulted, so ignoreOnInsert like the above.
+    // Finalize/Reopen here must set Phase too, or a customer keeps seeing
+    // "Labor in progress" after a web finalize.
+    [Column("phase", ignoreOnInsert: true)]
+    public string? Phase { get; set; }
+
+    [Column("reference_code", ignoreOnInsert: true)]
+    public string? ReferenceCode { get; set; }
+
     [Column("customer_id")]
     public Guid? CustomerId { get; set; }
 

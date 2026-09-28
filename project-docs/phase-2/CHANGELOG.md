@@ -1,5 +1,18 @@
 # Change Log
 
+## 2026-09-28 — Gary's mobile push reviewed, problems fixed, migrations 0006/0007
+
+Gary pushed mobile login (Supabase + profiles role), admin-only Finalize/Delete/Reopen, five booking phases with push notifications, and the customer reference-code lookup (U3-21 and U3-22 now built on mobile).
+
+Fixed in this branch:
+- **Security:** `mobile/firebase-service-account-minified.json` (a Firebase private key) and `mobile/android/local.properties` removed from the repo and added to `.gitignore`. The key is still in git history, so **Gary must revoke it in Google Cloud**.
+- **Web ignored phases:** web Finalize now sets `phase = 'finalized'` and web Reopen sets `'ready_for_pickup'` (same as mobile), so customers never see a stale phase. Web booking page shows the phase and the customer reference code.
+- **Mobile:** removing a part or labour line is now admin-only (agreed rule). Mobile delete now calls the one `delete_booking_and_restock` database function (atomic) instead of several separate calls; this also removes a bug that recorded the wrong stock item's cost.
+- **`0006`**: record of the dashboard-only schema (profiles, phase, reference_code, booking_push_tokens, four functions). Reconstructed from the mobile code; already live, not to be run there.
+- **`0007`**: delete function now also clears mobile `booking_labor` and refuses non-admins in the database itself. To be run by Gary.
+- Use case: added **Update booking phase** (both roles; notifies the customer).
+- The U3-21 plan doc (invoice number + registration) is superseded by Gary's dedicated random reference code.
+
 ## 2026-09-25 — Editable sources, Reopen gate, U3-21 plan, branch merged with main
 
 - **Editable diagram sources**: `diagrams/editable/*.drawio` for the use case and all five sequence diagrams, generated from the same definitions as the PNGs and checked to open and render in diagrams.net. README explains how to get a Google Drive share link, which is the editable-source link the brief asks for.

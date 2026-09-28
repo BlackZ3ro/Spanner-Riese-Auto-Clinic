@@ -16,7 +16,7 @@
     <h1 class="mb-1">@booking.Brand @booking.Model (@booking.Year)</h1>
     @if (!string.IsNullOrEmpty(booking.InvoiceNumber))
     {
-        <p class="text-muted mb-4">Invoice @booking.InvoiceNumber</p>
+        <p class="text-muted mb-4">Invoice @booking.InvoiceNumber@(string.IsNullOrEmpty(booking.ReferenceCode) ? "" : $" · Customer reference code {booking.ReferenceCode}")</p>
     }
 
     @if (!string.IsNullOrEmpty(booking.CustomerName))
@@ -48,6 +48,10 @@
         <dt class="col-sm-3">Status</dt>
         <dd class="col-sm-9">
             <span class="badge @(isOpen ? "bg-success" : "bg-secondary")">@booking.Status</span>
+            @if (!string.IsNullOrEmpty(booking.Phase))
+            {
+                <span class="badge bg-info text-dark ms-1">@booking.Phase.Replace('_', ' ')</span>
+            }
             @if (!isOpen && booking.ClosedAt is { } closedAt)
             {
                 <span class="text-muted"> - finalized @closedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</span>

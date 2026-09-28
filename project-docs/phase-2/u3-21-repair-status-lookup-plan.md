@@ -1,5 +1,7 @@
 # U3-21: Customer repair-status lookup, proposed plan (for Gary to approve)
 
+> **Superseded 28 Sept 2026.** Gary built the lookup on mobile using a dedicated random `reference_code` column and the `get_booking_by_reference_code` function (recorded in `supabase/migrations/0006`). Kept for the history of the decision.
+
 Confirmed at the 22 Sept consultation: a customer enters a reference code and
 sees what stage their car is at, **with no login**. This plan is a proposal
 and has not been built or applied.

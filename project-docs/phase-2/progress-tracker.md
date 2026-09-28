@@ -46,9 +46,11 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 18 | Update Microsoft Project + screenshot into the SRS | **Khumo** | Not started | — | 2026-10-03 |
 | 19 | Final top-up of the Progress Checker (incl. Phase 2 Group Reflection) | Wisani | Not started | — | 2026-10-08 |
 | 20 | Presentation & defence rehearsal — everyone must be able to explain the whole design | All | Not started | — | Week of 2026-10-06 |
-| 21 | **New:** Customer repair-status lookup (reference code, no login) — confirmed at the consultation (plan: `u3-21-repair-status-lookup-plan.md`) | **Unassigned — needs an owner** | Not started | — | 2026-09-23 (group's own target) |
-| 22 | **New:** Mobile login validated by Supabase Auth (replace role picker; picker kept for testing only) | **Unassigned** (suggest Gary) | Not started | — | 2026-10-01 |
-| 23 | **New:** Apply agreed permissions in web + mobile — only Admin can finalize, delete, reopen, remove jobs; both restock | Wisani (review: Gary) | In progress: web done 24 Sept (Reopen gated, 209fd0b); mobile outstanding | — | 2026-10-01 |
+| 21 | **New:** Customer repair-status lookup (reference code, no login) | **Gary** (built on mobile, pushed 28 Sept) | Done (mobile); web page not built | 2026-09-28 | 2026-09-23 |
+| 22 | **New:** Mobile login validated by Supabase Auth, role from `profiles` | **Gary** | Done (pushed 28 Sept) | 2026-09-28 | 2026-10-01 |
+| 23 | **New:** Apply agreed permissions in web + mobile — only Admin can finalize, delete, reopen, remove jobs; both restock | Wisani (review: Gary) | Done in code (web 24 Sept; mobile 28 Sept incl. remove part/labour; DB check in 0007). Needs Gary to build mobile + run 0007 | 2026-09-24 | 2026-10-01 |
+| 24 | **New:** Revoke the leaked Firebase service-account key and create a new one | **Gary** | Not started — urgent | — | 2026-09-29 |
+| 25 | **New:** Run migration 0007; check 0006 against the live schema (`supabase db pull`) | **Gary** | Not started | — | 2026-10-01 |
 
 **Task 11 note:** checked off at Wisani's explicit instruction (20 Sept) —
 the real screenshots and wireframe flow satisfy the deliverable, but they
