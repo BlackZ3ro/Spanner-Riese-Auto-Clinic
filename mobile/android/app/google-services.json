@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "238243708018",
+    "project_id": "spanner-background",
+    "storage_bucket": "spanner-background.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:238243708018:android:29ae6f3e46fc84b370d6eb",
+        "android_client_info": {
+          "package_name": "com.example.stock_system_riese_auto_clinic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtBnE4fK4SY7aJhi_4gOSmPI0Q0jbZu1I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
