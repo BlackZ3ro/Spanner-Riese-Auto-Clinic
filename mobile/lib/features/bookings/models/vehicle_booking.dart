@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'booking_phase.dart';
 import 'transmission_type.dart';
 import 'booking_status.dart';
 
@@ -10,6 +11,7 @@ abstract class VehicleBooking with _$VehicleBooking{
   const factory VehicleBooking({
     required String id,
     required String invoiceNumber,
+    required String referenceCode,
     String? customerId,
     required String customerName,
     required String customerPhone,
@@ -25,6 +27,7 @@ abstract class VehicleBooking with _$VehicleBooking{
     String? engineCode,
     String? imageUrl,
     @Default(BookingStatus.checkedIn) BookingStatus status,
+    @Default(BookingPhase.bookedIn) BookingPhase phase,
     DateTime? closedAt,
     DateTime? createdAt,
   }) = _VehicleBooking;

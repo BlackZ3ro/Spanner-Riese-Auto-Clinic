@@ -12,6 +12,10 @@ import '../providers/booking_parts_provider.dart';
 import '../providers/invoice_pdf_provider.dart';
 import '../providers/vehicle_booking_provider.dart';
 import 'package:intl/intl.dart';
+import '../../auth/models/user_role.dart';
+import '../../auth/providers/auth_provider.dart';
+import '../providers/booking_deletion_service.dart';
+import '../models/booking_phase.dart';
 
 class BookingDetailScreen extends ConsumerWidget {
   const BookingDetailScreen({super.key, required this.bookingId});
@@ -20,6 +24,8 @@ class BookingDetailScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bookingsAsync = ref.watch(vehicleBookingProvider);
+    final profileAsync = ref.watch(currentProfileProvider);
+    final isAdmin = profileAsync.value?.role == UserRole.admin;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Booking details')),
@@ -28,13 +34,13 @@ class BookingDetailScreen extends ConsumerWidget {
         error: (e, _) => Center(child: Text('Error: $e')),
         data: (bookings) {
           final booking = bookings.firstWhere((b) => b.id == bookingId);
-          return _buildBody(context, ref, booking);
+          return _buildBody(context, ref, booking, isAdmin);
         },
       ),
     );
   }
 
-  Widget _buildBody(BuildContext context, WidgetRef ref, VehicleBooking booking) {
+  Widget _buildBody(BuildContext context, WidgetRef ref, VehicleBooking booking, bool isAdmin) {
     final partsAsync = ref.watch(bookingPartsProvider(booking.id));
     final laborAsync = ref.watch(bookingLaborProvider(booking.id));
     final stockItems = ref.watch(stockItemProvider).value ?? <StockItem>[];
@@ -58,6 +64,7 @@ class BookingDetailScreen extends ConsumerWidget {
             .textTheme
             .bodyMedium
             ?.copyWith(fontWeight: FontWeight.bold)),
+        Text('Reference: ${booking.referenceCode}'),
         if (booking.customerName.isNotEmpty) ...[
           const SizedBox(height: 8,),
           Text('Customer', style: Theme.of(context).textTheme.titleSmall,),
@@ -82,6 +89,29 @@ class BookingDetailScreen extends ConsumerWidget {
         if (booking.closedAt != null)
           Text('Finalized: ${_formatDateTime(booking.closedAt)}'),
         const Divider(height: 32),
+        const SizedBox(height: 12),
+Text('Phase', style: Theme.of(context).textTheme.titleSmall),
+if (isOpen)
+  DropdownButton<BookingPhase>(
+    value: booking.phase,
+    isExpanded: true,
+    items: BookingPhase.selectable
+        .map((p) => DropdownMenuItem(value: p, child: Text(p.displayName)))
+        .toList(),
+    onChanged: (newPhase) async {
+      if (newPhase == null) return;
+      try {
+        await ref.read(vehicleBookingProvider.notifier).updatePhase(booking.id, newPhase);
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Could not update phase: $e')));
+        }
+      }
+    },
+  )
+else
+  Text(booking.phase.displayName),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -160,12 +190,29 @@ class BookingDetailScreen extends ConsumerWidget {
         const Divider(height: 32),
         _buildTotals(parts, labor),
         const SizedBox(height: 24),
-        if (isOpen)
+        if (isOpen && isAdmin) ...[
           FilledButton.icon(
             icon: const Icon(Icons.lock_outline),
             label: const Text('Finalize & close'),
             onPressed: () => _confirmClose(context, ref, booking),
           ),
+          const SizedBox(height: 12,),
+          OutlinedButton.icon(
+            icon: const Icon(Icons.delete_outline),
+            label: const Text('Delete booking'),
+            style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
+            onPressed: () => _confirmDeleteBooking(context, ref, booking), 
+          ),
+          const SizedBox(height: 12,)
+        ],
+        if (!isOpen && isAdmin) ...[
+          OutlinedButton.icon(
+            icon: const Icon(Icons.lock_open),
+            label: const Text('Reopen booking'),
+            onPressed: () => _confirmReopen(context, ref, booking),
+          ),
+  const SizedBox(height: 12),
+],
         const SizedBox(height: 12),
         OutlinedButton.icon(
           icon: const Icon(Icons.picture_as_pdf),
@@ -204,6 +251,32 @@ class BookingDetailScreen extends ConsumerWidget {
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
       ],
     );
+  }
+
+  void _confirmDeleteBooking(BuildContext context, WidgetRef ref, VehicleBooking booking) {
+    showDialog(
+      context: context, 
+      builder: (dialogContext) => AlertDialog(
+        title:  const Text('Delete this booking?'),
+        content: const Text(
+          'This permanently removes the booking and returns any allocated parts to the stock. This cannot be undone.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(), 
+              child: const Text('Cancel'),
+              ),
+              FilledButton(
+                style: FilledButton.styleFrom(backgroundColor: Colors.red),
+                onPressed: () async {
+                  Navigator.of(dialogContext).pop();
+                  await ref.read(bookingDeletionServiceProvider).deleteBooking(booking);
+                  if (context.mounted) Navigator.of(context).pop();
+                }, 
+                child: const Text('Delete'),
+                )
+          ],
+      ) 
+      );
   }
 
   void _confirmClose(BuildContext context, WidgetRef ref, VehicleBooking booking) {
@@ -297,6 +370,30 @@ void _confirmRemoveLabor(
     )
     );
   }
+
+  void _confirmReopen(BuildContext context, WidgetRef ref, VehicleBooking booking) {
+  showDialog(
+    context: context,
+    builder: (dialogContext) => AlertDialog(
+      title: const Text('Reopen this booking?'),
+      content: const Text(
+          'This resumes work on the booking — parts and labor can be added again, and the finalized date will be cleared until it\'s closed next time.'),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(dialogContext).pop(),
+          child: const Text('Cancel'),
+        ),
+        FilledButton(
+          onPressed: () async {
+            Navigator.of(dialogContext).pop();
+            await ref.read(vehicleBookingProvider.notifier).reopenBooking(booking.id);
+          },
+          child: const Text('Reopen'),
+        ),
+      ],
+    ),
+  );
+}
 }
 
 class _AddPartDialog extends ConsumerStatefulWidget {

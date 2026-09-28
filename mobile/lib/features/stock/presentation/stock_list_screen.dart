@@ -16,10 +16,14 @@ class StockListScreen extends ConsumerWidget{
     final categories = ref.watch(categoryProvider).value ?? [];
     final suppliers = ref.watch(supplierProvider).value ?? [];
 
-    String categoryName(String id) =>
-      categories.firstWhere((c) => c.id == id, orElse: () => categories.first).name;
-    String supplierName(String id) =>
-    suppliers.firstWhere((s) => s.id == id, orElse: () => suppliers.first).name;
+    String categoryName(String id) {
+      final match = categories.where((c) => c.id == id);
+      return match.isEmpty ? 'Unknown category' : match.first.name;
+    }
+    String supplierName(String id) {
+      final match = suppliers.where((s) => s.id == id);
+      return match.isEmpty ? 'Unknown supplier' : match.first.name;
+    }
 
     return Scaffold(
       appBar: AppBar(

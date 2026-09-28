@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:stock_system_riese_auto_clinic/features/bookings/models/booking_phase.dart';
 import '../data/vehicle_booking_repository.dart';
 import '../models/transmission_type.dart';
 import '../models/vehicle_booking.dart';
@@ -61,6 +62,26 @@ class VehicleBookingNotifier extends AsyncNotifier<List<VehicleBooking>> {
     final current = state.value ?? [];
     state = AsyncData([
       for (final b in current)
+        if (b.id == id) updated else b,
+    ]);
+  }
+
+  Future<void> reopenBooking(String id) async {
+    final repo = ref.read(vehicleBookingRepositoryProvider);
+    final updated = await repo.reopen(id);
+    final current = state.value ?? [];
+    state = AsyncData([
+      for(final b in current)
+      if (b.id == id) updated else b,
+    ]);
+  }
+
+  Future<void> updatePhase(String id, BookingPhase phase) async {
+    final repo = ref.read(vehicleBookingRepositoryProvider);
+    final updated = await repo.updatePhase(id, phase);
+    final current = state.value ?? [];
+    state = AsyncData([
+      for(final b in current)
         if (b.id == id) updated else b,
     ]);
   }

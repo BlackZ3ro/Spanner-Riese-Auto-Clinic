@@ -1,3 +1,4 @@
+import 'package:stock_system_riese_auto_clinic/features/bookings/models/booking_phase.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/transmission_type.dart';
 import '../models/vehicle_booking.dart';
@@ -72,11 +73,51 @@ class VehicleBookingRepository {
       .from('bookings')
       .update({
         'status': 'closed',
+        'phase': 'finalized',
         'closed_at' : DateTime.now().toIso8601String(),
       })
       .eq('id', id)
       .select()
       .single();
     return VehicleBooking.fromJson(row);
+  }
+
+  Future<VehicleBooking> reopen(String id) async{
+    final row = await _client
+      .from('bookings')
+      .update({
+        'status': 'checked_in',
+        'phase': 'ready_for_pickup',
+        'closed_at': null,
+      })
+      .eq('id', id)
+      .select()
+      .single();
+    return VehicleBooking.fromJson(row);
+  }
+
+  Future<VehicleBooking> updatePhase(String bookingId, BookingPhase phase) async {
+    final row = await _client.rpc('update_booking_phase', params: {
+      'p_booking_id': bookingId,
+      'p_phase': _phaseToDb(phase),
+    });
+    return VehicleBooking.fromJson(row as Map<String, dynamic>);
+  }
+
+  String _phaseToDb(BookingPhase phase){
+    switch (phase) {
+      case BookingPhase.bookedIn:
+      return 'booked_in';
+    case BookingPhase.laborInProgress:
+      return 'labor_in_progress';
+    case BookingPhase.reassembly:
+      return 'reassembly';
+    case BookingPhase.readyForPickup:
+      return 'ready_for_pickup';
+    case BookingPhase.finalized:
+      throw ArgumentError(
+        'finalized is set automatically when a booking is closed - it should never be passed to updatePhase.',
+      );
+    }
   }
 }
