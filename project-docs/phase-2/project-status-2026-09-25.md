@@ -1,5 +1,7 @@
 # Spanner (Riese Auto-Clinic) - Project Status, Beginning to 25 September 2026
 
+> **Superseded by `team-update-2026-09-28.md`.** Since this snapshot: mobile login (U3-22) and the customer lookup (U3-21) were built by Gary, and permissions are in code on both apps.
+
 Group Y "The Zealots", ITC327W. Prepared by Wisani Nkuna (222010787).
 Team: Wisani Nkuna, Gary van Wyk, Keamogetse Ogone Kgosi (Kea), Moremi KE (Khumo), Mathye MD (Denny), plus Ofentse Rammutla (223056856) and Breyton Rossouw (222069744), who joined on 17 September 2026.
 Stakeholder: Michael Riese. Academic mentor: Ms Mbele.

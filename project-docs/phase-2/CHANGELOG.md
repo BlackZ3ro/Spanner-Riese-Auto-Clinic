@@ -1,5 +1,13 @@
 # Change Log
 
+## 2026-09-30 — Full recheck
+
+- **Architecture** (`system-architecture.md`): added the Edge Function and Firebase Cloud Messaging, the customer lookup path, and phase notifications; corrected the stale claims that mobile has no admin distinction and that there is no roles table.
+- **ERD** (`uml-and-erd.md` Part 3): added `booking_labor` (mobile's labour table, missing since the first draft), `profiles`, `booking_push_tokens`, and the `phase`, `reference_code` and customer columns on `bookings`. All Mermaid blocks re-validated.
+- **Scope flag:** push notifications are the customer tracking Phase 1 excluded. The SRS Requirements Change Log must record this as an approved scope change.
+- Sequence diagram 1 (Flutter): login label updated. Mobile has real login now, so the "role picker kept for testing" wording is gone.
+- Superseded notes added to the 23 Sept review and the 25 Sept status report; checklist and live tracker corrected (reviewers, the merged U3-09). Added `team-update-2026-09-28.md`.
+
 ## 2026-09-28 — Gary's mobile push reviewed, problems fixed, migrations 0006/0007
 
 Gary pushed mobile login (Supabase + profiles role), admin-only Finalize/Delete/Reopen, five booking phases with push notifications, and the customer reference-code lookup (U3-21 and U3-22 now built on mobile).

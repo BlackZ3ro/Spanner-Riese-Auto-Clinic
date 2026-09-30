@@ -1,5 +1,7 @@
 # Diagram review: SpannerUML.pdf and Sequence Diagram V2.pdf (23 Sept 2026)
 
+> **Update 28 Sept:** finding 8 and open decision 1 are resolved — Gary added real Supabase login and admin-only Finalize/Delete/Reopen on mobile; part/labour removal was gated to admin afterwards. See CHANGELOG 28 Sept.
+
 Checked against the web code (`web/Pages/Bookings/Details.cshtml.cs`), the
 mobile code on `origin/main` (`mobile/lib/features/...`) and the
 consultation outcomes. Corrected sequence diagrams are in `diagrams/`.

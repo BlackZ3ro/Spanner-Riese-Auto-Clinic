@@ -19,22 +19,24 @@ not re-designing.
 >   middle; every shared use case has its own line to each actor.
 > - **Dashboard** is one separate box, `«include»`d from Login. Nothing else links
 >   back to it (it is a landing screen, not a hub).
-> - **Login** `«include»`s "Validate with Supabase Auth" (web and mobile; the mobile
->   role picker stays for testing only).
-> - **Customer** (no login) -> "Check repair status by reference code" (unchanged).
+> - **Login** `«include»`s "Validate with Supabase Auth" (web and mobile; mobile has
+>   real Supabase login since 28 Sept, role read from `profiles`).
+> - **Customer** (no login) -> "Check repair status by reference code" (built on mobile 28 Sept).
+> - **Update booking phase** (both roles, added 28 Sept) -> pushes a notification to the customer.
 > - **Permissions agreed 23 Sept:**
 >
 > | Use case | Mechanic | Admin |
 > |---|---|---|
-> | Login, book in a vehicle, search / view bookings (open/closed filter), download invoice, manage stock (incl. restock), update booking (labour/parts) | yes | yes |
+> | Login, book in a vehicle, search / view bookings (open/closed filter), download invoice, manage stock (incl. restock), update booking (add labour/parts), update booking phase | yes | yes |
 > | Finalize & close booking | no | **yes** |
 > | Delete booking (includes restock parts, remove jobs) | no | **yes** |
 > | Reopen closed booking (re-enter password) | no | **yes** |
-> | Remove a job | no | **yes** |
+> | Remove a part or labour line | no | **yes** |
 >
-> **Gap between this design and the code (task U3-23):** the web app does not yet
-> gate Reopen or job removal to admins, and the mobile app has no admin gate at
-> all (role picker only, no authentication; U3-22 adds Supabase login).
+> **Status in code (28 Sept, U3-23):** web gates Finalize, Delete and Reopen;
+> mobile gates Finalize, Delete, Reopen and part/labour removal on
+> `profiles.role`; the database refuses non-admin deletes once Gary runs
+> migration 0007. Mobile changes still need Gary to build and test.
 > Sequence diagrams use `Alt` (never `Loop`), Login first, then "Working with
 > the system".
 
@@ -173,7 +175,16 @@ this is a single pull/lookup screen with no live updates and no account.
 Worth stating that distinction explicitly in the SRS so it doesn't read as
 a scope reversal.
 
-**Open question, not yet decided — needs Gary before this is built:** what
+**Outcome (28 Sept): built on mobile by Gary.** He chose option 2 below — a
+dedicated random `reference_code` (8 characters, e.g. `CY45KLGP`) — read
+through the `get_booking_by_reference_code` function (see
+`supabase/migrations/0006`). He also added **push notifications** on every
+phase change. That goes beyond "a single pull/lookup screen": it is the
+push-based tracking Phase 1 excluded, so the SRS Requirements Change Log must
+record it as an approved scope change (confirmed by Ms Mbele's "a screen with
+updates"), not leave it looking like a reversal.
+
+**Original open question (22 Sept), kept for history:** what
 is the reference code? Two real options against the live schema:
 1. Reuse `bookings.invoice_number` (already a DB-generated sequence,
    `INV-00005` style) — no new column, but need to confirm it's assigned
@@ -188,6 +199,13 @@ route — a real addition to `system-architecture.md`'s access-control story
 deliberately doesn't). Target: working by end of day 23 Sept.
 
 ## Part 2 — Sequence Diagrams (at least one Flutter, one ASP.NET)
+
+> **Superseded 23 Sept.** The current reference sequence diagrams are the PNGs
+> in `diagrams/` with editable draw.io versions in `diagrams/editable/`:
+> book in a vehicle (Flutter and web, Login first), admin finalize, admin
+> delete, admin reopen. The Mermaid drafts below are the 19 Sept originals
+> (the Flutter one wrongly used `jobs`; mobile records labour in
+> `booking_labor`) and are kept only for history.
 
 ### Diagram 1 — Mechanic adds a job (Flutter -> Supabase)
 
@@ -243,13 +261,18 @@ sequenceDiagram
 
 Taken directly from `web/Models/*.cs` and `supabase/migrations/` — this is
 the **real, live schema**, including the customer/invoice columns mobile
-added mid-project (see `web/CLAUDE.md`'s "Schema drift" note).
+added mid-project and the 28 Sept additions (`booking_labor`, `profiles`,
+`booking_push_tokens`, `phase`, `reference_code` — columns reconstructed in
+`supabase/migrations/0006`, Gary to confirm with `supabase db pull`) (see `web/CLAUDE.md`'s "Schema drift" note).
 
 ```mermaid
 erDiagram
     CUSTOMERS ||--o{ BOOKINGS : "books in"
     BOOKINGS ||--o{ JOBS : "has"
     BOOKINGS ||--o{ BOOKING_PARTS : "uses"
+    BOOKINGS ||--o{ BOOKING_LABOR : "mobile labour"
+    BOOKINGS ||--o{ BOOKING_PUSH_TOKENS : "notifies"
+    AUTH_USERS ||--|| PROFILES : "has role"
     STOCK_ITEMS ||--o{ BOOKING_PARTS : "used in"
     STOCK_ITEMS ||--o{ STOCK_MOVEMENTS : "tracked by"
     CATEGORIES ||--o{ STOCK_ITEMS : "classifies"
@@ -275,7 +298,13 @@ erDiagram
         text registration
         bigint kilometers
         text image_url
-        text status
+        text customer_name "denormalised by mobile"
+        text customer_phone
+        text customer_email
+        text customer_company
+        text status "checked_in / closed"
+        text phase "booked_in ... finalized (28 Sept)"
+        text reference_code "random, unique - customer lookup (28 Sept)"
         text invoice_number "DB-generated sequence, e.g. INV-00005"
         timestamptz created_at
         timestamptz closed_at
@@ -329,6 +358,27 @@ erDiagram
         uuid id PK
         text name
         text contact_info
+        timestamptz created_at
+    }
+    BOOKING_LABOR {
+        uuid id PK
+        uuid booking_id FK
+        text description
+        numeric hours
+        numeric rate
+        numeric price "hours x rate"
+        timestamptz created_at
+    }
+    PROFILES {
+        uuid id PK "= auth.users.id"
+        text role "admin / mechanic"
+        text full_name
+        timestamptz created_at
+    }
+    BOOKING_PUSH_TOKENS {
+        uuid id PK
+        uuid booking_id FK
+        text fcm_token
         timestamptz created_at
     }
 ```
