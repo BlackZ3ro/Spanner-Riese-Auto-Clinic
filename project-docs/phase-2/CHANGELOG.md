@@ -1,5 +1,10 @@
 # Change Log
 
+## 2026-09-30 — SRS v2.0 merged
+
+- `project-docs/Group Y - SRS v2.0 (Phase 2 - System Architecture and Design).pdf` (28 pages): new cover (7 members) and revision page; **Part A** = Phase 1 pages exactly as submitted; **Part B** = FR-14 to FR-18, Requirements Change Log Changes 7-11 (**Change 7 records the customer repair-status lookup as a partial reversal of Change 5**, answering its "false expectations" and "mechanic workload" reasons, and flags that Michael Riese must reconfirm it), scope amendment, risk register updates (R-03 closed, R-10 materialised, new R-14 to R-16), architecture, use case, 5 sequence diagrams, ERD, both interface designs, a draft design-alignment table for Denny, and the editable-source links.
+- Breyton's Lucid links recorded (use case, sequence). They currently ask viewers to sign in and the document title reads "Blank diagram", so sharing and content still need checking.
+
 ## 2026-09-30 — Full recheck
 
 - **Architecture** (`system-architecture.md`): added the Edge Function and Firebase Cloud Messaging, the customer lookup path, and phase notifications; corrected the stale claims that mobile has no admin distinction and that there is no roles table.

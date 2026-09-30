@@ -29,7 +29,7 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 1 | Draft system architecture (grounded in real code) | Wisani | Done | 2026-09-19 | 2026-09-19 |
 | 2 | Redraw architecture diagram in a proper tool + share link | Ofentse | Not started | — | 2026-09-21 |
 | 3 | Draft use case diagram (actors + use cases) | Wisani | Done | 2026-09-19 | 2026-09-19 |
-| 4 | Redraw use case diagram + both sequence diagrams in a proper tool + share links ("the UML diagrams") | **Ofentse and Breyton, paired** | Not started | — | 2026-09-21 |
+| 4 | Redraw use case diagram + both sequence diagrams in a proper tool + share links ("the UML diagrams") | **Ofentse and Breyton, paired** | Links received 30 Sept (Lucid) — sharing must be set to "anyone with the link can view" (currently asks for sign-in; title shows "Blank diagram") | — | 2026-09-21 |
 | 5 | Sequence diagrams — book in a vehicle (Flutter + web), Supabase login; reference versions in `diagrams/` | Wisani (reference) / Gary (verify) | Done (reference); students redraw | 2026-09-19 | 2026-09-21 |
 | 6 | Sequence diagram — ASP.NET (finalize booking), draft | Wisani | Done | 2026-09-19 | 2026-09-19 |
 | 7 | ERD from live schema (draft) | Wisani | Done | 2026-09-19 | 2026-09-19 |
@@ -40,7 +40,7 @@ module — see `phase2-checklist.md` for the full rubric breakdown).
 | 12 | Navigation flow diagram | **Kea** (moved from Wisani 20 Sept) | Not started | — | 2026-09-25 |
 | 13 | Design-alignment table (requirement → use case → sequence → ERD → interface) | **Denny** (moved from Wisani 20 Sept) | Not started | — | 2026-09-27 |
 | 14 | Reconfirm requirements with Michael Riese before finalizing the design | **Denny** (sole owner from 20 Sept; Wisani kept informed, not co-owner) | Not started | — | After 22 Sept |
-| 15 | Merge everything into the existing SRS as one new section | Wisani | Not started | — | 2026-09-30 |
+| 15 | Merge everything into the existing SRS as one new section | Wisani | **v2.0 draft done 30 Sept** (`project-docs/Group Y - SRS v2.0 (Phase 2 - System Architecture and Design).pdf`): Phase 1 verbatim + Part B incl. scope-change entry (Change 7). Final version after the pending items in its Section 6.3 | 2026-09-30 | 2026-09-30 |
 | 16 | Consultation with Ms Mbele | All (attend) | **Done** | 2026-09-22 | 2026-09-22 12:00 |
 | 17 | Apply consultation feedback — use case restructure + sequence corrections (reference versions done 23 Sept; Ofentse & Breyton redraw pending) | Wisani / Ofentse & Breyton | In progress | 2026-09-22 | 2026-09-26 |
 | 18 | Update Microsoft Project + screenshot into the SRS | **Khumo** | Not started | — | 2026-10-03 |
