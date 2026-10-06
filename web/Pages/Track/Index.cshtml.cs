@@ -19,11 +19,11 @@ public class IndexModel(Supabase.Client supabase) : PageModel
     // same words in the app, on this page and in the notification.
     public static readonly IReadOnlyList<Step> Steps =
     [
-        new("booked_in", "Book-in & inspection", "Your vehicle is with us and being checked."),
-        new("labor_in_progress", "Labour in progress", "Our mechanics are working on your vehicle."),
+        new("booked_in", "Book-in & Inspection", "Your vehicle is with us and being checked."),
+        new("labor_in_progress", "Labor in progress", "Our mechanics are working on your vehicle."),
         new("reassembly", "Reassembly", "Putting everything back together and testing."),
         new("ready_for_pickup", "Finished - ready for pickup", "All done. You can collect your vehicle."),
-        new("finalized", "Finalized - booked out", "Booked out and invoiced. Thank you!"),
+        new("finalized", "Finalized - booked out to customer", "Booked out and invoiced. Thank you!"),
     ];
 
     [BindProperty(SupportsGet = true)]
