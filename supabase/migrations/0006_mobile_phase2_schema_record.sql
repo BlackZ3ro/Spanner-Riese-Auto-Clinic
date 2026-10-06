@@ -144,16 +144,25 @@ alter table public.booking_push_tokens enable row level security;
 
 create or replace function public.register_push_token(p_reference_code text, p_token text)
 returns void
-language sql
+language plpgsql
 security definer
 set search_path = public
-as $$
+as $
+declare
+  v_booking_id uuid;
+begin
+  -- Live behaviour confirmed 7 Oct 2026: an unknown code raises
+  -- "No booking found for that reference code" (HTTP 400) rather than
+  -- silently doing nothing.
+  select id into v_booking_id from public.bookings where reference_code = upper(trim(p_reference_code));
+  if v_booking_id is null then
+    raise exception 'No booking found for that reference code';
+  end if;
   insert into public.booking_push_tokens (booking_id, fcm_token)
-  select b.id, p_token
-  from public.bookings b
-  where b.reference_code = upper(trim(p_reference_code))
+  values (v_booking_id, p_token)
   on conflict (booking_id, fcm_token) do nothing;
-$$;
+end;
+$;
 revoke all on function public.register_push_token(text, text) from public;
 grant execute on function public.register_push_token(text, text) to anon, authenticated;
 

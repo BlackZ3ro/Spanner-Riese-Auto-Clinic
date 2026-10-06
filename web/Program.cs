@@ -23,6 +23,8 @@ builder.Services.AddRazorPages(options =>
     // FR-12: every page requires a logged-in staff member, except the login page itself.
     options.Conventions.AuthorizeFolder("/");
     options.Conventions.AllowAnonymousToPage("/Account/Login");
+    // Customer repair-status lookup (FR-14): public, reference code only.
+    options.Conventions.AllowAnonymousToFolder("/Track");
 });
 builder.Services.Configure<Microsoft.AspNetCore.Mvc.MvcOptions>(options =>
 {

@@ -1,0 +1,105 @@
+@page
+@model Spanner.Web.Pages.Track.IndexModel
+@{
+    ViewData["Title"] = "Track your vehicle";
+    var b = Model.Booking;
+    var current = Model.CurrentIndex;
+}
+
+<div class="track">
+    <div class="track-head">
+        <div class="track-brand">Riese Auto-Clinic</div>
+        <h1>Track your vehicle</h1>
+        <p>Enter the reference code from your booking slip to see where your vehicle is.</p>
+
+        <form method="get" class="track-form" role="search">
+            <label for="code" class="visually-hidden">Reference code</label>
+            <input id="code" name="code" value="@Model.Code" class="form-control form-control-lg"
+                   placeholder="e.g. CY45KLGP" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="12" />
+            <button type="submit" class="btn btn-dark btn-lg">Track</button>
+        </form>
+
+        @if (Model.Error is not null)
+        {
+            <div class="alert alert-warning mt-3 mb-0" role="alert">@Model.Error</div>
+        }
+    </div>
+
+    @if (b is not null)
+    {
+        var step = IndexModel.Steps[current];
+        <section class="track-card" aria-label="Vehicle status">
+            <div class="waybill">
+                <div>
+                    <div class="label">Reference</div>
+                    <div class="value mono">@b.ReferenceCode</div>
+                </div>
+                <div>
+                    <div class="label">Vehicle</div>
+                    <div class="value">@b.Brand @b.Model (@b.Year)</div>
+                </div>
+                <div>
+                    <div class="label">Registration</div>
+                    <div class="value mono">@b.Registration</div>
+                </div>
+            </div>
+
+            <div class="status-hero @(step.Key is "ready_for_pickup" or "finalized" ? "done" : "")">
+                <div class="label">Current status</div>
+                <div class="status">@step.Label</div>
+                <div class="detail">@step.Detail</div>
+                <div class="bar" role="progressbar" aria-valuemin="1" aria-valuemax="@IndexModel.Steps.Count" aria-valuenow="@(current + 1)">
+                    @for (var i = 0; i < IndexModel.Steps.Count; i++)
+                    {
+                        <span class="@(i <= current ? "on" : "")"></span>
+                    }
+                </div>
+                <div class="step-count">Step @(current + 1) of @IndexModel.Steps.Count</div>
+            </div>
+
+            <ol class="timeline">
+                @for (var i = 0; i < IndexModel.Steps.Count; i++)
+                {
+                    var s = IndexModel.Steps[i];
+                    var state = i < current ? "past" : i == current ? "now" : "next";
+                    <li class="@state">
+                        <span class="dot" aria-hidden="true">@(i < current || (i == current && s.Key == "finalized") ? "✓" : (i + 1).ToString())</span>
+                        <div>
+                            <div class="t-label">@s.Label</div>
+                            @if (i == 0 && b.CreatedAt is not null)
+                            {
+                                <div class="t-time">@b.CreatedAt.Value.ToLocalTime().ToString("ddd d MMM, HH:mm")</div>
+                            }
+                            @if (s.Key == "finalized" && b.ClosedAt is not null)
+                            {
+                                <div class="t-time">@b.ClosedAt.Value.ToLocalTime().ToString("ddd d MMM, HH:mm")</div>
+                            }
+                            @if (i == current)
+                            {
+                                <div class="t-detail">@s.Detail</div>
+                            }
+                        </div>
+                    </li>
+                }
+            </ol>
+
+            <details class="work">
+                <summary>What we've done so far (@b.Labor.Count work items, @b.Parts.Count parts)</summary>
+                <div class="work-cols">
+                    <div>
+                        <h2>Work</h2>
+                        @if (b.Labor.Count == 0) { <p class="text-muted">Nothing logged yet.</p> }
+                        <ul>@foreach (var l in b.Labor) { <li>@l.Description <span>@l.Hours.ToString("0.#") h</span></li> }</ul>
+                    </div>
+                    <div>
+                        <h2>Parts</h2>
+                        @if (b.Parts.Count == 0) { <p class="text-muted">No parts fitted yet.</p> }
+                        <ul>@foreach (var p in b.Parts) { <li>@p.Name <span>× @p.Quantity</span></li> }</ul>
+                    </div>
+                </div>
+            </details>
+
+            <p class="track-foot">Want updates on your phone? Install the Spanner app, tap <b>I'm a customer</b> and enter the same code to get a notification each time the status changes.</p>
+        </section>
+    }
+</div>
