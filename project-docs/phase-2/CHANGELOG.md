@@ -1,5 +1,15 @@
 # Change Log
 
+## 2026-10-07 — Customer tracking pages, navigation flow, security finding, SRS v2.1, presentation
+
+- **Web /Track** (public, no login): courier-style customer tracking (waybill strip, current status, 5-step bar, timeline, work done). Tested live: empty, not-found and invalid-code states. Same labels as mobile and the push notification. Pushed.
+- **Web phase selector** on booking details (both roles, FR-15) using update_booking_phase. Build clean; needs a logged-in test.
+- **Mobile tracking redesign** + fix for notification setup blocking the status screen: compiled with Flutter 3.47.6, `flutter analyze` 0 errors; kept on local branch `proposal/mobile-customer-tracking` and sent to Gary as a patch. **Not pushed** (decision: Gary reviews first).
+- **Live probe (anon key, read-only)**: lookup, push-subscribe and the Edge Function are deployed; anonymous reads blocked; delete refused for non-admins, so 0007 is applied. **Found:** update_booking_phase ran anonymously. **0008** revokes anonymous execute on staff functions (Gary to run). 0006 register_push_token corrected to the live behaviour.
+- Navigation flow (overdue, assigned to Kea) produced by Wisani; editable draw.io + PNG for architecture, ERD and navigation flow.
+- `Group Y - SRS v2.1`: adds navigation flow, both tracking designs, cleaner figures, Appendix F with the tool and editable file for every design, R-17, MS Project section (screenshot pending Khumo).
+- Presentation: 21-slide deck with speaker notes, plus a presentation notes PDF.
+
 ## 2026-09-30 — SRS v2.0 merged
 
 - `project-docs/Group Y - SRS v2.0 (Phase 2 - System Architecture and Design).pdf` (28 pages): new cover (7 members) and revision page; **Part A** = Phase 1 pages exactly as submitted; **Part B** = FR-14 to FR-18, Requirements Change Log Changes 7-11 (**Change 7 records the customer repair-status lookup as a partial reversal of Change 5**, answering its "false expectations" and "mechanic workload" reasons, and flags that Michael Riese must reconfirm it), scope amendment, risk register updates (R-03 closed, R-10 materialised, new R-14 to R-16), architecture, use case, 5 sequence diagrams, ERD, both interface designs, a draft design-alignment table for Denny, and the editable-source links.
