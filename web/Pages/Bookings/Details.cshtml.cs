@@ -34,6 +34,19 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
     public Booking? Booking { get; private set; }
     public List<Job> Jobs { get; private set; } = new();
     public string? LoadError { get; private set; }
+
+    // Phases staff can choose; "finalized" is only ever set by Finalize & close
+    // (same rule as mobile's updatePhase and the update_booking_phase function).
+    public static readonly IReadOnlyList<(string Key, string Label)> SelectablePhases =
+    [
+        ("booked_in", "Book-in & Inspection"),
+        ("labor_in_progress", "Labor in progress"),
+        ("reassembly", "Reassembly"),
+        ("ready_for_pickup", "Finished - ready for pickup"),
+    ];
+
+    [BindProperty]
+    public string? NewPhase { get; set; }
     public string? JobsError { get; private set; }
 
     public List<BookingPart> PartsUsed { get; private set; } = new();
@@ -74,6 +87,43 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
     // the same status/closed_at columns mobile does, so a booking closed here also
     // drops off mobile's open list and vice versa. Once closed, the Add Job/Add
     // Part forms below hide (see the .cshtml) - matches mobile's `isOpen` gating.
+    // Update booking phase (both roles, use case "Update booking phase"). Goes
+    // through the same update_booking_phase function as mobile; the database
+    // webhook then pushes a notification to the customer.
+    public async Task<IActionResult> OnPostPhaseAsync(Guid id)
+    {
+        ModelState.Clear();
+        await LoadAsync(id);
+        if (Booking is null)
+        {
+            return NotFound();
+        }
+
+        if (Booking.Status == "closed")
+        {
+            LoadError = "A closed booking's phase can't be changed - reopen it first.";
+            return Page();
+        }
+
+        if (NewPhase is null || !SelectablePhases.Any(p => p.Key == NewPhase))
+        {
+            LoadError = "Choose a phase.";
+            return Page();
+        }
+
+        try
+        {
+            await supabase.Rpc("update_booking_phase", new { p_booking_id = id, p_phase = NewPhase });
+        }
+        catch (Exception ex)
+        {
+            LoadError = $"Couldn't update the phase: {ex.Message}";
+            return Page();
+        }
+
+        return RedirectToPage(new { id });
+    }
+
     public async Task<IActionResult> OnPostFinalizeAsync(Guid id)
     {
         ModelState.Clear();

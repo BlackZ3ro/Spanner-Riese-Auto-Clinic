@@ -48,7 +48,7 @@
         <dt class="col-sm-3">Status</dt>
         <dd class="col-sm-9">
             <span class="badge @(isOpen ? "bg-success" : "bg-secondary")">@booking.Status</span>
-            @if (!string.IsNullOrEmpty(booking.Phase))
+            @if (!string.IsNullOrEmpty(booking.Phase) && !isOpen)
             {
                 <span class="badge bg-info text-dark ms-1">@booking.Phase.Replace('_', ' ')</span>
             }
@@ -57,6 +57,23 @@
                 <span class="text-muted"> - finalized @closedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</span>
             }
         </dd>
+
+        @if (isOpen)
+        {
+            <dt class="col-sm-3">Phase</dt>
+            <dd class="col-sm-9">
+                <form method="post" asp-page-handler="Phase" class="d-flex gap-2 align-items-center" style="max-width: 420px">
+                    <select name="NewPhase" class="form-select form-select-sm" aria-label="Booking phase">
+                        @foreach (var p in Spanner.Web.Pages.Bookings.DetailsModel.SelectablePhases)
+                        {
+                            <option value="@p.Key" selected="@(p.Key == booking.Phase)">@p.Label</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-outline-primary text-nowrap">Update phase</button>
+                </form>
+                <div class="form-text">The customer is notified when the phase changes.</div>
+            </dd>
+        }
 
         <dt class="col-sm-3">Booked</dt>
         <dd class="col-sm-9">@booking.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</dd>
