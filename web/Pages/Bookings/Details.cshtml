@@ -62,6 +62,14 @@
         {
             <dt class="col-sm-3">Phase</dt>
             <dd class="col-sm-9">
+                @{
+                    var stageIndex = Spanner.Web.Pages.Track.IndexModel.Steps.ToList().FindIndex(s => s.Key == booking.Phase);
+                    if (stageIndex < 0) { stageIndex = 0; }
+                }
+                <div class="sp-stages @(stageIndex >= 3 ? "done" : "")" aria-hidden="true">
+                    @for (var i = 0; i < 5; i++) { <span class="@(i <= stageIndex ? "on" : "")"></span> }
+                </div>
+                <div class="sp-stage-label">Customer sees: step @(stageIndex + 1) of 5 - @Spanner.Web.Pages.Track.IndexModel.Steps[stageIndex].Label</div>
                 <form method="post" asp-page-handler="Phase" class="d-flex gap-2 align-items-center" style="max-width: 420px">
                     <select name="NewPhase" class="form-select form-select-sm" aria-label="Booking phase">
                         @foreach (var p in Spanner.Web.Pages.Bookings.DetailsModel.SelectablePhases)

@@ -6,8 +6,9 @@
 }
 
 <div class="row justify-content-center">
-    <div class="col-md-5">
-        <h1 class="mb-4">Spanner - Staff login</h1>
+    <div class="col-md-5 sp-login">
+        <div class="sp-eyebrow">Riese Auto-Clinic</div>
+        <h1>Staff login</h1>
 
         @if (!string.IsNullOrEmpty(Model.ErrorMessage))
         {
@@ -28,7 +29,7 @@
             <button type="submit" class="btn btn-primary w-100">Log in</button>
         </form>
 
-        <p class="text-center text-muted mt-4">Not staff? <a asp-page="/Track/Index">Track your vehicle</a> with your reference code.</p>
+        <p class="text-center mt-4" style="color:#c9d6e3">Not staff? <a asp-page="/Track/Index">Track your vehicle</a> with your reference code.</p>
     </div>
 </div>
 

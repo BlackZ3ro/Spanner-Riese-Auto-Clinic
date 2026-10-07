@@ -32,7 +32,7 @@ else
                 <tr>
                     <td><a asp-page="/Bookings/Details" asp-route-id="@booking.Id">@booking.Brand @booking.Model (@booking.Year)</a></td>
                     <td>@booking.Registration</td>
-                    <td>@booking.CustomerName</td>
+                    <td>@(string.IsNullOrWhiteSpace(booking.CustomerName) ? "Not recorded" : booking.CustomerName)</td>
                     <td>@(booking.ClosedAt?.ToLocalTime().ToString("dd MMM yyyy HH:mm") ?? "-")</td>
                 </tr>
             }

@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Spanner.Web</title>
+    <title>@ViewData["Title"] - Spanner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" />
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -11,9 +13,9 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark spanner-nav mb-4">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Spanner.Web</a>
+                <a class="navbar-brand spanner-brand" asp-area="" asp-page="/Index"><span class="spanner-brand-mark">Riese Auto-Clinic</span>Spanner</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,24 +25,24 @@
                         @if (User.Identity?.IsAuthenticated == true)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Dashboard</a>
+                                <a class="nav-link" asp-area="" asp-page="/Index">Dashboard</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Stock/Index">Stock</a>
+                                <a class="nav-link" asp-area="" asp-page="/Stock/Index">Stock</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Vehicles/Search">Vehicle history</a>
+                                <a class="nav-link" asp-area="" asp-page="/Vehicles/Search">Vehicle history</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-page="/Bookings/Closed">Closed bookings</a>
+                                <a class="nav-link" asp-area="" asp-page="/Bookings/Closed">Closed bookings</a>
                             </li>
                         }
                     </ul>
                     @if (User.Identity?.IsAuthenticated == true)
                     {
                         <form method="post" asp-page="/Account/Logout" class="d-flex align-items-center">
-                            <span class="text-muted me-2">@User.Identity.Name</span>
-                            <button type="submit" class="btn btn-outline-secondary btn-sm">Log out</button>
+                            <span class="spanner-user me-2">@User.Identity.Name</span>
+                            <button type="submit" class="btn btn-outline-light btn-sm">Log out</button>
                         </form>
                     }
                 </div>
@@ -55,7 +57,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2026 - Spanner.Web - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            &copy; 2026 Spanner · Riese Auto-Clinic · <a asp-area="" asp-page="/Track/Index">Track your vehicle</a> · <a asp-area="" asp-page="/Privacy">Privacy</a>
         </div>
     </footer>
 

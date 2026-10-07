@@ -29,3 +29,51 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* ---- Spanner theme (Oct 2026): same look as the customer tracking page,
+   the SRS figures and the presentation - navy, amber, warm off-white. ---- */
+:root {
+  --sp-navy: #12263a;
+  --sp-amber: #f5a524;
+  --sp-green: #198754;
+  --sp-paper: #f7f5ef;
+  --sp-line: #e3ded2;
+  --sp-muted: #4a5568;
+  --bs-body-font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --bs-link-color: #1f5f99;
+  --bs-link-hover-color: #12263a;
+}
+body { background: var(--sp-paper); color: var(--sp-navy); }
+h1, h2, h3, .h1, .h2, .h3, .h4 { font-family: 'Space Grotesk', 'IBM Plex Sans', Arial, sans-serif; font-weight: 700; color: var(--sp-navy); }
+a { color: #1f5f99; }
+
+.spanner-nav { background: var(--sp-navy); border-bottom: 4px solid var(--sp-amber); }
+.spanner-nav .nav-link { color: #c9d6e3; }
+.spanner-nav .nav-link:hover, .spanner-nav .nav-link:focus { color: #ffffff; }
+.spanner-brand { display: flex; flex-direction: column; line-height: 1.05; font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 700; font-size: 1.35rem; color: #ffffff; text-align: left; }
+.spanner-brand-mark { font-family: 'IBM Plex Sans', Arial, sans-serif; font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; color: var(--sp-amber); }
+.spanner-user { color: #c9d6e3; }
+
+.btn-primary { background-color: var(--sp-navy); border-color: var(--sp-navy); color: #fff; }
+.btn-primary:hover, .btn-primary:focus { background-color: #0b1a29; border-color: #0b1a29; }
+.btn-outline-primary { color: var(--sp-navy); border-color: var(--sp-navy); }
+.btn-outline-primary:hover { background-color: var(--sp-navy); color: #fff; }
+
+.table { --bs-table-bg: #ffffff; border: 1px solid var(--sp-line); }
+.table > thead th, .table > tbody > tr:first-child > th { font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: #6b7a8a; background: #fbfaf6; }
+
+.footer { background: #fbfaf6; }
+
+/* Staff view of the customer's stage bar (booking details). */
+.sp-stages { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-width: 420px; margin-bottom: 4px; }
+.sp-stages span { height: 8px; border-radius: 4px; background: #e3e8ee; }
+.sp-stages span.on { background: var(--sp-amber); }
+.sp-stages.done span.on { background: var(--sp-green); }
+.sp-stage-label { font-size: .85rem; color: var(--sp-muted); margin-bottom: 8px; }
+
+/* Login card, matching the tracking page header. */
+.sp-login { background: var(--sp-navy); color: #fff; border-radius: 14px; padding: 22px 22px 24px; }
+.sp-login h1 { color: #fff; font-size: 1.6rem; margin: 2px 0 14px; }
+.sp-login .form-label { color: #c9d6e3; }
+.sp-login .btn-primary { background: var(--sp-amber); border-color: var(--sp-amber); color: var(--sp-navy); font-weight: 700; }
+.sp-eyebrow { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--sp-amber); font-weight: 700; }
