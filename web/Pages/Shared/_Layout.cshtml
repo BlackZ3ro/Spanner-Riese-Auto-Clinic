@@ -11,55 +11,58 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Spanner.Web.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark spanner-nav mb-4">
-            <div class="container">
-                <a class="navbar-brand spanner-brand" asp-area="" asp-page="/Index"><span class="spanner-brand-mark">Riese Auto-Clinic</span>Spanner</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        @if (User.Identity?.IsAuthenticated == true)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Index">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Stock/Index">Stock</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Vehicles/Search">Vehicle history</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Bookings/Closed">Closed bookings</a>
-                            </li>
-                        }
-                    </ul>
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
-                        <form method="post" asp-page="/Account/Logout" class="d-flex align-items-center">
-                            <span class="spanner-user me-2">@User.Identity.Name</span>
-                            <button type="submit" class="btn btn-outline-light btn-sm">Log out</button>
-                        </form>
-                    }
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 Spanner · Riese Auto-Clinic · <a asp-area="" asp-page="/Track/Index">Track your vehicle</a> · <a asp-area="" asp-page="/Privacy">Privacy</a>
+@{
+    var signedIn = User.Identity?.IsAuthenticated == true;
+    var path = Context.Request.Path.Value ?? "/";
+    string Active(string prefix, bool exact = false) =>
+        (exact ? path.Equals(prefix, StringComparison.OrdinalIgnoreCase) || (prefix == "/" && path == "/Index")
+               : path.StartsWith(prefix, StringComparison.OrdinalIgnoreCase)) ? "active" : "";
+    var userName = User.Identity?.Name ?? "";
+}
+<body class="@(signedIn ? "sp-app" : "sp-public")">
+    @if (signedIn)
+    {
+        <aside class="sp-side">
+            <a class="sp-brand" asp-page="/Index">
+                <span class="sp-logo" aria-hidden="true">R</span>
+                <span><span class="sp-brand-name">Riese Auto Clinic</span><span class="sp-brand-sub">Spanner workshop system</span></span>
+            </a>
+            <nav class="sp-nav">
+                <a class="@Active("/", exact: true)" asp-page="/Index">Today</a>
+                <a class="@Active("/Bookings/Create")" asp-page="/Bookings/Create">Book in a vehicle</a>
+                <a class="@Active("/Stock")" asp-page="/Stock/Index">Stock</a>
+                <a class="@Active("/Vehicles")" asp-page="/Vehicles/Search">Vehicle history</a>
+                <a class="@Active("/Bookings/Closed")" asp-page="/Bookings/Closed">Closed bookings</a>
+                <a asp-page="/Track/Index" target="_blank">Customer tracking ↗</a>
+            </nav>
+            <form method="post" asp-page="/Account/Logout" class="sp-user">
+                <span class="sp-avatar">@(userName.Length > 0 ? char.ToUpperInvariant(userName[0]) : '?')</span>
+                <span class="sp-user-name">@userName</span>
+                <button type="submit" class="btn btn-sm sp-logout">Log out</button>
+            </form>
+        </aside>
+        <div class="sp-main">
+            <main role="main" class="sp-content">
+                @RenderBody()
+            </main>
+            <footer class="sp-foot">&copy; 2026 Spanner · Riese Auto Clinic · <a asp-page="/Privacy">Privacy</a></footer>
         </div>
-    </footer>
+    }
+    else
+    {
+        <header class="sp-topbar">
+            <a class="sp-brand" asp-page="/Index">
+                <span class="sp-logo" aria-hidden="true">R</span>
+                <span><span class="sp-brand-name">Riese Auto Clinic</span><span class="sp-brand-sub">Spanner workshop system</span></span>
+            </a>
+        </header>
+        <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+        <footer class="sp-foot text-center">&copy; 2026 Spanner · Riese Auto Clinic · <a asp-page="/Track/Index">Track your vehicle</a> · <a asp-page="/Privacy">Privacy</a></footer>
+    }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

@@ -383,16 +383,28 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
             // and left the two inserts as separate calls - a review pass found
             // that split could still lose stock silently on a partial failure.
             // See supabase/migrations/0004_atomic_stock_decrement.sql.
-            var response = await supabase.Rpc("add_booking_part", new
+            AddBookingPartResult? result;
+            try
             {
-                p_booking_id = id,
-                p_stock_item_id = stockItem.Id,
-                p_qty = NewPartQuantity.Value,
-                p_unit_price = stockItem.SellPrice,
-                p_user_id = supabase.Auth.CurrentUser?.Id,
-                p_reference = Booking.Registration,
-            });
-            var result = JsonSerializer.Deserialize<List<AddBookingPartResult>>(response.Content ?? "[]")?.FirstOrDefault();
+                var response = await supabase.Rpc("add_booking_part", new
+                {
+                    p_booking_id = id,
+                    p_stock_item_id = stockItem.Id,
+                    p_qty = NewPartQuantity.Value,
+                    p_unit_price = stockItem.SellPrice,
+                    p_user_id = supabase.Auth.CurrentUser?.Id,
+                    p_reference = Booking.Registration,
+                });
+                result = JsonSerializer.Deserialize<List<AddBookingPartResult>>(response.Content ?? "[]")?.FirstOrDefault();
+            }
+            catch (Exception rpcEx) when (IsAddPartFunctionBroken(rpcEx.Message))
+            {
+                // Until migration 0009 is run on the live project the database
+                // still holds the old text-typed add_booking_part, which fails
+                // with 42804 on every call. Do the same three writes directly
+                // (the way the mobile app does) so staff aren't blocked.
+                result = await AddPartWithoutFunctionAsync(id, stockItem, NewPartQuantity.Value, Booking.Registration);
+            }
             if (result is null || !result.Ok)
             {
                 // The RPC returns the CURRENT quantity_on_hand, not the stale
@@ -414,6 +426,82 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
         }
 
         return RedirectToPage(new { id });
+    }
+
+    // 42804 = the old text overload; PGRST202/203 = function missing or two
+    // ambiguous overloads. Anything else (stock rules, network) is a real error.
+    private static bool IsAddPartFunctionBroken(string message) =>
+        message.Contains("42804") || message.Contains("PGRST202") || message.Contains("PGRST203");
+
+    // Fallback for add_booking_part. Not one transaction, so each step undoes
+    // the earlier ones if it fails. The stock decrement only succeeds if the
+    // quantity is still the value we read, so two people using the same part
+    // at once can't both take the last one.
+    private async Task<AddBookingPartResult> AddPartWithoutFunctionAsync(Guid bookingId, StockItem item, int qty, string? reference)
+    {
+        var current = await supabase.From<StockItem>().GetByIdAsync(item.Id);
+        if (current is null || current.QuantityOnHand < qty)
+        {
+            return new AddBookingPartResult(false, current?.QuantityOnHand ?? 0);
+        }
+
+        var decremented = await supabase.From<StockItem>()
+            .Where(x => x.Id == item.Id)
+            .Where(x => x.QuantityOnHand == current.QuantityOnHand)
+            .Set(x => x.QuantityOnHand, current.QuantityOnHand - qty)
+            .Update();
+        if (decremented.Models.Count == 0)
+        {
+            var latest = await supabase.From<StockItem>().GetByIdAsync(item.Id);
+            return new AddBookingPartResult(false, latest?.QuantityOnHand ?? 0);
+        }
+
+        async Task RestoreStockAsync() => await supabase.From<StockItem>()
+            .Where(x => x.Id == item.Id)
+            .Set(x => x.QuantityOnHand, current.QuantityOnHand)
+            .Update();
+
+        BookingPart? part;
+        try
+        {
+            var inserted = await supabase.From<BookingPart>().Insert(new BookingPart
+            {
+                BookingId = bookingId,
+                StockItemId = item.Id,
+                Quantity = qty,
+                UnitPrice = item.SellPrice,
+            });
+            part = inserted.Models.FirstOrDefault();
+        }
+        catch
+        {
+            await RestoreStockAsync();
+            throw;
+        }
+
+        try
+        {
+            await supabase.From<StockMovement>().Insert(new StockMovement
+            {
+                ItemId = item.Id,
+                Type = "out",
+                Quantity = qty,
+                CostAtTime = current.CostPrice,
+                Reference = reference,
+                UserId = supabase.Auth.CurrentUser?.Id,
+            });
+        }
+        catch
+        {
+            if (part is not null)
+            {
+                await supabase.From<BookingPart>().Where(x => x.Id == part.Id).Delete();
+            }
+            await RestoreStockAsync();
+            throw;
+        }
+
+        return new AddBookingPartResult(true, current.QuantityOnHand - qty);
     }
 
     private async Task LoadAsync(Guid id, bool skipJobs = false)
