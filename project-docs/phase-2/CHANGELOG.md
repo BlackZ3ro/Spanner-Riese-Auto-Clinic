@@ -1,5 +1,13 @@
 # Change Log
 
+## 2026-10-11 — Client colours, team designs, schedule, SRS v2.2
+
+- **Client colours.** The client chose gold and green, or gold, green and orange. Web app restyled on Denny's layout: dark-green sidebar, gold highlights, orange actions and "in progress", green "done". "Today" dashboard has stat cards and phase pills; /Track and the login card match.
+- **Add part workaround.** The live database still has the old text-typed `add_booking_part` (42804). The web app now falls back to doing the stock decrement and both inserts directly (stock changes only if unchanged since read; earlier steps undone on failure). Gary still needs to run 0009, then 0004, then 0008.
+- **Designs added** to `designs/`: Gary's Flutter mockups (`Riese_Auto_Clinic_App_Mockups.pdf`, 11 Oct) and a board of Denny's web designs (7-10 Oct).
+- **Schedule** (`schedule/`): Khumo's 8 Oct file brought up to 11 Oct as MS Project XML (finished tasks at 100%; development and testing, submission and defence, and Phase 3 added) plus a Gantt image. Khumo to save as .mpp and take the real screenshot.
+- `Group Y - SRS v2.2`: sections 5.5.0 (Gary's mockups), 5.6.0 (Denny's designs, the colour decision and what was not adopted), refreshed Fig. 12, schedule Fig. 16, updated sources table and open items.
+
 ## 2026-10-07 — Customer tracking pages, navigation flow, security finding, SRS v2.1, presentation
 
 - **Web /Track** (public, no login): courier-style customer tracking (waybill strip, current status, 5-step bar, timeline, work done). Tested live: empty, not-found and invalid-code states. Same labels as mobile and the push notification. Pushed.

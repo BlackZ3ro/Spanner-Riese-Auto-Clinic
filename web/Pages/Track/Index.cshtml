@@ -84,7 +84,7 @@
             </ol>
 
             <details class="work">
-                <summary>What we've done so far (@b.Labor.Count work items, @b.Parts.Count parts)</summary>
+                <summary>What we've done so far (@b.Labor.Count work @(b.Labor.Count == 1 ? "item" : "items"), @b.Parts.Count @(b.Parts.Count == 1 ? "part" : "parts"))</summary>
                 <div class="work-cols">
                     <div>
                         <h2>Work</h2>
