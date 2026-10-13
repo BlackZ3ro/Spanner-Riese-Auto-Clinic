@@ -1,0 +1,66 @@
+@page
+@model Spanner.Web.Pages.Stock.CreateModel
+@{
+    ViewData["Title"] = "Add a part";
+}
+
+<h1 class="mb-4">Add a part</h1>
+
+@if (!string.IsNullOrEmpty(Model.ErrorMessage))
+{
+    <div class="alert alert-danger">@Model.ErrorMessage</div>
+}
+
+<form method="post" class="col-md-6">
+    <div class="mb-3">
+        <label asp-for="Sku" class="form-label"></label>
+        <input asp-for="Sku" class="form-control" />
+        <span asp-validation-for="Sku" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label">Category</label>
+        <select asp-for="CategoryId" class="form-select" asp-items="Model.CategoryOptions">
+            <option value="">-- Select --</option>
+        </select>
+        <input asp-for="NewCategoryName" class="form-control mt-1" placeholder="Or add a new category" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="SupplierId" class="form-label">Supplier</label>
+        <select asp-for="SupplierId" class="form-select" asp-items="Model.SupplierOptions">
+            <option value="">-- Select --</option>
+        </select>
+        <input asp-for="NewSupplierName" class="form-control mt-1" placeholder="Or add a new supplier" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="CostPrice" class="form-label"></label>
+        <input asp-for="CostPrice" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="CostPrice" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SellPrice" class="form-label"></label>
+        <input asp-for="SellPrice" class="form-control" type="number" step="0.01" />
+        <span asp-validation-for="SellPrice" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="QuantityOnHand" class="form-label">Quantity on hand</label>
+        <input asp-for="QuantityOnHand" class="form-control" type="number" />
+        <span asp-validation-for="QuantityOnHand" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ReorderLevel" class="form-label">Reorder level</label>
+        <input asp-for="ReorderLevel" class="form-control" type="number" />
+        <span asp-validation-for="ReorderLevel" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save part</button>
+    <a asp-page="/Stock/Index" class="btn btn-link">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

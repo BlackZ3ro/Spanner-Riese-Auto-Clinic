@@ -1,0 +1,141 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+.form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
+  color: var(--bs-secondary-color);
+  text-align: end;
+}
+
+.form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
+  text-align: start;
+}
+
+/* ---- Spanner theme (11 Oct 2026). Client colours: gold, green and orange.
+   Green = brand and "done", gold = highlights, orange = actions and "in progress".
+   Layout follows Denny's web design: dark sidebar, warm paper, stat cards. ---- */
+:root {
+  --sp-green-dark: #173a2c;
+  --sp-green: #2e7d4f;
+  --sp-green-soft: #e3f1e8;
+  --sp-gold: #c9a227;
+  --sp-gold-soft: #f8efd2;
+  --sp-orange: #d9601a;
+  --sp-orange-dark: #b44e12;
+  --sp-orange-soft: #fbe6d8;
+  --sp-paper: #f6f2e8;
+  --sp-card: #ffffff;
+  --sp-line: #e4ddcc;
+  --sp-ink: #1c2a22;
+  --sp-muted: #5b665f;
+  --bs-body-font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Arial, sans-serif;
+  --bs-link-color: var(--sp-green);
+  --bs-link-hover-color: var(--sp-green-dark);
+}
+body { background: var(--sp-paper); color: var(--sp-ink); margin-bottom: 0; }
+h1, h2, h3, .h1, .h2, .h3, .h4 { font-family: 'Space Grotesk', 'IBM Plex Sans', Arial, sans-serif; font-weight: 700; color: var(--sp-ink); }
+a { color: var(--sp-green); }
+a:hover { color: var(--sp-green-dark); }
+
+/* Signed-in shell: sidebar + content. */
+.sp-app { display: grid; grid-template-columns: 248px 1fr; min-height: 100vh; }
+.sp-side { background: var(--sp-green-dark); color: #dfe9e2; display: flex; flex-direction: column; padding: 20px 14px; position: sticky; top: 0; height: 100vh; border-right: 4px solid var(--sp-gold); }
+.sp-brand { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-decoration: none; padding: 0 6px 18px; }
+.sp-brand-logo { width: 100%; max-width: 210px; height: auto; display: block; }
+.sp-logo { flex: 0 0 38px; height: 38px; border-radius: 10px; background: var(--sp-gold); color: var(--sp-green-dark); display: grid; place-items: center; font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 700; font-size: 1.2rem; }
+.sp-brand-name { display: block; font-family: 'Space Grotesk', Arial, sans-serif; font-weight: 700; color: #fff; font-size: 1.05rem; line-height: 1.1; }
+.sp-brand-sub { display: block; font-size: .72rem; color: var(--sp-gold); letter-spacing: .04em; }
+.sp-nav { display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.sp-nav a { color: #c8d6cd; text-decoration: none; padding: 9px 12px; border-radius: 8px; border-left: 3px solid transparent; }
+.sp-nav a:hover { background: rgba(255,255,255,.06); color: #fff; }
+.sp-nav a.active { background: rgba(201,162,39,.16); color: #fff; border-left-color: var(--sp-gold); font-weight: 600; }
+.sp-user { display: flex; align-items: center; gap: 8px; border-top: 1px solid rgba(255,255,255,.12); padding: 14px 6px 0; flex-wrap: wrap; }
+.sp-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--sp-orange); color: #fff; display: grid; place-items: center; font-weight: 700; }
+.sp-user-name { font-size: .8rem; color: #c8d6cd; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.sp-logout { color: #fff; border: 1px solid rgba(255,255,255,.35); }
+.sp-logout:hover { background: #fff; color: var(--sp-green-dark); }
+.sp-main { display: flex; flex-direction: column; min-width: 0; }
+.sp-content { padding: 28px 32px; flex: 1; }
+.sp-foot { padding: 14px 32px; font-size: .82rem; color: var(--sp-muted); border-top: 1px solid var(--sp-line); }
+
+/* Signed-out pages (login, customer tracking). */
+.sp-topbar { background: var(--sp-green-dark); border-bottom: 4px solid var(--sp-gold); padding: 12px 20px; margin-bottom: 28px; }
+.sp-topbar .sp-brand { padding: 0; flex-direction: row; align-items: center; gap: 12px; }
+.sp-topbar .sp-brand-logo { width: auto; height: 46px; }
+
+@media (max-width: 900px) {
+  .sp-app { display: block; }
+  .sp-side { position: static; height: auto; border-right: 0; border-bottom: 4px solid var(--sp-gold); padding: 14px 16px; }
+  .sp-nav { flex-direction: row; flex-wrap: wrap; margin-bottom: 10px; }
+  .sp-nav a { padding: 6px 10px; border-left: 0; }
+  .sp-content { padding: 20px 16px; }
+  .sp-foot { padding: 14px 16px; }
+}
+
+/* Buttons: orange for actions (as in Gary's mobile mockups), green secondary. */
+.btn-primary { background-color: var(--sp-orange); border-color: var(--sp-orange); color: #fff; font-weight: 600; }
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active { background-color: var(--sp-orange-dark); border-color: var(--sp-orange-dark); color: #fff; }
+.btn-outline-primary { color: var(--sp-green); border-color: var(--sp-green); }
+.btn-outline-primary:hover { background-color: var(--sp-green); border-color: var(--sp-green); color: #fff; }
+.btn-success { background-color: var(--sp-green); border-color: var(--sp-green); }
+.btn:focus, .btn:active:focus, .form-control:focus, .form-select:focus, .form-check-input:focus { box-shadow: 0 0 0 .2rem rgba(201,162,39,.35); border-color: var(--sp-gold); }
+
+.table { --bs-table-bg: #ffffff; --bs-table-striped-bg: #fbf8f0; border: 1px solid var(--sp-line); }
+.table > thead th, .table > tbody > tr:first-child > th { font-size: .76rem; letter-spacing: .06em; text-transform: uppercase; color: var(--sp-muted); background: #fbf8f0; border-bottom: 2px solid var(--sp-ink); }
+.table-warning { --bs-table-bg: var(--sp-gold-soft); --bs-table-striped-bg: var(--sp-gold-soft); }
+
+/* Page heading row. */
+.sp-page-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+.sp-page-head h1 { margin: 0; }
+.sp-page-head p { margin: 2px 0 0; color: var(--sp-muted); }
+
+/* Stat cards (Denny's dashboard). */
+.sp-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 22px; }
+.sp-stat { background: var(--sp-green-dark); color: #fff; border-radius: 12px; padding: 16px 18px; border-bottom: 4px solid var(--sp-gold); }
+.sp-stat .n { font-family: 'Space Grotesk', Arial, sans-serif; font-size: 2rem; font-weight: 700; line-height: 1.1; }
+.sp-stat .l { font-size: .85rem; color: #c8d6cd; }
+.sp-stat.orange { border-bottom-color: var(--sp-orange); }
+.sp-stat.green { border-bottom-color: #5cb27f; }
+
+.sp-card { background: var(--sp-card); border: 1px solid var(--sp-line); border-radius: 12px; padding: 18px; }
+.sp-card + .sp-card { margin-top: 16px; }
+
+/* Phase pills (same meaning as the tracking page). */
+.sp-pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .78rem; font-weight: 600; white-space: nowrap; }
+.sp-pill.p-booked_in { background: var(--sp-gold-soft); color: #7a5f0c; }
+.sp-pill.p-labor_in_progress, .sp-pill.p-reassembly { background: var(--sp-orange-soft); color: var(--sp-orange-dark); }
+.sp-pill.p-ready_for_pickup, .sp-pill.p-finalized { background: var(--sp-green-soft); color: var(--sp-green); }
+
+/* Staff view of the customer's stage bar (booking details). */
+.sp-stages { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; max-width: 420px; margin-bottom: 4px; }
+.sp-stages span { height: 8px; border-radius: 4px; background: #e7e1d2; }
+.sp-stages span.on { background: var(--sp-orange); }
+.sp-stages.done span.on { background: var(--sp-green); }
+.sp-stage-label { font-size: .85rem; color: var(--sp-muted); margin-bottom: 8px; }
+
+/* Login card. */
+.sp-login { background: var(--sp-green-dark); color: #fff; border-radius: 14px; padding: 24px 24px 26px; border-top: 5px solid var(--sp-gold); }
+.sp-login h1 { color: #fff; font-size: 1.6rem; margin: 2px 0 14px; }
+.sp-login .form-label { color: #c8d6cd; }
+.sp-eyebrow { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; color: var(--sp-gold); font-weight: 700; }
+.sp-login a { color: var(--sp-gold); }
+.sp-login-logo { display: block; width: 100%; max-width: 300px; height: auto; margin: 0 auto 10px; }

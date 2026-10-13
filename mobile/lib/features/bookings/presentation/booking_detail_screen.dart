@@ -143,7 +143,8 @@ else
                 children: [
                   Text('R ${(part.unitPrice * part.quantity).toStringAsFixed(2)}',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
-                  if (isOpen)
+                  // Removing parts/labour is admin-only (agreed 23 Sept).
+                  if (isOpen && isAdmin)
                   IconButton(
                     icon: const Icon(Icons.close, size: 20),
                     onPressed: () => _confirmRemovePart(context, ref, booking, part, stockItems),
@@ -179,7 +180,8 @@ else
               children: [
                Text('R ${item.price.toStringAsFixed(2)}',
                   style: const TextStyle(fontWeight: FontWeight.bold)),
-                  if (isOpen)
+                  // Removing parts/labour is admin-only (agreed 23 Sept).
+                  if (isOpen && isAdmin)
                   IconButton(
                     icon: const Icon(Icons.close, size: 20),
                     onPressed: () => _confirmRemoveLabor(context, ref, booking.id, item),

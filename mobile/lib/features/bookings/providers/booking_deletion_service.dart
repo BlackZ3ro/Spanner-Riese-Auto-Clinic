@@ -1,38 +1,28 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../stock/models/stock_movement.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../stock/providers/stock_item_provider.dart';
-import '../../stock/providers/stock_movement_service.dart';
 import '../models/vehicle_booking.dart';
-import 'booking_labor_provider.dart';
-import 'booking_parts_provider.dart';
 import 'vehicle_booking_provider.dart';
 
 class BookingDeletionService {
   BookingDeletionService(this.ref);
   final Ref ref;
 
+  // One database call (supabase/migrations/0007) restocks every part, removes
+  // labour and parts, then deletes the booking in a single transaction - the
+  // same function the web app uses. The old version did this in several
+  // separate calls, so a failure halfway left stock and bookings out of sync.
+  // The function also refuses anyone who isn't an admin.
   Future<void> deleteBooking(VehicleBooking booking) async {
-    final partRepo = ref.read(bookingPartRepositoryProvider);
-    final stockItems = ref.read(stockItemProvider).value ?? [];
-    final parts = await partRepo.fetchForBooking(booking.id);
+    final client = Supabase.instance.client;
+    await client.rpc('delete_booking_and_restock', params: {
+      'p_booking_id': booking.id,
+      'p_user_id': client.auth.currentUser?.id,
+    });
 
-    for (final part in parts) {
-      final item = stockItems.firstWhere(
-        (i) => i.id == part.stockItemId,
-        orElse: () => stockItems.first,
-      );
-      await ref.read(stockMovementServiceProvider).recordMovement(
-            itemId: part.stockItemId,
-            type: MovementType.stockIn,
-            quantity: part.quantity,
-            costAtTime: item.costPrice,
-            reference: 'Booking ${booking.registration} deleted',
-          );
-    }
-
-    await partRepo.removeAllForBooking(booking.id);
-    await ref.read(bookingLaborRepositoryProvider).removeAllForBooking(booking.id);
+    // The row is already gone; this just drops it from the local list.
     await ref.read(vehicleBookingProvider.notifier).removeBooking(booking.id);
+    ref.invalidate(stockItemProvider);
   }
 }
 

@@ -1,0 +1,245 @@
+@page "{id:guid}"
+@model Spanner.Web.Pages.Bookings.DetailsModel
+@{
+    ViewData["Title"] = "Booking details";
+}
+
+@if (!string.IsNullOrEmpty(Model.LoadError))
+{
+    <div class="alert alert-warning">@Model.LoadError</div>
+}
+
+@if (Model.Booking is { } booking)
+{
+    var isOpen = booking.Status != "closed";
+
+    <h1 class="mb-1">@booking.Brand @booking.Model (@booking.Year)</h1>
+    @if (!string.IsNullOrEmpty(booking.InvoiceNumber))
+    {
+        <p class="text-muted mb-4">Invoice @booking.InvoiceNumber@(string.IsNullOrEmpty(booking.ReferenceCode) ? "" : $" · Customer reference code {booking.ReferenceCode}")</p>
+    }
+
+    @if (!string.IsNullOrEmpty(booking.CustomerName))
+    {
+        <dl class="row col-md-8 mb-2">
+            <dt class="col-sm-3">Customer</dt>
+            <dd class="col-sm-9">
+                @booking.CustomerName
+                @if (!string.IsNullOrEmpty(booking.CustomerPhone)) { <text> · @booking.CustomerPhone</text> }
+                @if (!string.IsNullOrEmpty(booking.CustomerEmail)) { <text> · @booking.CustomerEmail</text> }
+                @if (!string.IsNullOrEmpty(booking.CustomerCompany)) { <text> · @booking.CustomerCompany</text> }
+            </dd>
+        </dl>
+    }
+
+    <dl class="row col-md-8">
+        <dt class="col-sm-3">Registration</dt>
+        <dd class="col-sm-9">@booking.Registration</dd>
+
+        <dt class="col-sm-3">Transmission</dt>
+        <dd class="col-sm-9">@booking.TransmissionType</dd>
+
+        <dt class="col-sm-3">Engine</dt>
+        <dd class="col-sm-9">@(booking.EngineSize ?? "-") @(booking.EngineCode is not null ? $"({booking.EngineCode})" : "")</dd>
+
+        <dt class="col-sm-3">Kilometers</dt>
+        <dd class="col-sm-9">@booking.Kilometers?.ToString("N0")</dd>
+
+        <dt class="col-sm-3">Status</dt>
+        <dd class="col-sm-9">
+            <span class="badge @(isOpen ? "bg-success" : "bg-secondary")">@booking.Status</span>
+            @if (!string.IsNullOrEmpty(booking.Phase) && !isOpen)
+            {
+                <span class="badge bg-info text-dark ms-1">@booking.Phase.Replace('_', ' ')</span>
+            }
+            @if (!isOpen && booking.ClosedAt is { } closedAt)
+            {
+                <span class="text-muted"> - finalized @closedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</span>
+            }
+        </dd>
+
+        @if (isOpen)
+        {
+            <dt class="col-sm-3">Phase</dt>
+            <dd class="col-sm-9">
+                @{
+                    var stageIndex = Spanner.Web.Pages.Track.IndexModel.Steps.ToList().FindIndex(s => s.Key == booking.Phase);
+                    if (stageIndex < 0) { stageIndex = 0; }
+                }
+                <div class="sp-stages @(stageIndex >= 3 ? "done" : "")" aria-hidden="true">
+                    @for (var i = 0; i < 5; i++) { <span class="@(i <= stageIndex ? "on" : "")"></span> }
+                </div>
+                <div class="sp-stage-label">Customer sees: step @(stageIndex + 1) of 5 - @Spanner.Web.Pages.Track.IndexModel.Steps[stageIndex].Label</div>
+                <form method="post" asp-page-handler="Phase" class="d-flex gap-2 align-items-center" style="max-width: 420px">
+                    <select name="NewPhase" class="form-select form-select-sm" aria-label="Booking phase">
+                        @foreach (var p in Spanner.Web.Pages.Bookings.DetailsModel.SelectablePhases)
+                        {
+                            <option value="@p.Key" selected="@(p.Key == booking.Phase)">@p.Label</option>
+                        }
+                    </select>
+                    <button type="submit" class="btn btn-sm btn-outline-primary text-nowrap">Update phase</button>
+                </form>
+                <div class="form-text">The customer is notified when the phase changes.</div>
+            </dd>
+        }
+
+        <dt class="col-sm-3">Booked</dt>
+        <dd class="col-sm-9">@booking.CreatedAt.ToLocalTime().ToString("dd MMM yyyy HH:mm")</dd>
+    </dl>
+
+    @if (!isOpen && Model.IsAdmin)
+    {
+        <form method="post" asp-page-handler="Reopen" class="col-md-6 mt-2 mb-3 p-3 bg-light border rounded">
+            <label class="form-label">Reopen this booking - enter your password to confirm</label>
+            <div class="input-group">
+                <input asp-for="ReopenPassword" type="password" class="form-control" placeholder="Your password" />
+                <button type="submit" class="btn btn-outline-danger">Reopen</button>
+            </div>
+        </form>
+    }
+
+    <h2 class="h4 mt-4">Jobs</h2>
+
+    @if (!string.IsNullOrEmpty(Model.JobsError))
+    {
+        <div class="alert alert-info">@Model.JobsError</div>
+    }
+    else if (Model.Jobs.Count == 0)
+    {
+        <p><em>No jobs added to this booking yet.</em></p>
+    }
+    else
+    {
+        <table class="table table-sm table-striped col-md-8">
+            <thead>
+                <tr>
+                    <th>Job type</th>
+                    <th>Status</th>
+                    <th>Labour</th>
+                    <th>Added</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var job in Model.Jobs)
+                {
+                    <tr>
+                        <td><a asp-page="/Jobs/Details" asp-route-id="@job.Id">@job.JobType</a></td>
+                        <td>@job.Status</td>
+                        <td>@(job.LabourHours is { } h && job.LabourRate is { } r ? (h * r).ToString("C") : "-")</td>
+                        <td>@job.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (isOpen)
+    {
+        <form method="post" asp-page-handler="AddJob" class="col-md-6 mt-3">
+            <div class="input-group">
+                <input asp-for="NewJobType" class="form-control" placeholder="e.g. Brake pad replacement" />
+                <button type="submit" class="btn btn-outline-primary">Add job</button>
+            </div>
+            <span asp-validation-for="NewJobType" class="text-danger"></span>
+        </form>
+    }
+
+    <h2 class="h4 mt-4">Parts used</h2>
+
+    @if (!string.IsNullOrEmpty(Model.PartsError))
+    {
+        <div class="alert alert-info">@Model.PartsError</div>
+    }
+
+    @if (Model.PartsUsed.Count == 0)
+    {
+        <p><em>No parts used on this booking yet.</em></p>
+    }
+    else
+    {
+        <table class="table table-sm table-striped col-md-8">
+            <thead>
+                <tr>
+                    <th>Part</th>
+                    <th>Qty</th>
+                    <th>Unit price</th>
+                    <th>Line total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var part in Model.PartsUsed)
+                {
+                    var partName = Model.StockItemsById.TryGetValue(part.StockItemId, out var stockItem)
+                        ? stockItem.Name : "(part no longer exists)";
+                    <tr>
+                        <td>@partName</td>
+                        <td>@part.Quantity</td>
+                        <td>@part.UnitPrice.ToString("C")</td>
+                        <td>@((part.UnitPrice * part.Quantity).ToString("C"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (isOpen)
+    {
+        <form method="post" asp-page-handler="AddPart" class="col-md-6 mt-3">
+            <div class="row g-2">
+                <div class="col-7">
+                    <select asp-for="NewPartStockItemId" class="form-select" asp-items="Model.StockItemOptions">
+                        <option value="">-- Select a part --</option>
+                    </select>
+                    <span asp-validation-for="NewPartStockItemId" class="text-danger"></span>
+                </div>
+                <div class="col-3">
+                    <input asp-for="NewPartQuantity" class="form-control" type="number" min="1" placeholder="Qty" />
+                    <span asp-validation-for="NewPartQuantity" class="text-danger"></span>
+                </div>
+                <div class="col-2">
+                    <button type="submit" class="btn btn-outline-primary w-100">Add</button>
+                </div>
+            </div>
+        </form>
+    }
+
+    <div class="col-md-8 mt-3 p-3 bg-light border rounded">
+        <div class="d-flex justify-content-between">
+            <span>Parts total</span>
+            <span>@Model.PartsTotal.ToString("C")</span>
+        </div>
+        <div class="d-flex justify-content-between">
+            <span>Labour total</span>
+            <span>@Model.LabourTotal.ToString("C")</span>
+        </div>
+        <hr class="my-1" />
+        <div class="d-flex justify-content-between fw-bold">
+            <span>Total</span>
+            <span>@Model.GrandTotal.ToString("C")</span>
+        </div>
+    </div>
+
+    <p class="mt-3 d-flex gap-2">
+        <a asp-page="/Bookings/Invoice" asp-route-id="@booking.Id" class="btn btn-outline-secondary" target="_blank">
+            Download invoice (PDF)
+        </a>
+        @if (isOpen && Model.IsAdmin)
+        {
+            <form method="post" asp-page-handler="Finalize" onsubmit="return confirm('Finalize and close this booking? Parts and labour can no longer be added after this.');">
+                <button type="submit" class="btn btn-outline-danger">Finalize &amp; close</button>
+            </form>
+        }
+        @if (Model.IsAdmin)
+        {
+            <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Are you sure? This deletes the booking, restocks its parts, and removes its labour. This can\'t be undone.');">
+                <button type="submit" class="btn btn-danger">Delete booking</button>
+            </form>
+        }
+    </p>
+
+    <p class="mt-4"><a asp-page="/Index">&larr; Back to dashboard</a></p>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -58,3 +58,11 @@ Thumbs.db
 *.log
 *.tmp
 *.temp                                                                                                                            
+
+# Claude Code tool config (local, not shared)
+.claude/
+
+# Secrets and machine-specific files (added 28 Sept 2026)
+mobile/firebase-service-account*.json
+*service-account*.json
+mobile/android/local.properties

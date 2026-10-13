@@ -1,0 +1,242 @@
+# Change Log
+
+## 2026-10-11 — Client colours, team designs, schedule, SRS v2.2
+
+- **Client colours.** The client chose gold and green, or gold, green and orange. Web app restyled on Denny's layout: dark-green sidebar, gold highlights, orange actions and "in progress", green "done". "Today" dashboard has stat cards and phase pills; /Track and the login card match.
+- **Add part workaround.** The live database still has the old text-typed `add_booking_part` (42804). The web app now falls back to doing the stock decrement and both inserts directly (stock changes only if unchanged since read; earlier steps undone on failure). Gary still needs to run 0009, then 0004, then 0008.
+- **Designs added** to `designs/`: Gary's Flutter mockups (`Riese_Auto_Clinic_App_Mockups.pdf`, 11 Oct) and a board of Denny's web designs (7-10 Oct).
+- **Schedule** (`schedule/`): Khumo's 8 Oct file brought up to 11 Oct as MS Project XML (finished tasks at 100%; development and testing, submission and defence, and Phase 3 added) plus a Gantt image. Khumo to save as .mpp and take the real screenshot.
+- `Group Y - SRS v2.2`: sections 5.5.0 (Gary's mockups), 5.6.0 (Denny's designs, the colour decision and what was not adopted), refreshed Fig. 12, schedule Fig. 16, updated sources table and open items.
+
+## 2026-10-07 — Customer tracking pages, navigation flow, security finding, SRS v2.1, presentation
+
+- **Web /Track** (public, no login): courier-style customer tracking (waybill strip, current status, 5-step bar, timeline, work done). Tested live: empty, not-found and invalid-code states. Same labels as mobile and the push notification. Pushed.
+- **Web phase selector** on booking details (both roles, FR-15) using update_booking_phase. Build clean; needs a logged-in test.
+- **Mobile tracking redesign** + fix for notification setup blocking the status screen: compiled with Flutter 3.47.6, `flutter analyze` 0 errors; kept on local branch `proposal/mobile-customer-tracking` and sent to Gary as a patch. **Not pushed** (decision: Gary reviews first).
+- **Live probe (anon key, read-only)**: lookup, push-subscribe and the Edge Function are deployed; anonymous reads blocked; delete refused for non-admins, so 0007 is applied. **Found:** update_booking_phase ran anonymously. **0008** revokes anonymous execute on staff functions (Gary to run). 0006 register_push_token corrected to the live behaviour.
+- Navigation flow (overdue, assigned to Kea) produced by Wisani; editable draw.io + PNG for architecture, ERD and navigation flow.
+- `Group Y - SRS v2.1`: adds navigation flow, both tracking designs, cleaner figures, Appendix F with the tool and editable file for every design, R-17, MS Project section (screenshot pending Khumo).
+- Presentation: 21-slide deck with speaker notes, plus a presentation notes PDF.
+
+## 2026-09-30 — SRS v2.0 merged
+
+- `project-docs/Group Y - SRS v2.0 (Phase 2 - System Architecture and Design).pdf` (28 pages): new cover (7 members) and revision page; **Part A** = Phase 1 pages exactly as submitted; **Part B** = FR-14 to FR-18, Requirements Change Log Changes 7-11 (**Change 7 records the customer repair-status lookup as a partial reversal of Change 5**, answering its "false expectations" and "mechanic workload" reasons, and flags that Michael Riese must reconfirm it), scope amendment, risk register updates (R-03 closed, R-10 materialised, new R-14 to R-16), architecture, use case, 5 sequence diagrams, ERD, both interface designs, a draft design-alignment table for Denny, and the editable-source links.
+- Breyton's Lucid links recorded (use case, sequence). They currently ask viewers to sign in and the document title reads "Blank diagram", so sharing and content still need checking.
+
+## 2026-09-30 — Full recheck
+
+- **Architecture** (`system-architecture.md`): added the Edge Function and Firebase Cloud Messaging, the customer lookup path, and phase notifications; corrected the stale claims that mobile has no admin distinction and that there is no roles table.
+- **ERD** (`uml-and-erd.md` Part 3): added `booking_labor` (mobile's labour table, missing since the first draft), `profiles`, `booking_push_tokens`, and the `phase`, `reference_code` and customer columns on `bookings`. All Mermaid blocks re-validated.
+- **Scope flag:** push notifications are the customer tracking Phase 1 excluded. The SRS Requirements Change Log must record this as an approved scope change.
+- Sequence diagram 1 (Flutter): login label updated. Mobile has real login now, so the "role picker kept for testing" wording is gone.
+- Superseded notes added to the 23 Sept review and the 25 Sept status report; checklist and live tracker corrected (reviewers, the merged U3-09). Added `team-update-2026-09-28.md`.
+
+## 2026-09-28 — Gary's mobile push reviewed, problems fixed, migrations 0006/0007
+
+Gary pushed mobile login (Supabase + profiles role), admin-only Finalize/Delete/Reopen, five booking phases with push notifications, and the customer reference-code lookup (U3-21 and U3-22 now built on mobile).
+
+Fixed in this branch:
+- **Security:** `mobile/firebase-service-account-minified.json` (a Firebase private key) and `mobile/android/local.properties` removed from the repo and added to `.gitignore`. The key is still in git history, so **Gary must revoke it in Google Cloud**.
+- **Web ignored phases:** web Finalize now sets `phase = 'finalized'` and web Reopen sets `'ready_for_pickup'` (same as mobile), so customers never see a stale phase. Web booking page shows the phase and the customer reference code.
+- **Mobile:** removing a part or labour line is now admin-only (agreed rule). Mobile delete now calls the one `delete_booking_and_restock` database function (atomic) instead of several separate calls; this also removes a bug that recorded the wrong stock item's cost.
+- **`0006`**: record of the dashboard-only schema (profiles, phase, reference_code, booking_push_tokens, four functions). Reconstructed from the mobile code; already live, not to be run there.
+- **`0007`**: delete function now also clears mobile `booking_labor` and refuses non-admins in the database itself. To be run by Gary.
+- Use case: added **Update booking phase** (both roles; notifies the customer).
+- The U3-21 plan doc (invoice number + registration) is superseded by Gary's dedicated random reference code.
+
+## 2026-09-25 — Editable sources, Reopen gate, U3-21 plan, branch merged with main
+
+- **Editable diagram sources**: `diagrams/editable/*.drawio` for the use case and all five sequence diagrams, generated from the same definitions as the PNGs and checked to open and render in diagrams.net. README explains how to get a Google Drive share link, which is the editable-source link the brief asks for.
+- **Web: Reopen is now admin-only** (commit 209fd0b). The form is hidden for mechanics and a direct POST is rejected server-side. Build clean; live mechanic-login check still to be done by a person.
+- Use case oval "Remove a job (single)" renamed "Remove a job (labour line)". The web has no single-job remove; this matches mobile's remove-labour action.
+- **U3-21 plan**: `u3-21-repair-status-lookup-plan.md`. Lookup by invoice number **plus** registration (invoice numbers are a guessable sequence), through one `security definer` RPC with no public read on `bookings`. Draft SQL, not applied; needs Gary and an owner.
+- Merged `main` into `phase2/design-docs` (brings in the current mobile app); resolved `CONTRIBUTORS.md` by keeping main's table and adding Ofentse and Breyton.
+
+## 2026-09-23 — Diagram review against the real code, final permissions
+
+- Reviewed Ofentse & Breyton's `SpannerUML.pdf` and `Spanner System Sequence
+  Diagram V2.pdf` against the web code and the mobile code on `origin/main`.
+  Findings and fixes in `diagram-review-2026-09-23.md`; corrected reference
+  diagrams in `diagrams/`.
+- **Use case diagram redrawn**: Admin left / Mechanic right, shared ovals connect
+  to both, admin-only ovals only to Admin, Dashboard is one separate include from
+  Login, Login includes "Validate with Supabase Auth", Customer unchanged.
+- **Sequence diagrams**: Login first, then working with the system; `Alt` not
+  `Loop`; Flutter diagram is now "book in a vehicle" (mobile writes
+  `booking_labor`, not `jobs`); no "Check IsAdmin" call to Supabase (web checks the
+  `AdminEmails` allowlist in-app); web book-in and Reopen diagrams added; mobile
+  book-in validated through Supabase.
+- **Permissions agreed** (Wisani, 23 Sept): only Admin can finalize, delete, reopen
+  a closed booking and remove jobs; both roles can restock parts and do the rest.
+  This changes the earlier "Reopen is shared" finding (20 Sept). New tasks: U3-22
+  mobile Supabase login, U3-23 apply the permissions in code. Zealots Tracker
+  updated.
+
+## 2026-09-22 — Ms Mbele consultation (Lab 226)
+
+- **Use case diagram restructured** per direct feedback: fewer, more
+  concise base use cases (`Manage Bookings`, `Manage Stock`) each fanning
+  out to `«extend»` points instead of one oval per action; `View
+  dashboard` folded into `Login` as an extension instead of standing
+  alone; `Filter open/closed jobs` added (wasn't modelled before); the
+  Admin-only extension points now label the authentication requirement
+  directly. Full before/after mapping of each consultation note to what
+  changed is in `uml-and-erd.md`, "Consultation outcomes."
+- **New requirement confirmed:** a customer-facing repair-status lookup —
+  enter a reference code, see the vehicle's phase, no login. Deliberately
+  narrower than the real-time tracking excluded from scope in Phase 1 (see
+  SRS Requirements Change Log) — a single lookup, not push updates or an
+  account. New `Customer` actor added to the use case diagram; new
+  unauthenticated route flagged in `system-architecture.md`. **Not yet
+  assigned an owner** — the group's own target is end of day 23 Sept.
+  Open implementation question: what the reference code actually is
+  (reuse `invoice_number` vs. a new dedicated column) — needs Gary.
+- `consultation-prep-2026-09-22.md` updated with the actual meeting notes
+  in place of the pre-meeting question list.
+
+## 2026-09-20 (later still)
+
+- Everything now lives in one artifact:
+  [Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov)
+  — architecture, use case (corrected), sequence diagrams, web wireframes
+  (mockup + real screenshots), a new mobile wireframe mockup mirroring
+  Gary's real flow, Gary's real Flutter screenshots embedded directly, and
+  a full Status & Checklist dashboard (every Phase 2 task, grouped by
+  activity, with owner/status/notes and a "behind the scenes" section
+  covering the roster fix, the UML pairing, the load rebalance and the
+  Reopen finding).
+- Gary's Individual Contributions entry updated to note the mobile
+  wireframe backup exists alongside his real work — his Obsidian Canvas
+  flow is still the deliverable that counts for Activity 3.3.
+
+## 2026-09-20 (later)
+
+- **ASP.NET wireframes checked off** at Wisani's explicit instruction —
+  real screenshots (login, admin/mechanic dashboards, booking details,
+  stock, add a part, book in a vehicle, closed bookings, a real invoice
+  PDF) plus the earlier wireframe flow, both in
+  [Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov).
+  Produced by Wisani, not Kea (the assigned owner) — flagged in
+  `progress-tracker.md` in case individual-contribution evidence matters.
+- **Use case diagram corrected against the live app**: `Reopen booking`
+  is not actually admin-gated in the code (`OnPostReopenAsync` never
+  checks `IsAdmin` — confirmed live with a mechanic login) and `View
+  closed bookings` is on the shared nav for both roles. Both moved from
+  the admin-only cluster to shared Mechanic use cases in
+  `uml-and-erd.md` and the backups artifact. Only Finalize & close and
+  Delete booking are genuinely admin-gated. Worth a team decision on
+  whether Reopen should be locked down too, for consistency.
+- Architecture diagram reviewed against the live app and the real
+  screenshots — no structural change needed.
+
+Dated log of real changes/decisions — web app, Supabase, and Phase 2 docs.
+Kept here so there's one place showing what actually happened and why,
+separate from the Progress Tracker's task/owner view.
+
+## 2026-09-20
+
+**Shared Phase 2 tracker**
+- Published [Zealots Tracker](https://claude.ai/artifact/3TeRkof9dpEMUGjAiz2iDo) —
+  a live, shared task board + updates feed for the group, seeded with the
+  real 20-task Phase 2 checklist. Two separate design-plan documents
+  written alongside it: `tracker/team-guide.md` (for the group) and
+  `tracker/build-spec.md` (internal, for maintaining the artifact's code).
+- Built [Spanner Design Backups](https://claude.ai/artifact/4j8EwFJ9KL3tC9GujFSBov) —
+  worked examples of the architecture diagram and the UML diagrams (use
+  case + both sequence diagrams), initially kept private as a personal
+  safety net. **Later shared with the group as reference examples** — not
+  the submission; Ofentse, Breyton and Gary still produce and share-link
+  their own versions.
+
+**Load check and rebalance**
+- Wisani was the owner on ~10 active Phase 2 items plus reviewer on most
+  others — the same solo-overload pattern as her Phase 1 SRS/tracker/
+  reflection load. Moved the ERD redraw to Gary (merged with his existing
+  sanity-check task), the navigation flow diagram to Kea (pairs with her
+  ASP.NET wireframes), and the design-alignment table to Denny (matches
+  his Phase 1 content-support role); dropped her as co-owner of the
+  stakeholder reconfirmation (Denny now sole owner, she stays informed).
+  She keeps the SRS merge and tracker top-up. Logged as a real Challenges
+  & Actions entry in the official tracker, not just noted here.
+
+## 2026-09-19
+
+**Phase 2 design docs**
+- Created `project-docs/phase-2/` — system architecture diagram, use case
+  diagram, 2 sequence diagrams, ERD, all drafted directly from the live
+  Supabase schema and real app behaviour rather than designed from scratch
+  (web dev was already ahead of the design docs going into Unit 3).
+- Added Ofentse Rammutla and Breyton Rossouw to `CONTRIBUTORS.md` with
+  their student numbers.
+- Assigned Phase 2 tasks to the new members so their GitHub activity shows
+  real individual contribution.
+- **Revised same day**: moved the use case + sequence diagrams from a
+  one-each split to a paired task for Ofentse and Breyton, since we don't
+  yet know either of their skill levels and Breyton had already offered to
+  take it on solo. ASP.NET wireframes and navigation-flow tasks reassigned
+  off Breyton to Kea and Khumo.
+- **Revised again**: roster corrected against the group's actual official
+  Phase 1 submission (`Group Y - ITC327W Progress Checker.xlsx`, from
+  `Group Y Phase 1_2.zip`). Two names in earlier drafts of these docs were
+  wrong — "Kia" and "Kumo" were phonetic mis-transcriptions of
+  **Keamogetse Ogone Kgosi (Kea)** and **Moremi KE (Khumo)** — and
+  **Mathye MD (Denny)** was missing entirely. Denny is now assigned the
+  stakeholder-reconfirmation task, which matches the group's own stated
+  top priority for Phase 2 from the Phase 1 Group Reflection. The official
+  Progress Checker workbook was continued (not replaced) as
+  `Group Y - ITC327W Progress Checker (Phase 2 update).xlsx`, same sheet
+  structure as the submitted original, Phase 1 rows preserved verbatim.
+
+**Web app — admin/mechanic access control (post-M8)**
+- Added a config-based admin/mechanic distinction (`web/Auth/AdminAccess.cs`,
+  an email allowlist in `appsettings.json`) — no new database table, kept
+  deliberately simple after two consecutive live-discovered migration bugs
+  this week made a bigger schema change too risky to rush.
+- **Finalize & close** a booking: now admin-only, enforced both by hiding
+  the button and by rejecting a direct POST server-side.
+- **Delete booking** (new): admin-only, asks "are you sure" first, restocks
+  every part used, removes all labour/jobs, then removes the booking — one
+  atomic Postgres function call (`delete_booking_and_restock`,
+  `supabase/migrations/0005_delete_booking_with_restock.sql`) so a partial
+  failure can't leave stock restocked with the booking still there.
+- **Reopen a closed booking**: re-verifies the logged-in staff member's own
+  password before undoing a finalize (mobile has no reopen concept at all —
+  this is web-only, deliberately).
+
+**Supabase migrations**
+- `0004_atomic_stock_decrement.sql` (rewritten as `add_booking_part`): two
+  real bugs found via live testing against the actual database, not just
+  code review — (1) an ambiguous column reference caused by the function's
+  `RETURNS TABLE` column colliding with a bare column name inside it, and
+  (2) a parameter declared `text` that should have been `uuid` to match the
+  real `stock_movements.user_id` column. Both required re-sending the fixed
+  SQL to Gary to re-run, since he's the one with Supabase dashboard access.
+- `0005_delete_booking_with_restock.sql` (new): adds the missing `bookings`
+  DELETE policy (same bug class found earlier on `jobs` — RLS allowing a
+  204 response while silently not deleting anything) plus the atomic
+  restock function above. Every column type and permission used in it was
+  verified live before writing, not assumed from the C# models — a
+  deliberate change in approach after the 0004 bugs, to stop costing the
+  team re-run cycles.
+
+**Documentation sent to the group**
+- `gary-update.pdf`/`.docx`, `pending-migrations.pdf`/`.docx` — SQL and bug
+  summary sent to Gary to apply.
+- `group-test-guide.pdf`/`.docx` — admin/mechanic login details and a full
+  testing checklist sent to the group (not committed to git — has real
+  passwords in it).
+- `group-progress-report.pdf` — general progress update.
+
+## Known open items (carried forward, not yet resolved)
+
+- Migrations `0004` and `0005` still need to be confirmed applied and
+  re-verified live (Gary applied earlier versions; the final fixed versions
+  need a fresh live check).
+- Mobile totals invoice labour from `booking_labor`; web still totals from
+  `jobs.labour_hours × labour_rate` — two disconnected ledgers on the same
+  live bookings, flagged for a team decision, not fixed yet.
+- Mobile has no admin/mechanic distinction (web does) and no Realtime
+  subscriptions (web does) — both known asymmetries between the two apps.
+- A leftover test booking (`DELTEST`) is still in the live database from
+  permission testing — needs cleanup once the `bookings` DELETE policy is
+  confirmed applied.

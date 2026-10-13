@@ -1,0 +1,53 @@
+@page
+@model Spanner.Web.Pages.Stock.IndexModel
+@{
+    ViewData["Title"] = "Stock";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Stock</h1>
+    <a asp-page="/Stock/Create" class="btn btn-primary">Add a part</a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.LoadError))
+{
+    <div class="alert alert-warning">@Model.LoadError</div>
+}
+else if (Model.Items.Count == 0)
+{
+    <p><em>No stock items yet.</em></p>
+}
+else
+{
+    <p class="text-muted">Rows highlighted in yellow are at or below their reorder level.</p>
+    <table class="table table-sm table-striped col-md-10">
+        <thead>
+            <tr>
+                <th>Part</th>
+                <th>SKU</th>
+                <th>Category</th>
+                <th>Supplier</th>
+                <th>Cost</th>
+                <th>Sell</th>
+                <th>On hand</th>
+                <th>Reorder at</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+                var lowStock = item.QuantityOnHand <= item.ReorderLevel;
+                <tr class="@(lowStock ? "table-warning" : "")">
+                    <td>@item.Name</td>
+                    <td>@item.Sku</td>
+                    <td>@(item.CategoryId is { } catId && Model.CategoryNames.TryGetValue(catId, out var catName) ? catName : "-")</td>
+                    <td>@(item.SupplierId is { } supId && Model.SupplierNames.TryGetValue(supId, out var supName) ? supName : "-")</td>
+                    <td>@item.CostPrice.ToString("C")</td>
+                    <td>@item.SellPrice.ToString("C")</td>
+                    <td>@item.QuantityOnHand</td>
+                    <td>@item.ReorderLevel</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
