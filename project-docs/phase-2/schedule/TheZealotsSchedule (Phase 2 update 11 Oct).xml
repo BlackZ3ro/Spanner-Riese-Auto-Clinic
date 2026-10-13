@@ -47,7 +47,7 @@
     <BaselineForEarnedValue>0</BaselineForEarnedValue>
     <AutoAddNewResourcesAndTasks>1</AutoAddNewResourcesAndTasks>
     <StatusDate>2026-10-11T17:00:00</StatusDate>
-    <CurrentDate>2026-10-11T16:57:21</CurrentDate>
+    <CurrentDate>2026-10-13T12:06:56</CurrentDate>
     <MicrosoftProjectServerURL>1</MicrosoftProjectServerURL>
     <Autolink>1</Autolink>
     <NewTaskStartDate>0</NewTaskStartDate>
@@ -3349,163 +3349,6 @@ All these were initially missing.
                 <LagFormat>7</LagFormat>
             </PredecessorLink>
         </Task>
-        <Task>
-            <UID>75</UID>
-            <ID>55</ID>
-            <Name>Phase 3 (due 2 Nov)</Name>
-            <Active>1</Active>
-            <Manual>0</Manual>
-            <Type>0</Type>
-            <IsNull>0</IsNull>
-            <WBS>10</WBS>
-            <OutlineLevel>1</OutlineLevel>
-            <Priority>500</Priority>
-            <Duration>PT0H0M0S</Duration>
-            <DurationFormat>7</DurationFormat>
-            <ResumeValid>0</ResumeValid>
-            <EffortDriven>0</EffortDriven>
-            <Recurring>0</Recurring>
-            <OverAllocated>0</OverAllocated>
-            <Estimated>0</Estimated>
-            <Milestone>0</Milestone>
-            <Summary>1</Summary>
-            <Critical>0</Critical>
-            <IsSubproject>0</IsSubproject>
-            <IsSubprojectReadOnly>0</IsSubprojectReadOnly>
-            <ExternalTask>0</ExternalTask>
-            <FixedCostAccrual>3</FixedCostAccrual>
-            <CalendarUID>-1</CalendarUID>
-            <LevelAssignments>0</LevelAssignments>
-            <LevelingCanSplit>0</LevelingCanSplit>
-            <IgnoreResourceCalendar>0</IgnoreResourceCalendar>
-            <HideBar>0</HideBar>
-            <Rollup>0</Rollup>
-            <EarnedValueMethod>0</EarnedValueMethod>
-        </Task>
-        <Task>
-            <UID>76</UID>
-            <ID>56</ID>
-            <Name>Apply open database fixes (0008, 0009) and mobile review</Name>
-            <Active>1</Active>
-            <Manual>0</Manual>
-            <Type>0</Type>
-            <IsNull>0</IsNull>
-            <WBS>10.1</WBS>
-            <OutlineLevel>2</OutlineLevel>
-            <Priority>500</Priority>
-            <Start>2026-10-19T08:00:00</Start>
-            <Finish>2026-10-21T17:00:00</Finish>
-            <Duration>PT24H0M0S</Duration>
-            <DurationFormat>7</DurationFormat>
-            <ResumeValid>0</ResumeValid>
-            <EffortDriven>0</EffortDriven>
-            <Recurring>0</Recurring>
-            <OverAllocated>0</OverAllocated>
-            <Estimated>0</Estimated>
-            <Milestone>0</Milestone>
-            <Summary>0</Summary>
-            <Critical>0</Critical>
-            <IsSubproject>0</IsSubproject>
-            <IsSubprojectReadOnly>0</IsSubprojectReadOnly>
-            <ExternalTask>0</ExternalTask>
-            <FixedCostAccrual>3</FixedCostAccrual>
-            <PercentComplete>0</PercentComplete>
-            <RemainingDuration>PT24H0M0S</RemainingDuration>
-            <CalendarUID>-1</CalendarUID>
-            <LevelAssignments>0</LevelAssignments>
-            <LevelingCanSplit>0</LevelingCanSplit>
-            <IgnoreResourceCalendar>0</IgnoreResourceCalendar>
-            <HideBar>0</HideBar>
-            <Rollup>0</Rollup>
-            <EarnedValueMethod>0</EarnedValueMethod>
-        </Task>
-        <Task>
-            <UID>77</UID>
-            <ID>57</ID>
-            <Name>Finish features, testing and user acceptance with Michael Riese</Name>
-            <Active>1</Active>
-            <Manual>0</Manual>
-            <Type>0</Type>
-            <IsNull>0</IsNull>
-            <WBS>10.2</WBS>
-            <OutlineLevel>2</OutlineLevel>
-            <Priority>500</Priority>
-            <Start>2026-10-22T08:00:00</Start>
-            <Finish>2026-10-30T17:00:00</Finish>
-            <Duration>PT56H0M0S</Duration>
-            <DurationFormat>7</DurationFormat>
-            <ResumeValid>0</ResumeValid>
-            <EffortDriven>0</EffortDriven>
-            <Recurring>0</Recurring>
-            <OverAllocated>0</OverAllocated>
-            <Estimated>0</Estimated>
-            <Milestone>0</Milestone>
-            <Summary>0</Summary>
-            <Critical>0</Critical>
-            <IsSubproject>0</IsSubproject>
-            <IsSubprojectReadOnly>0</IsSubprojectReadOnly>
-            <ExternalTask>0</ExternalTask>
-            <FixedCostAccrual>3</FixedCostAccrual>
-            <PercentComplete>0</PercentComplete>
-            <RemainingDuration>PT56H0M0S</RemainingDuration>
-            <CalendarUID>-1</CalendarUID>
-            <LevelAssignments>0</LevelAssignments>
-            <LevelingCanSplit>0</LevelingCanSplit>
-            <IgnoreResourceCalendar>0</IgnoreResourceCalendar>
-            <HideBar>0</HideBar>
-            <Rollup>0</Rollup>
-            <EarnedValueMethod>0</EarnedValueMethod>
-            <PredecessorLink>
-                <PredecessorUID>76</PredecessorUID>
-                <Type>1</Type>
-                <CrossProject>0</CrossProject>
-                <LinkLag>0</LinkLag>
-                <LagFormat>7</LagFormat>
-            </PredecessorLink>
-        </Task>
-        <Task>
-            <UID>78</UID>
-            <ID>58</ID>
-            <Name>Phase 3 submission (2 Nov)</Name>
-            <Active>1</Active>
-            <Manual>0</Manual>
-            <Type>0</Type>
-            <IsNull>0</IsNull>
-            <WBS>10.3</WBS>
-            <OutlineLevel>2</OutlineLevel>
-            <Priority>500</Priority>
-            <Start>2026-11-02T08:00:00</Start>
-            <Finish>2026-11-02T08:00:00</Finish>
-            <Duration>PT0H0M0S</Duration>
-            <DurationFormat>7</DurationFormat>
-            <ResumeValid>0</ResumeValid>
-            <EffortDriven>0</EffortDriven>
-            <Recurring>0</Recurring>
-            <OverAllocated>0</OverAllocated>
-            <Estimated>0</Estimated>
-            <Milestone>1</Milestone>
-            <Summary>0</Summary>
-            <Critical>0</Critical>
-            <IsSubproject>0</IsSubproject>
-            <IsSubprojectReadOnly>0</IsSubprojectReadOnly>
-            <ExternalTask>0</ExternalTask>
-            <FixedCostAccrual>3</FixedCostAccrual>
-            <PercentComplete>0</PercentComplete>
-            <CalendarUID>-1</CalendarUID>
-            <LevelAssignments>0</LevelAssignments>
-            <LevelingCanSplit>0</LevelingCanSplit>
-            <IgnoreResourceCalendar>0</IgnoreResourceCalendar>
-            <HideBar>0</HideBar>
-            <Rollup>0</Rollup>
-            <EarnedValueMethod>0</EarnedValueMethod>
-            <PredecessorLink>
-                <PredecessorUID>77</PredecessorUID>
-                <Type>1</Type>
-                <CrossProject>0</CrossProject>
-                <LinkLag>0</LinkLag>
-                <LagFormat>7</LagFormat>
-            </PredecessorLink>
-        </Task>
     </Tasks>
     <Resources>
         <Resource>
@@ -3573,7 +3416,7 @@ All these were initially missing.
             <PeakUnits>1</PeakUnits>
             <OverAllocated>0</OverAllocated>
             <Start>2026-08-17T08:00:00</Start>
-            <Finish>2026-10-30T17:00:00</Finish>
+            <Finish>2026-10-15T17:00:00</Finish>
             <CanLevel>0</CanLevel>
             <AccrueAt>3</AccrueAt>
             <Work>PT96H0M0S</Work>
@@ -3603,7 +3446,7 @@ All these were initially missing.
             <PeakUnits>1</PeakUnits>
             <OverAllocated>0</OverAllocated>
             <Start>2026-08-17T08:00:00</Start>
-            <Finish>2026-10-30T17:00:00</Finish>
+            <Finish>2026-10-15T17:00:00</Finish>
             <CanLevel>0</CanLevel>
             <AccrueAt>3</AccrueAt>
             <Work>PT48H0M0S</Work>
@@ -3663,7 +3506,7 @@ All these were initially missing.
             <PeakUnits>1</PeakUnits>
             <OverAllocated>0</OverAllocated>
             <Start>2026-08-17T08:00:00</Start>
-            <Finish>2026-10-30T17:00:00</Finish>
+            <Finish>2026-10-15T17:00:00</Finish>
             <CanLevel>0</CanLevel>
             <AccrueAt>3</AccrueAt>
             <Work>PT72H0M0S</Work>
@@ -5485,58 +5328,6 @@ All these were initially missing.
             <Start>2026-10-13T08:00:00</Start>
             <Units>1</Units>
             <Work>PT24H0M0S</Work>
-        </Assignment>
-        <Assignment>
-            <UID>9054</UID>
-            <TaskUID>76</TaskUID>
-            <ResourceUID>2</ResourceUID>
-            <Finish>2026-10-21T17:00:00</Finish>
-            <HasFixedRateUnits>1</HasFixedRateUnits>
-            <FixedMaterial>0</FixedMaterial>
-            <LevelingDelayFormat>7</LevelingDelayFormat>
-            <RemainingWork>PT24H0M0S</RemainingWork>
-            <Start>2026-10-19T08:00:00</Start>
-            <Units>1</Units>
-            <Work>PT24H0M0S</Work>
-        </Assignment>
-        <Assignment>
-            <UID>9055</UID>
-            <TaskUID>77</TaskUID>
-            <ResourceUID>3</ResourceUID>
-            <Finish>2026-10-30T17:00:00</Finish>
-            <HasFixedRateUnits>1</HasFixedRateUnits>
-            <FixedMaterial>0</FixedMaterial>
-            <LevelingDelayFormat>7</LevelingDelayFormat>
-            <RemainingWork>PT56H0M0S</RemainingWork>
-            <Start>2026-10-22T08:00:00</Start>
-            <Units>1</Units>
-            <Work>PT56H0M0S</Work>
-        </Assignment>
-        <Assignment>
-            <UID>9056</UID>
-            <TaskUID>77</TaskUID>
-            <ResourceUID>2</ResourceUID>
-            <Finish>2026-10-30T17:00:00</Finish>
-            <HasFixedRateUnits>1</HasFixedRateUnits>
-            <FixedMaterial>0</FixedMaterial>
-            <LevelingDelayFormat>7</LevelingDelayFormat>
-            <RemainingWork>PT56H0M0S</RemainingWork>
-            <Start>2026-10-22T08:00:00</Start>
-            <Units>1</Units>
-            <Work>PT56H0M0S</Work>
-        </Assignment>
-        <Assignment>
-            <UID>9057</UID>
-            <TaskUID>77</TaskUID>
-            <ResourceUID>5</ResourceUID>
-            <Finish>2026-10-30T17:00:00</Finish>
-            <HasFixedRateUnits>1</HasFixedRateUnits>
-            <FixedMaterial>0</FixedMaterial>
-            <LevelingDelayFormat>7</LevelingDelayFormat>
-            <RemainingWork>PT56H0M0S</RemainingWork>
-            <Start>2026-10-22T08:00:00</Start>
-            <Units>1</Units>
-            <Work>PT56H0M0S</Work>
         </Assignment>
     </Assignments>
 </Project>

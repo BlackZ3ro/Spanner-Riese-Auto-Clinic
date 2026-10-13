@@ -1,0 +1,247 @@
+{
+  "nodes": [
+    {
+      "id": "456ad5a382521f5b",
+      "type": "file",
+      "file": "Riese Auto Clinic Mockups/mockups/01-vehicle-status.png",
+      "x": 0,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "04b71feae35ba0a9",
+      "type": "text",
+      "text": "### Vehicle status (customer)\n`customer_status_screen.dart`\n- Opened with a reference code, no login\n- Read-only: phase, parts used, work done (no prices)\n- Updates live when staff change the phase\n- Pull down to refresh as a fallback\n- Tapping a push notification lands here",
+      "x": 0,
+      "y": 900,
+      "width": 390,
+      "height": 330
+    },
+    {
+      "id": "28f8e444201b3e4f",
+      "type": "file",
+      "file": "Riese Auto Clinic Mockups/mockups/02-role-choice.png",
+      "x": 590,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "05566167ed479eb9",
+      "type": "text",
+      "text": "### Entry: role choice\n`role_choice_screen.dart`\n- \"I'm a customer\" goes to the reference-code lookup\n- \"I work here\" goes to staff sign-in (`login_screen.dart`)",
+      "x": 590,
+      "y": 900,
+      "width": 390,
+      "height": 330
+    },
+    {
+      "id": "a864f0d378439bb3",
+      "type": "file",
+      "file": "Riese Auto Clinic Mockups/mockups/03-home.png",
+      "x": 1180,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "d1d148031704ea78",
+      "type": "text",
+      "text": "### Home\n`home_screen.dart`\n- Shows the signed-in role (Admin or Mechanic)\n- Shortcuts: View bookings, Stock\n- Sign-out sits in the top bar\n- **Design idea, not built yet:** the \"3 open jobs / 1 low stock\" strip",
+      "x": 1180,
+      "y": 900,
+      "width": 390,
+      "height": 330
+    },
+    {
+      "id": "56f1d8eb1993f37f",
+      "type": "file",
+      "file": "Riese Auto Clinic Mockups/mockups/04-bookings-list.png",
+      "x": 1770,
+      "y": 0,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "id": "9176bbf330e2d466",
+      "type": "text",
+      "text": "### Bookings list\n`bookings_list_screen.dart`\n- Search by invoice number\n- Tabs: Open and Completed\n- Each card: vehicle, registration, km, invoice number\n- **Design idea, not built yet:** the coloured phase tag on each card",
+      "x": 1770,
+      "y": 900,
+      "width": 390,
+      "height": 330
+    },
+    {
+      "id": "69f36dc57ad4707e",
+      "type": "file",
+      "file": "Riese Auto Clinic Mockups/mockups/05-booking-detail.png",
+      "x": 2360,
+      "y": -142,
+      "width": 390,
+      "height": 1127
+    },
+    {
+      "id": "4979c13f4fe09dac",
+      "type": "text",
+      "text": "### Booking details\n`booking_detail_screen.dart`\n- Phase is a dropdown in the app today; the step tracker is a **design idea**\n- Finalize, Delete and Reopen are admin-only\n- Parts and labor can be added or removed while the booking is open\n- Labor = hours x rate (default R350/h)",
+      "x": 2360,
+      "y": 1041,
+      "width": 390,
+      "height": 330
+    },
+    {
+      "id": "d5d3db1765287eef",
+      "type": "text",
+      "text": "# Riese Auto Clinic: app mockups\nDark theme with gold, green and orange accents. Phone layout, 390 px wide.\n\n**Staff:** role choice, then Home, then Bookings list, then Booking details\n**Customer:** role choice, then Vehicle status (reference code, no login)\n\nThe screens are images in `mockups/`. The notes, palette and arrows are ordinary canvas cards, so edit, move or add to them freely.",
+      "x": 0,
+      "y": -600,
+      "width": 900,
+      "height": 260
+    },
+    {
+      "id": "9366282e11c15155",
+      "type": "text",
+      "text": "## How the colours are used\n- **Gold**: brand and main actions (buttons, add button, active tab, \"Checked in\" tag)\n- **Green**: done or positive (completed steps, \"Ready for pickup\", vehicle icons)\n- **Orange**: active or needs attention (current phase, \"Labor in progress\", low-stock count)\n- Dark text on gold buttons; white icons on green and orange fills",
+      "x": 0,
+      "y": -310,
+      "width": 900,
+      "height": 250
+    },
+    {
+      "id": "5ca5a8d02077b7f6",
+      "type": "group",
+      "label": "Palette",
+      "x": 1000,
+      "y": -600,
+      "width": 1420,
+      "height": 220
+    },
+    {
+      "id": "f833733e1ea4a867",
+      "type": "text",
+      "text": "**Background**\n#16181A\napp background",
+      "color": "#16181A",
+      "x": 1040,
+      "y": -540,
+      "width": 150,
+      "height": 120
+    },
+    {
+      "id": "007d9e9853562c72",
+      "type": "text",
+      "text": "**Surface**\n#1F2224\ncards and bars",
+      "color": "#1F2224",
+      "x": 1210,
+      "y": -540,
+      "width": 150,
+      "height": 120
+    },
+    {
+      "id": "9eed5d1fafd0e335",
+      "type": "text",
+      "text": "**Border**\n#2C3033\ndividers",
+      "color": "#2C3033",
+      "x": 1380,
+      "y": -540,
+      "width": 150,
+      "height": 120
+    },
+    {
+      "id": "f91c09167aee5ef5",
+      "type": "text",
+      "text": "**Text**\n#F2F1ED\nmain text",
+      "color": "#F2F1ED",
+      "x": 1550,
+      "y": -540,
+      "width": 150,
+      "height": 120
+    },
+    {
+      "id": "116ac2298ecdbebf",
+      "type": "text",
+      "text": "**Muted text**\n#9BA1A6\nlabels",
+      "color": "#9BA1A6",
+      "x": 1720,
+      "y": -540,
+      "width": 150,
+      "height": 120
+    },
+    {
+      "id": "30663488451e8475",
+      "type": "text",
+      "text": "**Gold**\n#D4A72C\nactions",
+      "color": "#D4A72C",
+      "x": 1890,
+      "y": -540,
+      "width": 150,
+      "height": 120
+    },
+    {
+      "id": "0901a9b1ac1e1019",
+      "type": "text",
+      "text": "**Green**\n#4C9A44\ndone",
+      "color": "#4C9A44",
+      "x": 2060,
+      "y": -540,
+      "width": 150,
+      "height": 120
+    },
+    {
+      "id": "5977c269939df87f",
+      "type": "text",
+      "text": "**Orange**\n#C9480A\nactive (text #E0691C)",
+      "color": "#C9480A",
+      "x": 2230,
+      "y": -540,
+      "width": 150,
+      "height": 120
+    }
+  ],
+  "edges": [
+    {
+      "id": "66bc580a451ae90a",
+      "fromNode": "28f8e444201b3e4f",
+      "fromSide": "left",
+      "toNode": "456ad5a382521f5b",
+      "toSide": "right",
+      "fromEnd": "none",
+      "toEnd": "arrow",
+      "label": "I'm a customer",
+      "color": "#4C9A44"
+    },
+    {
+      "id": "094a1cb9168fdd29",
+      "fromNode": "28f8e444201b3e4f",
+      "fromSide": "right",
+      "toNode": "a864f0d378439bb3",
+      "toSide": "left",
+      "fromEnd": "none",
+      "toEnd": "arrow",
+      "label": "I work here",
+      "color": "#D4A72C"
+    },
+    {
+      "id": "38f09a44f7c66c91",
+      "fromNode": "a864f0d378439bb3",
+      "fromSide": "right",
+      "toNode": "56f1d8eb1993f37f",
+      "toSide": "left",
+      "fromEnd": "none",
+      "toEnd": "arrow",
+      "label": "View bookings",
+      "color": "#D4A72C"
+    },
+    {
+      "id": "c19e1dce963a1cc8",
+      "fromNode": "56f1d8eb1993f37f",
+      "fromSide": "right",
+      "toNode": "69f36dc57ad4707e",
+      "toSide": "left",
+      "fromEnd": "none",
+      "toEnd": "arrow",
+      "label": "Open a booking",
+      "color": "#D4A72C"
+    }
+  ]
+}
