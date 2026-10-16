@@ -215,6 +215,27 @@ deliberately doesn't). Target: working by end of day 23 Sept.
 
 ## Part 2 — Sequence Diagrams (at least one Flutter, one ASP.NET)
 
+> **UPDATED 16 Oct 2026: communication with the customer (Mr G's feedback).**
+> Mr G asked for the communication with the client to be part of the
+> sequences, and described the customer's own sequence: "I open the app, I
+> select that I'm a client, then I enter [the code], then I see [the status]".
+> - **Book in (Flutter and ASP.NET):** new section 3, *Communication with the
+>   customer*. The booking row comes back with its `reference_code`; staff tap
+>   **Send on WhatsApp**, WhatsApp opens with the message filled in (code and
+>   tracking link), staff tap Send and the customer receives it. `alt`: no
+>   WhatsApp, so the code goes on the booking slip. The web button is built;
+>   the mobile button is still to build (same link).
+> - **Admin finalize:** finalize also sets `phase = 'finalized'`, so the
+>   database webhook sends the customer a push notification; staff can send a
+>   thank-you message with the invoice number on WhatsApp.
+> - **New: Customer checks the status and gets updates**
+>   (`seq-5-customer-updates`, page 14 of `spanner-all-designs.drawio`):
+>   open the app, *I'm a customer*, enter the code,
+>   `get_booking_by_reference_code` checks it in Supabase (`alt` found / not
+>   found), the phone subscribes with `register_push_token`; staff change the
+>   phase (`update_booking_phase`), the webhook pushes the change, staff send a
+>   WhatsApp update, and the customer refreshes and sees the new step.
+
 > **Superseded 23 Sept.** The current reference sequence diagrams are the PNGs
 > in `diagrams/` with editable draw.io versions in `diagrams/editable/`:
 > book in a vehicle (Flutter and web, Login first), admin finalize, admin
