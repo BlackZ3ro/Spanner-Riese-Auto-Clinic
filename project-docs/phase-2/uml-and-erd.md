@@ -303,7 +303,8 @@ added mid-project and the 28 Sept additions (`booking_labor`, `profiles`,
 
 ```mermaid
 erDiagram
-    CUSTOMERS |o--o{ BOOKINGS : "places"
+    CUSTOMERS |o--o{ BOOKINGS : "has"
+    AUTH_USERS |o--o{ BOOKINGS : "records (created_by)"
     BOOKINGS ||--o{ JOBS : "has"
     BOOKINGS ||--o{ BOOKING_PARTS : "uses"
     BOOKINGS ||--o{ BOOKING_LABOR : "logs labour"
@@ -345,6 +346,7 @@ erDiagram
         text invoice_number "DB-generated sequence, e.g. INV-00005"
         timestamptz created_at
         timestamptz closed_at
+        uuid created_by FK "staff who booked it in, default auth.uid() (migration 0010)"
     }
     JOBS {
         uuid id PK
@@ -433,6 +435,14 @@ erDiagram
   `stock_movements.item_id`). Added the missing `auth.users` to
   `stock_movements.user_id` line ("records"). The PNG is now rendered from the
   `.drawio` file itself, so the picture and the editable source always match.
+- **Also from the 16 Oct recording.** Ms Mbele read the customers line
+  ("books in") as if the customer uses the system, and asked "where is the
+  mechanic here?" and how staff populate the tables. The line is now "has",
+  the legend says customers never log in and staff type their details in,
+  and `bookings.created_by` (migration `0010`, default `auth.uid()`, no app
+  change needed) links each booking to the staff member who booked it in:
+  `auth.users` (staff login) --records--> `bookings`. **Gary must run 0010**
+  on the live project for this column to exist.
 
 - `bookings` also keeps denormalized `customer_name`/`customer_phone`/
   `customer_email`/`customer_company` columns alongside the `customer_id`
