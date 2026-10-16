@@ -267,16 +267,17 @@ added mid-project and the 28 Sept additions (`booking_labor`, `profiles`,
 
 ```mermaid
 erDiagram
-    CUSTOMERS ||--o{ BOOKINGS : "books in"
+    CUSTOMERS |o--o{ BOOKINGS : "places"
     BOOKINGS ||--o{ JOBS : "has"
     BOOKINGS ||--o{ BOOKING_PARTS : "uses"
-    BOOKINGS ||--o{ BOOKING_LABOR : "mobile labour"
+    BOOKINGS ||--o{ BOOKING_LABOR : "logs labour"
     BOOKINGS ||--o{ BOOKING_PUSH_TOKENS : "notifies"
-    AUTH_USERS ||--|| PROFILES : "has role"
-    STOCK_ITEMS ||--o{ BOOKING_PARTS : "used in"
+    AUTH_USERS ||--o| PROFILES : "has role"
+    AUTH_USERS |o--o{ STOCK_MOVEMENTS : "records"
+    STOCK_ITEMS ||--o{ BOOKING_PARTS : "fitted as"
     STOCK_ITEMS ||--o{ STOCK_MOVEMENTS : "tracked by"
-    CATEGORIES ||--o{ STOCK_ITEMS : "classifies"
-    SUPPLIERS ||--o{ STOCK_ITEMS : "supplies"
+    CATEGORIES |o--o{ STOCK_ITEMS : "classifies"
+    SUPPLIERS |o--o{ STOCK_ITEMS : "supplies"
 
     CUSTOMERS {
         uuid id PK
@@ -304,7 +305,7 @@ erDiagram
         text customer_company
         text status "checked_in / closed"
         text phase "booked_in ... finalized (28 Sept)"
-        text reference_code "random, unique - customer lookup (28 Sept)"
+        text reference_code UK "random, unique - customer lookup (28 Sept)"
         text invoice_number "DB-generated sequence, e.g. INV-00005"
         timestamptz created_at
         timestamptz closed_at
@@ -346,7 +347,7 @@ erDiagram
         int quantity
         numeric cost_at_time
         text reference
-        uuid user_id
+        uuid user_id FK "auth.users.id of the staff member"
         timestamptz timestamp
     }
     CATEGORIES {
@@ -384,6 +385,18 @@ erDiagram
 ```
 
 ### Notes for the write-up
+
+- **Redrawn 16 Oct 2026 after Ms Mbele's Phase 2 feedback** ("fix the ERD signs
+  and lines"). Every line now runs from the primary key row of the "one" table
+  to the foreign key row of the "many" table, with right-angled lines and one
+  crow's-foot symbol per end (legend on the diagram). The parent end is
+  "zero or one" wherever the foreign key is optional (`bookings.customer_id`,
+  `stock_items.category_id`, `stock_items.supplier_id`,
+  `stock_movements.user_id`) and "exactly one" where it is `not null`
+  (every `booking_id`, `booking_parts.stock_item_id`,
+  `stock_movements.item_id`). Added the missing `auth.users` to
+  `stock_movements.user_id` line ("records"). The PNG is now rendered from the
+  `.drawio` file itself, so the picture and the editable source always match.
 
 - `bookings` also keeps denormalized `customer_name`/`customer_phone`/
   `customer_email`/`customer_company` columns alongside the `customer_id`
