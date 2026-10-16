@@ -2,7 +2,7 @@
 
 Every design as an editable draw.io file. Click **Open** to load it straight into draw.io in the browser: no account, no download. To keep your own edited copy, use **File > Save as** in draw.io.
 
-For the presentation page with every design, link and document, see [`presentation/`](../../../../presentation/).
+For the presentation page with every design, link and document, see [`submission/presentation/`](../../../../submission/presentation/).
 
 | File | Open in draw.io |
 |---|---|
