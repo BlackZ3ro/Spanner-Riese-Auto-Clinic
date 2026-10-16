@@ -9,6 +9,21 @@ not re-designing.
 
 ## Part 1 — Use Case Diagram
 
+> **UPDATED 16 Oct 2026 after the Phase 2 presentation (Mr G's feedback).**
+> The customer side is now a proper set of use cases, not one oval:
+> - **Track repair status** (reference code, web `/Track` or the app)
+>   `«include»`s **Check reference code in Supabase** (the
+>   `get_booking_by_reference_code` call) and **View phase, parts and labour**;
+>   **Show "code not found"** `«extend»`s it for a wrong or unknown code.
+> - **Get phase updates on the phone** (push, subscribe with the reference code)
+>   also `«include»`s the Supabase check (`register_push_token` refuses unknown codes).
+> - **Message customer on WhatsApp** (new staff use case, both roles): staff send
+>   the reference code after book-in, then status updates. The Customer receives
+>   it; **WhatsApp** is shown as an external `«system»` actor. It uses WhatsApp's
+>   free click-to-chat link, so the zero-budget rule still holds (see Change 12
+>   in `CHANGELOG.md`).
+> - Login lines now meet Login at its ends, so no line crosses another use case.
+
 > **FINAL STRUCTURE — 23 Sept 2026 (supersedes the layout described below).**
 > Reference image: `diagrams/usecase-restructured.png`. Sequence references:
 > `diagrams/seq-1-book-in-vehicle-flutter.png`, `seq-1b-book-in-vehicle-web.png`,
