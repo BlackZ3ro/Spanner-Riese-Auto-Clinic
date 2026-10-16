@@ -16,7 +16,25 @@
     <h1 class="mb-1">@booking.Brand @booking.Model (@booking.Year)</h1>
     @if (!string.IsNullOrEmpty(booking.InvoiceNumber))
     {
-        <p class="text-muted mb-4">Invoice @booking.InvoiceNumber@(string.IsNullOrEmpty(booking.ReferenceCode) ? "" : $" · Customer reference code {booking.ReferenceCode}")</p>
+        <p class="text-muted mb-2">Invoice @booking.InvoiceNumber</p>
+    }
+
+    @* The customer gets their reference code the moment they're booked in, and
+       updates after that, on WhatsApp (Mr G's feedback, 16 Oct 2026). *@
+    @if (Model.WhatsAppUrl is { } whatsAppUrl)
+    {
+        <div class="sp-refcode mb-4">
+            <div>
+                <div class="sp-refcode-label">Customer reference code</div>
+                <div class="sp-refcode-value">@booking.ReferenceCode</div>
+            </div>
+            <div>
+                <a class="btn btn-sm sp-btn-whatsapp" href="@whatsAppUrl" target="_blank" rel="noopener">Send on WhatsApp</a>
+                <div class="form-text mt-1">
+                    Opens WhatsApp with @(!isOpen ? "a thank-you and the invoice number" : booking.Phase is null or "booked_in" ? "the reference code" : "this status update") typed in@(Model.WhatsAppNumberKnown ? "" : ", but this phone number can't be used directly, so choose the customer's chat"). Check it, then tap Send.
+                </div>
+            </div>
+        </div>
     }
 
     @if (!string.IsNullOrEmpty(booking.CustomerName))
@@ -79,7 +97,7 @@
                     </select>
                     <button type="submit" class="btn btn-sm btn-outline-primary text-nowrap">Update phase</button>
                 </form>
-                <div class="form-text">The customer is notified when the phase changes.</div>
+                <div class="form-text">Customers following this booking in the app get a push notification. Use Send on WhatsApp above to message them too.</div>
             </dd>
         }
 

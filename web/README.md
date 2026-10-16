@@ -26,7 +26,14 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
    dotnet user-secrets set "Supabase:Url" "https://<project-ref>.supabase.co"
    dotnet user-secrets set "Supabase:AnonKey" "<anon-public-key>"
    ```
-4. Run the application:
+4. Optional, once the site is online: set the public address so the
+   **Send on WhatsApp** message can link customers to the tracking page
+   (leave it blank while the app only runs on a staff computer - the message
+   then tells the customer to use the app's "I'm a customer" screen):
+   ```bash
+   dotnet user-secrets set "PublicSiteUrl" "https://<your-public-address>"
+   ```
+5. Run the application:
    ```bash
    dotnet run
    ```
@@ -67,6 +74,13 @@ not written down here on purpose). Log in as each to see the difference:
    of the registration plate.
 8. Go to **Stock > Add a part** and type a brand-new category or supplier
    name instead of picking one from the dropdown.
+9. **Send on WhatsApp** (new 16 Oct 2026, Mr G's feedback): book in a vehicle
+   using your own phone number as the customer's. On the booking page, under
+   the invoice number, the **Customer reference code** box has a **Send on
+   WhatsApp** button. It opens WhatsApp with the code already typed in; tap
+   Send and check it arrives. Change the phase (e.g. *Finished - ready for
+   pickup*) and the same button now sends that status update; after
+   **Finalize & close** it sends a thank-you with the invoice number.
 
 ## Status
 
