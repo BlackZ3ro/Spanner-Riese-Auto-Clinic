@@ -18,9 +18,12 @@ For the presentation page with every design, link and document, see [`submission
 | [`seq-2-admin-finalize-web.drawio`](seq-2-admin-finalize-web.drawio) | [Open](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fseq-2-admin-finalize-web.drawio) |
 | [`seq-3-admin-delete-web.drawio`](seq-3-admin-delete-web.drawio) | [Open](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fseq-3-admin-delete-web.drawio) |
 | [`seq-4-admin-reopen-web.drawio`](seq-4-admin-reopen-web.drawio) | [Open](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fseq-4-admin-reopen-web.drawio) |
+| [`seq-5-customer-updates.drawio`](seq-5-customer-updates.drawio) | [Open](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fseq-5-customer-updates.drawio) |
 | [`spanner-all-designs.drawio`](spanner-all-designs.drawio) | [Open](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fspanner-all-designs.drawio) |
 | [`usecase.drawio`](usecase.drawio) | [Open](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fusecase.drawio) |
 
-`spanner-all-designs.drawio` holds all 13 designs, one per page (tabs along the bottom).
+`spanner-all-designs.drawio` holds all 14 designs, one per page (tabs along the bottom). Page 14 is the customer sequence added on 16 Oct.
+
+The PNG pictures in `../` are rendered from these files with draw.io's own viewer, so a picture always matches its editable source.
 
 Offline: go to <https://app.diagrams.net>, choose **Device**, and pick the `.drawio` file.
