@@ -1,7 +1,7 @@
 # Phase 2 presentation: Group Y (The Zealots)
 
 **Spanner**, the workshop booking, stock and invoicing system for Riese Auto Clinic.  
-ITC327W Assessment 2 (System Architecture and Design). Presentation: **Friday 16 October 2026, 12:00**.
+ITC327W Assessment 2 (System Architecture and Design). Phase 2 presentation pack.
 
 Every link below opens directly. The draw.io links open the editable diagram straight in the browser, with no account and no download. To edit and keep a copy, use **File > Save as** in draw.io.
 
@@ -11,7 +11,8 @@ Every link below opens directly. The draw.io links open the editable diagram str
 |---|---|
 | All 13 designs in one draw.io file (one page per design, tabs along the bottom) | [Open in draw.io](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fspanner-all-designs.drawio) |
 | SRS v2.2 (Phase 2), the submitted document | [Open PDF](../../project-docs/Group%20Y%20-%20SRS%20v2.2%20%28Phase%202%20-%20System%20Architecture%20and%20Design%29.pdf) |
-| Microsoft Project schedule (Gantt) | [Screenshot](../../project-docs/phase-2/schedule/ms-project-gantt.png) · [XML for MS Project](../../project-docs/phase-2/schedule/TheZealotsSchedule%20%28Phase%202%20update%2011%20Oct%29.xml) |
+| Microsoft Project schedule, latest (updated 16 Oct) | [Download .mpp](TheZealotsSchedule.mpp) |
+| Microsoft Project schedule, as submitted (11 Oct) | [Gantt screenshot](../../project-docs/phase-2/schedule/ms-project-gantt.png) · [XML for MS Project](../../project-docs/phase-2/schedule/TheZealotsSchedule%20%28Phase%202%20update%2011%20Oct%29.xml) |
 | Progress Checker (tasks, contributions, reflection) | [Download .xlsx](../../project-docs/phase-2/tracker/Group%20Y%20-%20ITC327W%20Progress%20Checker%20%28Phase%202%20final%29.xlsx) |
 | Use case diagram (Lucidchart) | [Open in Lucidchart](https://lucid.app/lucidchart/fb4ebb76-2892-4f1a-888f-067c37aca98d/view) |
 | Sequence diagrams (Lucidchart) | [Open in Lucidchart](https://lucid.app/lucidchart/285c1247-0f85-4e60-879c-90f48a0c91f6/view) |
@@ -29,7 +30,7 @@ Every link below opens directly. The draw.io links open the editable diagram str
 4. **ERD** (Fig. 8). Drawn from the live schema; `bookings` is the centre.
 5. **Interface designs** (Fig. 9a to 10c, 13). Each member's own design, then the draw.io versions and the navigation flow.
 6. **Live demo of the web app.** Follow the [demo script](../../web/docs/demo-script.md) (about 3 minutes).
-7. **Schedule and progress.** Gantt screenshot and the Progress Checker.
+7. **Schedule and progress.** The latest Microsoft Project schedule and the Progress Checker.
 8. **Questions.**
 
 ## Designs
@@ -123,7 +124,7 @@ Each design: the picture, a one-click link to the editable draw.io source, and a
 ## If a link does not open
 
 - **draw.io:** go to <https://app.diagrams.net>, choose **Device**, and open the `.drawio` file from the submission ZIP (`design-sources/`) or from [the editable folder](../../project-docs/phase-2/diagrams/editable/).
-- **No internet:** every `.drawio` file, the SRS and the schedule are also in the submission ZIP.
+- **No internet:** every `.drawio` file, the SRS and the schedule are also in the submission ZIP. The latest `.mpp` is in this folder.
 - **Customer tracking (mobile) branch:** the SRS mentions the branch `proposal/mobile-customer-tracking`, which is no longer on GitHub. The web version is in [web/Pages/Track](../../web/Pages/Track).
 
 ## Team
