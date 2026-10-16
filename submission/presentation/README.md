@@ -5,15 +5,28 @@ ITC327W Assessment 2 (System Architecture and Design). Everything to present is 
 
 The **Edit in draw.io** links open the editable diagram straight in the browser, with no account and no download. To keep an edited copy, use **File > Save as** in draw.io.
 
+## Feedback from the 16 Oct presentation, and what changed
+
+| Who | Feedback | What changed | Open it |
+|---|---|---|---|
+| Ms Mbele | Fix the ERD signs and lines; "customer books in" reads as if the customer uses the system; where is the mechanic? | ERD redrawn: crow's-foot symbol at each end, every line from PK to FK, legend; customers line now "has"; new `bookings.created_by` links the staff member who booked the car in | [ERD](2-designs/08-erd.png) · [Edit in draw.io](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Ferd.drawio) |
+| Mr G | Customer use case should include the Supabase check and updates; a good use case has code, a table and user input behind it | Customer use cases: Track repair status includes the Supabase check; push updates; WhatsApp messages. Every use case mapped to user input, code and table | [Use case](2-designs/02-usecase-restructured.png) · [Traceability table](../../project-docs/phase-2/use-case-traceability.md) |
+| Mr G | Include the communication with the client in the sequence (open the app, I'm a customer, enter the code, see the status) | Book-in and finalize sequences now message the customer; new customer sequence | [Customer sequence](2-designs/07b-seq-5-customer-updates.png) · [Book in (web)](2-designs/04-seq-1b-book-in-vehicle-web.png) |
+| Mr G | Bonus: a button that sends the reference code on WhatsApp | **Send on WhatsApp** on the web booking page (free click-to-chat link, no paid API) | [Code](../../web/Services/CustomerWhatsApp.cs) · [How to try it](../../web/README.md) |
+| Mr G | Riese does not come up on Google | Step-by-step for Michael to set up a free Google Business Profile; public pages now titled for Riese | [Google guide](../../project-docs/phase-2/google-business-profile.md) |
+| Ms Mbele | The schedule showed the presentation in the future (23 Oct) and did not capture the late submission | Presentation back on 16 Oct; Phase 2 submission shown with its 13 Oct 23:59 deadline, done 14 Oct; progress filled in; tracker updated | [Gantt](4-schedule/gantt-corrected-16-Oct.png) · [Tracker](5-progress-and-demo/Group-Y-Progress-Checker-Phase-2-updated-16-Oct.xlsx) |
+
+Still to do: Gary runs migration 0010 and adds the WhatsApp button to the mobile app; Michael sets up the Google profile; SRS v2.3. Full list: [CHANGELOG, 16 Oct](../../project-docs/phase-2/CHANGELOG.md).
+
 ## What is in this folder
 
 | Folder | Contents |
 |---|---|
 | [1-srs](1-srs) | [SRS v2.2 (Phase 2)](1-srs/Group-Y-SRS-v2.2-Phase-2.pdf), the submitted document |
 | [2-designs](2-designs) | Every design as a picture, numbered in presenting order |
-| [3-design-sources](3-design-sources) | Every editable `.drawio` file. [All 13 designs in one file, open in draw.io](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fspanner-all-designs.drawio) |
-| [4-schedule](4-schedule) | [Latest Microsoft Project schedule (16 Oct, .mpp)](4-schedule/TheZealotsSchedule.mpp) · [Gantt as submitted (11 Oct)](4-schedule/gantt-as-submitted-11-Oct.png) · [XML as submitted](4-schedule/TheZealotsSchedule-as-submitted-11-Oct.xml) |
-| [5-progress-and-demo](5-progress-and-demo) | [Progress Checker (.xlsx)](5-progress-and-demo/Group-Y-Progress-Checker-Phase-2.xlsx) · [Web app demo script](5-progress-and-demo/demo-script.md) |
+| [3-design-sources](3-design-sources) | Every editable `.drawio` file. [All 14 designs in one file, open in draw.io](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fspanner-all-designs.drawio) |
+| [4-schedule](4-schedule) | **Corrected schedule, 16 Oct:** [Gantt](4-schedule/gantt-corrected-16-Oct.png) · [MS Project XML](4-schedule/TheZealotsSchedule-corrected-16-Oct.xml) (open in MS Project, save as .mpp). Earlier versions: [Khumo's 16 Oct .mpp](4-schedule/TheZealotsSchedule.mpp) · [Gantt as submitted, 11 Oct](4-schedule/gantt-as-submitted-11-Oct.png) · [XML as submitted](4-schedule/TheZealotsSchedule-as-submitted-11-Oct.xml) |
+| [5-progress-and-demo](5-progress-and-demo) | [Progress Checker, updated 16 Oct (.xlsx)](5-progress-and-demo/Group-Y-Progress-Checker-Phase-2-updated-16-Oct.xlsx) · [Web app demo script](5-progress-and-demo/demo-script.md) |
 
 ## Other links
 
@@ -34,8 +47,8 @@ The **Edit in draw.io** links open the editable diagram straight in the browser,
 3. **Use case and sequence diagrams** (Fig. 2 to 7). Admin-only paths: finalize, delete with atomic restock, reopen.
 4. **ERD** (Fig. 8). Drawn from the live schema; `bookings` is the centre.
 5. **Interface designs** (Fig. 9a to 10c, 13). Each member's own design, then the draw.io versions and the navigation flow.
-6. **Live demo of the web app.** Follow the [demo script](5-progress-and-demo/demo-script.md) (about 3 minutes).
-7. **Schedule and progress.** The [latest schedule](4-schedule/TheZealotsSchedule.mpp) and the [Progress Checker](5-progress-and-demo/Group-Y-Progress-Checker-Phase-2.xlsx).
+6. **Live demo of the web app.** Follow the [demo script](5-progress-and-demo/demo-script.md) (about 3 minutes). For Mr G's bonus: book in a vehicle with his phone number and tap **Send on WhatsApp** on the booking page.
+7. **Schedule and progress.** The [corrected schedule](4-schedule/gantt-corrected-16-Oct.png) (presentation on 16 Oct, late submission shown against its deadline) and the [Progress Checker](5-progress-and-demo/Group-Y-Progress-Checker-Phase-2-updated-16-Oct.xlsx).
 8. **Questions.**
 
 ## Designs
@@ -82,11 +95,17 @@ The **Edit in draw.io** links open the editable diagram straight in the browser,
 
 ![Sequence: admin reopens a closed booking](2-designs/07-seq-4-admin-reopen-web.png)
 
-### Fig. 8 · ERD (live Supabase schema)
+### Fig. 7b · Sequence: customer checks the status and gets updates (new, 16 Oct)
+
+[Edit in draw.io](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Fseq-5-customer-updates.drawio) · [.drawio file](3-design-sources/seq-5-customer-updates.drawio)
+
+![Sequence: customer checks the status and gets updates (new, 16 Oct)](2-designs/07b-seq-5-customer-updates.png)
+
+### Fig. 8 · ERD (crow's-foot notation, redrawn 16 Oct)
 
 [Edit in draw.io](https://app.diagrams.net/#Uhttps%3A%2F%2Fraw.githubusercontent.com%2FBlackZ3ro%2FSpanner-Riese-Auto-Clinic%2Fmain%2Fproject-docs%2Fphase-2%2Fdiagrams%2Feditable%2Ferd.drawio) · [.drawio file](3-design-sources/erd.drawio)
 
-![ERD (live Supabase schema)](2-designs/08-erd.png)
+![ERD (crow's-foot notation, redrawn 16 Oct)](2-designs/08-erd.png)
 
 ### Fig. 9a · Flutter mockups (by Gary van Wyk)
 
