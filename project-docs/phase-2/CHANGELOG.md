@@ -1,5 +1,19 @@
 # Change Log
 
+## 2026-10-16 — Phase 2 presentation feedback
+
+Feedback from the presentation (recording transcript in the group's OneDrive): Mr G on use cases, customer communication, WhatsApp and Google; Ms Mbele on the ERD and the late submission.
+
+- **ERD redrawn** (Ms Mbele: "fix the signs and lines"). Crow's-foot symbols at both ends, every line from the PK row to the FK row, right-angled lines, a legend. Optional foreign keys show "zero or one" on the parent side. The customers line is now "has" (she read "books in" as the customer using the system), and the legend says customers never log in. **New `bookings.created_by`** (migration `0010`, default `auth.uid()`, no app change) answers "where is the mechanic?": staff `auth.users` --records--> `bookings`. **Gary to run 0010.**
+- **Use case diagram** (Mr G: customer use case with the Supabase check and updates). *Track repair status* includes *Check reference code in Supabase* and *View phase, parts and labour*; *Show "code not found"* extends it; *Get phase updates on the phone*; new staff use case *Message customer on WhatsApp*, with WhatsApp as an external system.
+- **Sequence diagrams** (Mr G: include the communication with the client). Book-in (Flutter and web) gains section 3: the reference code goes to the customer on WhatsApp. Finalize shows the push notification and a WhatsApp thank-you. **New sequence** (page 14 of `spanner-all-designs.drawio`): the customer opens the app, taps *I'm a customer*, enters the code, Supabase checks it, then push and WhatsApp updates.
+- **Change 12 (for the SRS change log): Send on WhatsApp.** Mr G: "a little button that sends the codes". Built on the web booking page using WhatsApp's free click-to-chat link, so the zero-budget rule holds (the paid WhatsApp Business API charges per message). This partly adopts the WhatsApp step from Denny's prototype that SRS v2.2 said was not built. Mobile button still to build (Gary).
+- **Change 13 (for the SRS change log): `bookings.created_by`**, as above.
+- **Architecture**: WhatsApp added as an external service; /Track noted as linked from WhatsApp and Google.
+- **Google** (Mr G could not find Riese on Google): `google-business-profile.md`, step-by-step for Michael to create and verify a free Google Business Profile. Public pages now titled "Riese Auto-Clinic"; /Track has a description and link-preview tags.
+- **Use case traceability** (`use-case-traceability.md`, Mr G: every use case needs code, a database table and user input).
+- **Late submission** (Ms Mbele): Phase 2 was due 13 Oct 23:59 and submitted on 14 Oct after the reopening. Recorded in the MS Project schedule and the Progress Checker, with the presentation date corrected to 16 Oct.
+
 ## 2026-10-11 — Client colours, team designs, schedule, SRS v2.2
 
 - **Client colours.** The client chose gold and green, or gold, green and orange. Web app restyled on Denny's layout: dark-green sidebar, gold highlights, orange actions and "in progress", green "done". "Today" dashboard has stat cards and phase pills; /Track and the login card match.
