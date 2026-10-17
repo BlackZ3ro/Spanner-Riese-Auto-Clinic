@@ -1,0 +1,16 @@
+# Runs the ASP.NET web app on Vercel (Container Runtime). Also works with plain
+# `docker build -f Dockerfile.vercel .` for testing on any machine.
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+COPY Spanner.Web.csproj .
+RUN dotnet restore
+COPY . .
+RUN dotnet publish -c Release -o /app --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
+WORKDIR /app
+COPY --from=build /app .
+# Vercel sends traffic to $PORT (80 unless set in the project settings).
+# Supabase__Url, Supabase__AnonKey and PublicSiteUrl come from the
+# project's environment variables, never from this file.
+CMD ["sh", "-c", "ASPNETCORE_URLS=http://+:${PORT:-80} exec dotnet Spanner.Web.dll"]

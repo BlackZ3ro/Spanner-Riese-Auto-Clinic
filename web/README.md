@@ -41,7 +41,34 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
    Without credentials configured, it still starts (read-only pages that need
    Supabase just won't have data yet).
 
-## Try this build (new since M8 - quick checklist for anyone testing)
+## Run it online (Vercel)
+
+The app runs on Vercel as a container (`Dockerfile.vercel`, Vercel's Container
+Runtime). Vercel project: **riese-auto-clinic** (root directory `web`,
+framework "Container"). Public address once deployed:
+`https://riese-auto-clinic.vercel.app` (check the exact address Vercel gives
+after the first deploy and update `PublicSiteUrl` if it differs).
+
+1. In the Vercel project's **Settings > Environment Variables** (Production),
+   add `Supabase__Url` and `Supabase__AnonKey` (the same values as the user
+   secrets; anon/public key only, never the service-role key).
+   `PublicSiteUrl` is already set.
+2. Deploy from the repo root on any computer with Node.js:
+   ```bash
+   npx vercel link --project riese-auto-clinic
+   npx vercel deploy --prod
+   ```
+   Or connect the GitHub repo in the Vercel project (Settings > Git) so every
+   push to `main` deploys by itself.
+3. Open `/Track` and log in as staff to check.
+
+Notes: the container sleeps after 5 minutes without visitors, so the first
+page after a quiet spell takes a few seconds (open it before a demo). After it
+wakes up, staff may need to log in again. Tested locally with Docker:
+`docker build -f Dockerfile.vercel -t spanner-web .` then
+`docker run -p 8080:80 -e Supabase__Url=... -e Supabase__AnonKey=... spanner-web`.
+
+ (new since M8 - quick checklist for anyone testing)
 
 Needs migrations `0004` and `0005` applied first for the "Add part" and
 "Delete booking" steps below to fully work (see "Still pending" at the end of

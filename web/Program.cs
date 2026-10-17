@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
 using Spanner.Web.Auth;
 using Spanner.Web.Configuration;
 using Spanner.Web.Services;
@@ -39,6 +40,17 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization();
 
+// Hosted on Vercel (Dockerfile.vercel), requests arrive through Vercel's
+// proxy over plain HTTP. Trust its X-Forwarded-* headers so the app knows the
+// visitor really used HTTPS (absolute links, the link-preview image) and sees
+// their IP. Vercel's proxy addresses aren't fixed, hence the cleared lists.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 builder.Services.Configure<SupabaseSettings>(
     builder.Configuration.GetSection(SupabaseSettings.SectionName));
 
@@ -76,6 +88,8 @@ builder.Services.AddHttpClient<VehicleImageService>(client =>
 });
 
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
