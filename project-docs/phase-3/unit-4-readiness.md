@@ -186,6 +186,7 @@ only on hiding buttons". Two fixes:
 | 8 | Who booked a car in wasn't recorded (Ms Mbele) | No column | 0010 `created_by` | Gary runs it | Open |
 | 9 | Leaked Firebase key in git history | Key file was committed in Sept | Revoke the key | Gary | Open since 29 Sept |
 | 10 | Mobile doesn't live-update | No Realtime subscriptions in mobile | Accept: the notes say a refresh is fine unless real-time is a requirement. Record as a limitation | - | Accepted |
+| 11 | Flutter never reloads bookings or parts after the first load | Riverpod providers cache the list; no pull-to-refresh | Add `RefreshIndicator` + `ref.invalidate` (code guide, Part 2 Step 3) | Gary | Open (found 20 Oct). **Needed for P1** |
 
 ## 7. Initial function checks (4.2 and 4.3, Step 7)
 

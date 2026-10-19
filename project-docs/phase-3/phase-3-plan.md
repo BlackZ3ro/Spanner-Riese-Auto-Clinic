@@ -25,7 +25,7 @@ time we don't leave it to the last evening.
   live presentation alone is **30 of 100**, and every member must take part.
   How each criterion maps to our work and owners: `unit-4-readiness.md`,
   "How Phase 3 is marked". Tracker filled in:
-  `tracker/Group Y - ITC327W Phase 3 Project Progress Tracker (updated 19 Oct).xlsx`.
+  `tracker/Group Y - ITC327W Phase 3 Project Progress Tracker (updated 20 Oct).xlsx`.
 - **Code freeze Thu 29 Oct:** the GitHub repo and the submitted ZIP must be
   the version we demonstrate (rubric).
 - **Still to get from eThuto:** Activity 4.1 (Supabase set-up).
