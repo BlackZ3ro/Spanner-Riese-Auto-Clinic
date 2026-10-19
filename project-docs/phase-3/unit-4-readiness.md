@@ -2,8 +2,9 @@
 
 Group Y "The Zealots", ITC327W. Prepared by Wisani, 18 Oct 2026, from the
 Unit 4 notes on eThuto: Overview, Beginner Guide, Activities 4.2, 4.3 and
-4.4, and the Group Progress Checkpoint. **Activity 4.1** (Supabase set-up)
-wasn't among the files; someone please download it too.
+4.4, and the Group Progress Checkpoint, plus the Phase 3 rubric and
+progress tracker (19 Oct). **Activity 4.1** (Supabase set-up) wasn't among
+the files; someone please download it too.
 
 ## What Phase 3 actually is
 
@@ -34,6 +35,37 @@ we built ahead of the design in Phases 1 and 2. The work now is:
 Status key: **Built** = in the code on `main`; **Live-checked** = seen
 working against the real Supabase project, with evidence; **Gap** = not
 working or not consistent yet.
+
+## How Phase 3 is marked (rubric, received 19 Oct)
+
+Three lecturers each mark out of 100, and the panel average is halved to give
+the mark out of 50. Our honest position today and what moves each line up:
+
+| Criterion | Marks | "Excellent" needs | Where we are (19 Oct) | What gets us there | Owner |
+|---|---|---|---|---|---|
+| Shared Supabase Backend | 15 | ERD implemented with keys and relationships; required operations; authentication and access controls work; one shared project | Tables, keys and functions live and shared; access rules not fully enforced (0008, 0011 not run) | Run 0009, 0004, 0008, 0010, 0011; show the Table Editor and the check queries | Gary |
+| Flutter Mobile Application | 15 | Main screens, navigation, forms and functions work reliably on Supabase; access follows the SRS | All main screens built (on main since 28 Sept) | WhatsApp button, add part in one step, web build; screenshots of every screen | Gary; Breyton (checks) |
+| ASP.NET Web Application | 15 | Same, for the web pages | All pages built; WhatsApp done | Live on Vercel; one labour ledger; admin role from profiles; screenshots of every page | Wisani; Ofentse (checks) |
+| Integration and Functional Correctness | 15 | Same Supabase records; **two shared processes work end to end**; consistent retrieval, updates and permitted access | P1 and P2 built, not yet recorded; labour values differ between the apps | Fix the section 6 problems; record P1 and P2 | Wisani, Gary; Kea (recording) |
+| Final SRS and Implementation Evidence | 5 | Existing SRS continued with an implementation section, **requirement-to-function status**, screenshots, approved changes, known limitations, **GitHub link and MS Project screenshot** | Tables drafted in this file | SRS v3.0: sections 1-6 of this file + screenshots + change log + limitations | Wisani; Denny, Ofentse |
+| Microsoft Project, GitHub and Progress Tracker | 5 | Schedule shows actual progress; **GitHub and the submitted ZIP hold the demonstrated version** with setup guidance; tracker has tasks, contributions, challenges and the **final group reflection** | Tracker filled 19 Oct; MS Project not yet updated for Phase 3; GitHub behind (uploads pending) | Khumo: MS Project; everyone: own Individual Contributions rows; upload the final code; group reflection 29 Oct | Khumo; everyone |
+| Final Presentation and Live Demonstration | **30** | Clear live demo of Flutter + ASP.NET + Supabase incl. **two shared processes**; **every member participates meaningfully**, explains decisions and limitations, answers questions | Demo flow defined (section 9) | Each member presents a part; rehearse Sat 31 Oct; everyone able to explain any part | Everyone |
+
+Two things that cost marks easily:
+- **The ZIP and GitHub must match what we demo.** Freeze the code on Thu
+  29 Oct, upload it, and zip that same version.
+- **Participation is marked.** Seven people, seven parts of the demo
+  (a proposal; agree it on Tuesday):
+
+| Part | Who |
+|---|---|
+| Introduction, architecture, one shared Supabase project | Khumo |
+| Flutter app: book in, parts, labour, phase | Gary |
+| Web app: dashboard, booking, invoice, stock, search | Ofentse |
+| Shared process P1 (phone → web → phone) | Breyton and Gary |
+| Shared process P2 (web → WhatsApp → customer → phone → /Track) | Kea and Wisani |
+| Access rules, data consistency, known limitations | Denny |
+| Questions | Everyone |
 
 ## 1. Mobile functions (Activity 4.2, Step 1)
 

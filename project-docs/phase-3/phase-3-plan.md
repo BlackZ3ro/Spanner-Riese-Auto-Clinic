@@ -21,9 +21,14 @@ time we don't leave it to the last evening.
   needed for this checkpoint.** What's needed instead is the "initial
   function checks" tables and a record of integration problems. Every table
   the notes ask for is filled in for our project in `unit-4-readiness.md`.
-- **Still to get from eThuto:** Activity 4.1 (Supabase set-up), "Rubric:
-  Phase 3" and "Progress Tracker Phase 3". Check this plan against the
-  rubric when we have it.
+- **Rubric and tracker received 19 Oct** (`brief/`). Seven criteria; the
+  live presentation alone is **30 of 100**, and every member must take part.
+  How each criterion maps to our work and owners: `unit-4-readiness.md`,
+  "How Phase 3 is marked". Tracker filled in:
+  `tracker/Group Y - ITC327W Phase 3 Project Progress Tracker (updated 19 Oct).xlsx`.
+- **Code freeze Thu 29 Oct:** the GitHub repo and the submitted ZIP must be
+  the version we demonstrate (rubric).
+- **Still to get from eThuto:** Activity 4.1 (Supabase set-up).
 - **Ask Ms Mbele about the 14 Oct upload.** Our Phase 2 files went into the
   **"Assessment 3"** slot on eThuto, which is the Phase 3 slot. Ask her to
   move or mark it as Phase 2, so it isn't marked as our Phase 3 attempt and
@@ -54,7 +59,7 @@ time we don't leave it to the last evening.
 | 9 | **Acceptance test with Michael Riese**: he books in a real car, follows it on `/Track`, gets the WhatsApp message, and signs off (or lists changes). Also: help him set up the Google Business Profile | Denny | Wisani | Sat 24 Oct (book the visit now) |
 | 10 | SRS v3.0 implementation section: the function, shared-process, consistency, roles and alignment tables from `unit-4-readiness.md`, approved changes (WhatsApp, created_by, 0011, labour ledger) in the change log, known limitations | Denny + Ofentse (tables), Wisani (merge) | Kea | Tue 27 Oct |
 | 11 | Microsoft Project: Phase 3 tasks, owners, links; status date; final screenshot | Khumo | Wisani | Tue 20 Oct (plan), Thu 29 Oct (final) |
-| 12 | Progress Checker for Phase 3 (the new eThuto version), Individual Contributions **filled in by each member** | Everyone, Wisani collects | Khumo | Thu 29 Oct |
+| 12 | Phase 3 Progress Tracker (filled in 19 Oct; keep current): each member adds their own **Individual Contributions** rows; Group Reflection at the end | Everyone, Wisani collects | Khumo | Thu 29 Oct |
 | 13 | Final SRS (v3.0) as one PDF, plus Supabase evidence (Table Editor screenshots, keys and personal data hidden) | Wisani, Gary (Supabase screenshots) | Denny | Thu 29 Oct |
 | 14 | Final presentation: deck, live demo script on the Vercel address, Mr G's WhatsApp demo, everyone able to explain the whole system | Everyone (deck: Khumo + Breyton) | Wisani | Rehearse Sat 31 Oct |
 | 15 | Submit on eThuto | Wisani (back-up Khumo) | - | **Fri 30 Oct** |
