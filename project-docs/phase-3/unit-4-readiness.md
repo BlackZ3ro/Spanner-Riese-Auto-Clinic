@@ -162,12 +162,12 @@ four; demo **P1 and P2**, keep P3 and P4 as back-up.
 | Mechanic (both apps) | Book in, parts, labour, phase, stock; **no** finalize, delete or reopen | Delete: yes (0007). Finalize and reopen: yes once **0011** is run (until then, hidden buttons only) |
 | Admin (both apps) | Everything, incl. finalize, delete (restock), reopen | Yes |
 | Customer (no login) | Only their own booking, by reference code | Yes: lookup function only, no table access |
-| Anyone without a login | Nothing staff-only | **Not yet:** `update_booking_phase` runs without a login until Gary runs **0008** |
+| Anyone without a login | Nothing staff-only | **Yes, checked live 20 Oct:** no rows readable; `update_booking_phase`, `add_booking_part` and `delete_booking_and_restock` refused (0008 live) |
 
 The notes say access must be enforced by the database, "rather than relying
 only on hiding buttons". Two fixes:
 
-- **0008:** Gary, this week.
+- **0008:** done; confirmed live 20 Oct (`evidence/live-checks-2026-10-20.md`).
 - **Finalize and reopen** (admin only): migration **0011** adds the same
   admin check as 0007. Written and tested on a local Postgres (mechanic
   refused, admin allowed, phase changes unaffected); Gary to run it.
@@ -177,7 +177,7 @@ only on hiding buttons". Two fixes:
 | # | Problem | Cause | Action | Who | Status |
 |---|---|---|---|---|---|
 | 1 | Web "Add part" fails (error 42804) | Old text version of `add_booking_part` still in the database | Run 0009 then 0004 | Gary | Open (web has a temporary workaround) |
-| 2 | Phase can be changed without a login | Postgres lets everyone run new functions by default | Run 0008 | Gary | Open |
+| 2 | Phase can be changed without a login | Postgres lets everyone run new functions by default | Run 0008 | Gary | **Fixed** (confirmed live 20 Oct) |
 | 3 | Web and mobile invoices can show different labour | Two labour tables (`jobs` vs `booking_labor`) | Decide Tue 20 Oct; proposal: keep `booking_labor`, move the web over | Wisani + Gary | Open |
 | 4 | Admin role read from two places | Web uses an email list, mobile uses `profiles.role` | Web reads `profiles.role` too | Wisani | Open |
 | 5 | Finalize and reopen only blocked by hidden buttons | No database check | Migration 0011 (admin check, like 0007): written and tested 18 Oct | Gary runs it | Fix ready |

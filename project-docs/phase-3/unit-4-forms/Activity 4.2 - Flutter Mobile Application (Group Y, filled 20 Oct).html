@@ -1,0 +1,369 @@
+<!doctype html>
+<html dir="ltr" lang="en"> 
+ <head>
+  <title></title>
+ </head> 
+ <body> 
+  <div data-layout-row="eadad6c6-1188-48c1-a2db-8688a8ebbf84"> 
+   <div data-layout-column="efd73708-74b8-49b3-9af9-59e29967a6e1" data-layout-column-width="12"> 
+    <div data-bbid="bbml-editor-id_a8bda423-b269-46aa-bb41-4450c59ac2e8"> 
+     <h2 dir="ltr" lang="en">Activity 4.2: Develop the Flutter Mobile Application</h2> 
+     <br> 
+     <h2><a href="https://ethuto.cut.ac.za/bbcswebdav/pid-1689976-dt-content-rid-23476308_1/xid-23476308_1?Kq3cZcYS15=1918815a42084c8f9a0d6caae8cda7b0&amp;VxJw3wfC56=1792527457&amp;3cCnGYSz89=DX6nGLH4%2F8ntuiu6cmm2sAAz77rLaqIgVlTP8ACkM%2BI%3D" dir="ltr" lang="en">Activity 4.2.mp4</a></h2> 
+     <p dir="ltr" lang="en">By the end of this activity, your group should have a working mobile application that is ready to be integrated with the ASP.NET web application.</p> 
+     <h2 dir="ltr" lang="en">Supporting Video: Building a Flutter Application</h2> 
+     <p dir="ltr" lang="en">Watch the relevant sections of the official Flutter video:</p> 
+     <p><a href="https://www.youtube.com/watch?v=8sAyPDLorek"><span style="color: #2073a1" dir="ltr" lang="en">Building your first Flutter App - with a Codelab!</span></a> </p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Video section</p></th> 
+        <th><p dir="ltr" lang="en">What to focus on</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">14:08</p></td> 
+        <td><p dir="ltr" lang="en">Adding interactive elements</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">54:42</p></td> 
+        <td><p dir="ltr" lang="en">Implementing application functionality</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">1:02:44</p></td> 
+        <td><p dir="ltr" lang="en">Navigation</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">1:23:03</p></td> 
+        <td><p dir="ltr" lang="en">Adding another page</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">The example in the video is different from your stakeholder project. Use it to understand the Flutter development process, then apply what you learn to your own approved interfaces.</p> 
+     <p dir="ltr" lang="en">Additional support: <a href="https://supabase.com/docs/guides/getting-started/quickstarts/flutter" dir="ltr" lang="en">Use Supabase with Flutter | Supabase Docs </a>explains how to connect a Flutter application to Supabase.</p> 
+     <h2 dir="ltr" lang="en">Activity at a Glance</h2> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">You will develop</p></th> 
+        <th><p dir="ltr" lang="en">Main outcome</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Flutter project structure</p></td> 
+        <td><p dir="ltr" lang="en">Organised mobile source code</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Approved mobile screens</p></td> 
+        <td><p dir="ltr" lang="en">Working user interfaces</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Forms and navigation</p></td> 
+        <td><p dir="ltr" lang="en">Users can move through the application</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Required mobile functions</p></td> 
+        <td><p dir="ltr" lang="en">Features based on the SRS</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Supabase connection</p></td> 
+        <td><p dir="ltr" lang="en">Mobile application uses the shared backend</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Initial function checks</p></td> 
+        <td><p dir="ltr" lang="en">Evidence of working mobile features</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <h2 dir="ltr" lang="en">What You Must Do</h2> 
+     <h3 dir="ltr" lang="en">Step 1: Review the Approved Mobile Application Requirements</h3> 
+     <p dir="ltr" lang="en">Open your updated SRS and review the mobile interface designs, use case diagram and sequence diagrams.</p> 
+     <p dir="ltr" lang="en">Identify the functions that must be implemented in Flutter.</p> 
+     <p dir="ltr" lang="en">Complete the following table for your project.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Mobile function</p></th> 
+        <th><p dir="ltr" lang="en">Related requirement or use case</p></th> 
+        <th><p dir="ltr" lang="en">Required screen</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Staff sign in (admin or mechanic, role from profiles)</p></td> 
+        <td><p dir="ltr" lang="en">FR-12; Login</p></td> 
+        <td><p dir="ltr" lang="en">Login screen (I work here)</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Book in a vehicle and its customer</p></td> 
+        <td><p dir="ltr" lang="en">FR-01; Book in a vehicle</p></td> 
+        <td><p dir="ltr" lang="en">Book-in screen</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">View and search bookings (open and completed)</p></td> 
+        <td><p dir="ltr" lang="en">FR-11; Search bookings / vehicle history</p></td> 
+        <td><p dir="ltr" lang="en">Bookings list</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Add parts and labour, see the booking total</p></td> 
+        <td><p dir="ltr" lang="en">FR-02, FR-04, FR-05, FR-06; Update booking</p></td> 
+        <td><p dir="ltr" lang="en">Booking details</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Change the booking phase</p></td> 
+        <td><p dir="ltr" lang="en">FR-15; Update booking phase</p></td> 
+        <td><p dir="ltr" lang="en">Booking details</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Finalize, delete (with restock) and reopen: admin only</p></td> 
+        <td><p dir="ltr" lang="en">FR-17, FR-18</p></td> 
+        <td><p dir="ltr" lang="en">Booking details</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Invoice PDF</p></td> 
+        <td><p dir="ltr" lang="en">FR-07, FR-08; Download invoice</p></td> 
+        <td><p dir="ltr" lang="en">Booking details (invoice)</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Stock list, add item, restock, categories and suppliers</p></td> 
+        <td><p dir="ltr" lang="en">FR-03, FR-10; Manage stock</p></td> 
+        <td><p dir="ltr" lang="en">Stock list, Add stock item, Stock item details, Manage categories and suppliers</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Customer: track repair by reference code (no login)</p></td> 
+        <td><p dir="ltr" lang="en">FR-14; Track repair status</p></td> 
+        <td><p dir="ltr" lang="en">Check your vehicle (I'm a customer), Vehicle status</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Customer: phase push notifications</p></td> 
+        <td><p dir="ltr" lang="en">FR-16; Get phase updates</p></td> 
+        <td><p dir="ltr" lang="en">Vehicle status (Android)</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Send the reference code on WhatsApp</p></td> 
+        <td><p dir="ltr" lang="en">Phase 2 feedback (Mr G, 16 Oct)</p></td> 
+        <td><p dir="ltr" lang="en">Booking details (still to build)</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Short example: Salon appointment system</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Mobile function</p></th> 
+        <th><p dir="ltr" lang="en">Related use case</p></th> 
+        <th><p dir="ltr" lang="en">Required screen</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Sign in</p></td> 
+        <td><p dir="ltr" lang="en">Login</p></td> 
+        <td><p dir="ltr" lang="en">Login screen</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Request appointment</p></td> 
+        <td><p dir="ltr" lang="en">Request Appointment</p></td> 
+        <td><p dir="ltr" lang="en">Appointment form</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">View appointment status</p></td> 
+        <td><p dir="ltr" lang="en">View Appointment Status</p></td> 
+        <td><p dir="ltr" lang="en">My Appointments screen</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Your group's implementation must follow your own approved requirements, not the salon example.</p> 
+     <h3 dir="ltr" lang="en">Step 2: Prepare the Flutter Project</h3> 
+     <p dir="ltr" lang="en">Open the group's Flutter project or create it if it has not yet been prepared.</p> 
+     <p dir="ltr" lang="en">Keep the mobile application in the mobile/ folder of the group's GitHub repository. Use meaningful names for screens, models and services.</p> 
+     <p dir="ltr" lang="en">Check that the application runs in your development environment before implementing the remaining functions.</p> 
+     <h3 dir="ltr" lang="en">Step 3: Develop the Approved Screens</h3> 
+     <p dir="ltr" lang="en">Use the wireframes from Unit 3 to build the main mobile screens.</p> 
+     <p dir="ltr" lang="en">For each screen, implement the required interface elements.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Interface element</p></th> 
+        <th><p dir="ltr" lang="en">Example</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Text field</p></td> 
+        <td><p dir="ltr" lang="en">Customer name</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Date or time input</p></td> 
+        <td><p dir="ltr" lang="en">Preferred appointment date</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Button</p></td> 
+        <td><p dir="ltr" lang="en">Submit Request</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">List</p></td> 
+        <td><p dir="ltr" lang="en">My Appointments</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Status display</p></td> 
+        <td><p dir="ltr" lang="en">Pending, Approved or Rejected</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Your interfaces must be clear, consistent and appropriate for the intended users.</p> 
+     <h3 dir="ltr" lang="en">Step 4: Implement Navigation and Forms</h3> 
+     <p dir="ltr" lang="en">Connect the screens so users can move through the mobile application.</p> 
+     <p dir="ltr" lang="en">Add appropriate form validation. For example, a user should receive a helpful message when a required field is empty.</p> 
+     <p dir="ltr" lang="en">Short example: A customer opens the appointment form, enters the required details and selects Submit Request. The application checks the information before attempting to save it.</p> 
+     <p dir="ltr" lang="en">The exact navigation and validation must follow your project's requirements.</p> 
+     <h3 dir="ltr" lang="en">Step 5: Connect Flutter to the Shared Supabase Backend</h3> 
+     <p dir="ltr" lang="en">Use the same Supabase project configured in Activity 4.1.</p> 
+     <p dir="ltr" lang="en">Install and configure the supabase_flutter package, initialise the client and connect the required application functions to the approved database tables. Follow the official quickstart for the current setup steps.</p> 
+     <p><a href="https://supabase.com/docs/guides/getting-started/quickstarts/flutter" dir="ltr" lang="en">Use Supabase with Flutter</a></p> 
+     <p><a href="https://supabase.com/docs/reference/dart/introduction" dir="ltr" lang="en">Flutter Client Library</a></p> 
+     <p dir="ltr" lang="en">Implement the database operations required by your mobile application.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Operation</p></th> 
+        <th><p dir="ltr" lang="en">Salon example</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Create</p></td> 
+        <td><p dir="ltr" lang="en">Save a new appointment request</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Read</p></td> 
+        <td><p dir="ltr" lang="en">Retrieve the customer's appointments</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Update</p></td> 
+        <td><p dir="ltr" lang="en">Change information where the user is authorised to do so</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Delete</p></td> 
+        <td><p dir="ltr" lang="en">Remove a record only where the requirement and permissions allow it</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Important: Use the appropriate client publishable key and correctly configured database permissions. Do not include Supabase secret or service-role keys in the mobile application or GitHub repository.</p> 
+     <h3 dir="ltr" lang="en">Step 6: Implement the Main Mobile Functions</h3> 
+     <p dir="ltr" lang="en">Implement the mobile functions identified in Step 1.</p> 
+     <p dir="ltr" lang="en">Where authentication is required, connect the sign-in process to Supabase Authentication and make sure users can access only the information and functions permitted by their role.</p> 
+     <p dir="ltr" lang="en">For each function, check that the user can complete the intended process from beginning to end.</p> 
+     <h3 dir="ltr" lang="en">Step 7: Perform Initial Function Checks</h3> 
+     <p dir="ltr" lang="en">Use suitable dummy data to check that the mobile application works.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Function or check</p></th> 
+        <th><p dir="ltr" lang="en">Result</p></th> 
+        <th><p dir="ltr" lang="en">Action required</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Application launches successfully</p></td> 
+        <td><p dir="ltr" lang="en">Not yet checked in Phase 3 (no Flutter SDK on the machine used for the 20 Oct checks).</p></td> 
+        <td><p dir="ltr" lang="en">Breyton: run on a phone with the shared .env and screenshot, by 25 Oct.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Main screens display correctly</p></td> 
+        <td><p dir="ltr" lang="en">Not yet checked in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Screenshot every screen listed in Step 1.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Navigation works</p></td> 
+        <td><p dir="ltr" lang="en">Not yet checked in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Role choice &gt; login &gt; home &gt; bookings &gt; details; I'm a customer &gt; status.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Forms validate input</p></td> 
+        <td><p dir="ltr" lang="en">Code checked: book-in and login use required-field validators. Not yet seen on a phone.</p></td> 
+        <td><p dir="ltr" lang="en">Leave a required field empty and screenshot the message.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Mobile application connects to Supabase</p></td> 
+        <td><p dir="ltr" lang="en">Configured for the shared project (same project URL as the web app, .env set 20 Oct). Not yet run.</p></td> 
+        <td><p dir="ltr" lang="en">Confirm the bookings list loads.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Required records can be saved</p></td> 
+        <td><p dir="ltr" lang="en">Not yet checked in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Book in a dummy vehicle and show the row in Supabase.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Required records can be retrieved</p></td> 
+        <td><p dir="ltr" lang="en">Partly: lists load once and do not reload (found 20 Oct), so web changes do not appear until the app restarts.</p></td> 
+        <td><p dir="ltr" lang="en">Gary: add pull-to-refresh (tracker P3-25) by 24 Oct.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Authentication works, where required</p></td> 
+        <td><p dir="ltr" lang="en">Not yet checked in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Log in as admin and as mechanic.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Access restrictions work as intended</p></td> 
+        <td><p dir="ltr" lang="en">Database side checked live 20 Oct: anonymous calls to staff functions refused. App hides admin actions for mechanics (code).</p></td> 
+        <td><p dir="ltr" lang="en">Log in as mechanic and confirm there is no finalize or delete.</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Fix problems identified during development. The complete prototype will undergo formal manual testing in Unit 5.</p> 
+     <h3 dir="ltr" lang="en">Step 8: Commit Your Work and Update Project Records</h3> 
+     <p dir="ltr" lang="en">Commit the developed mobile application to the group's GitHub repository.</p> 
+     <p dir="ltr" lang="en">Update the existing Microsoft Project file and Project Progress Tracker to show completed tasks, responsible group members, progress and any challenges.</p> 
+     <p dir="ltr" lang="en">If an approved requirement or design needed to change during implementation, record the change in the SRS.</p> 
+     <h2 dir="ltr" lang="en">What to Keep as Evidence</h2> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Evidence</p></th> 
+        <th><p dir="ltr" lang="en">What it should show</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Mobile application screenshots</p></td> 
+        <td><p dir="ltr" lang="en">Implemented screens and navigation</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Function screenshots or short recordings</p></td> 
+        <td><p dir="ltr" lang="en">Main mobile functions working</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Supabase evidence</p></td> 
+        <td><p dir="ltr" lang="en">Required information saved or retrieved through the mobile application</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">GitHub commits</p></td> 
+        <td><p dir="ltr" lang="en">Development progress and contributions</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Updated Microsoft Project</p></td> 
+        <td><p dir="ltr" lang="en">Current development progress</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Updated Project Progress Tracker</p></td> 
+        <td><p dir="ltr" lang="en">Completed tasks, contributions and challenges</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Do not include passwords, secret keys or confidential personal information in your evidence.</p> 
+     <h2 dir="ltr" lang="en">Activity Outcome</h2> 
+     <p dir="ltr" lang="en">A working Flutter mobile application with the approved screens, navigation and main functions implemented.</p> 
+     <p dir="ltr" lang="en">The mobile application must connect to the shared Supabase backend and be ready for integration with the ASP.NET web application.</p> 
+     <h2 dir="ltr" lang="en">Before Moving On</h2> 
+     <p dir="ltr" lang="en">Confirm that the group has:</p> 
+     <ul> 
+      <li dir="ltr" lang="en">implemented the approved mobile screens and navigation;</li> 
+      <li dir="ltr" lang="en">developed the required forms and mobile functions;</li> 
+      <li dir="ltr" lang="en">connected Flutter to the shared Supabase backend;</li> 
+      <li dir="ltr" lang="en">checked the main functions using suitable test data;</li> 
+      <li dir="ltr" lang="en">retained evidence of the working mobile application;</li> 
+      <li dir="ltr" lang="en">committed relevant code to GitHub; and</li> 
+      <li dir="ltr" lang="en">updated Microsoft Project and the Project Progress Tracker.</li> 
+     </ul> 
+     <p dir="ltr" lang="en">Next: Activity 4.3: Develop the ASP.NET Web Application.</p> 
+    </div> 
+   </div> 
+  </div>  
+ </body>
+</html>

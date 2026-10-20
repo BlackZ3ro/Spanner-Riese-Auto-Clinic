@@ -63,7 +63,11 @@ public class LoginModel(Supabase.Client supabase) : PageModel
         {
             // Wrong password, unreachable Supabase project, missing config, etc. -
             // staff should see "something's wrong", not a crash (NFR-03).
-            ErrorMessage = $"Couldn't sign in: {ex.Message}";
+            // Supabase reports a wrong password as a JSON error body
+            // ("invalid_credentials"), which isn't for staff to read (NFR-01).
+            ErrorMessage = ex.Message.Contains("invalid_credentials") || ex.Message.Contains("Invalid login credentials")
+                ? "Incorrect email or password."
+                : $"Couldn't sign in: {ex.Message}";
             return Page();
         }
     }

@@ -335,7 +335,7 @@ It all happens in one transaction: all or nothing.
 | A logged-out person reads the tables with the public anon key | RLS: anonymous visitors get no table access (checked live, 7 Oct) | Supabase policies |
 | A customer guesses a code | Random 8-character codes (~1 trillion); the lookup returns no personal data | `0006` `generate_reference_code`, `get_booking_by_reference_code` |
 | A mechanic finalizes, deletes or reopens | Server check in the web app; delete checked in the database (0007); finalize/reopen in the database once 0011 is run | `Details.cshtml.cs`, `0007`, `0011` |
-| Anyone changes a phase without logging in | Migration 0008 revokes anonymous access to staff functions (**must be run; open today**) | `0008` |
+| Anyone changes a phase without logging in | Migration 0008 revokes anonymous access to staff functions (**live: checked 20 Oct, anonymous call refused**) | `0008` |
 | Stock goes wrong when two people use the last part | Conditional update inside one transaction | `0004` `add_booking_part` |
 | Secret keys leak | Keys live in user-secrets / Vercel settings, never in git; the service-role key only lives in the Edge Function | `Program.cs` comments, `.gitignore` |
 | Fake calls to the push function | Shared webhook secret | `send-phase-notification/index.ts:12` |
@@ -380,7 +380,7 @@ The rubric rewards explaining limitations. Say these confidently:
 6. **Vercel's container hosting is a beta** and sleeps after 5 idle
    minutes: the first page is slow and staff may have to log in again. We
    have a laptop back-up.
-7. Anything from migrations 0008-0011 **not yet run** on the day.
+7. Anything from migrations 0009-0011 **not yet run** on the day (0008 is live; 0010's `created_by` column was not there on 20 Oct).
 
 ---
 

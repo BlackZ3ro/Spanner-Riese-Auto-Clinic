@@ -10,3 +10,5 @@ Due Monday 2 November 2026 (we submit Friday 30 October); presentations 2-6 Nove
 - `hosting-on-vercel.md`: putting the web app and the Flutter web build online.
 - `Spanner - Gary handoff (18 Oct 2026).pdf`: database fixes (0009, 0004, 0008, 0010, 0011) and mobile changes for Gary.
 - `team-update-2026-10-17.md`, `-18.md`, `-19.md`: messages to the group.
+- `unit-4-forms/`: the eThuto Unit 4 activity forms (4.2, 4.3, 4.4, checkpoint) with our answers filled in, nothing else changed.
+- `evidence/`: live checks against the shared Supabase project (`live-checks-2026-10-20.md`) and web screenshots (`web/`).

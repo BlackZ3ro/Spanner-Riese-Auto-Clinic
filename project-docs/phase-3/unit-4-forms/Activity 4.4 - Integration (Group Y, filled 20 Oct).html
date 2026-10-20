@@ -1,0 +1,415 @@
+<!doctype html>
+<html dir="ltr" lang="en"> 
+ <head>
+  <title></title>
+ </head> 
+ <body> 
+  <div data-layout-row="776531f4-4814-47c2-a466-cb4932d8c63f"> 
+   <div data-layout-column="2fca9436-50b3-41fa-93f0-a8e47a629c45" data-layout-column-width="12"> 
+    <div data-bbid="bbml-editor-id_b7bde045-8e99-479c-a78b-a7c81df2ba9b"> 
+     <h2 dir="ltr" lang="en">Activity 4.4: Integrate the Mobile and Web Applications</h2> 
+     <br> 
+     <h2><a href="https://ethuto.cut.ac.za/bbcswebdav/pid-1689981-dt-content-rid-23476318_1/xid-23476318_1?Kq3cZcYS15=1918815a42084c8f9a0d6caae8cda7b0&amp;VxJw3wfC56=1792527487&amp;3cCnGYSz89=m%2F6wlIOGj7pWtNQ8niziyCsgBr5IX9HRHbZPF1iMUps%3D" dir="ltr" lang="en">Activity 4.4.mp4</a></h2> 
+     <p dir="ltr" lang="en">Remember, your goal is to demonstrate one integrated prototype that addresses the approved stakeholder requirements.</p> 
+     <h2 dir="ltr" lang="en">Supporting Video: Connecting an Application to Supabase</h2> 
+     <p dir="ltr" lang="en">Watch the following Supabase tutorial:</p> 
+     <p dir="ltr" lang="en"><a href="https://www.youtube.com/watch?v=F2j6Q-4nLEE" dir="ltr" lang="en">Getting Started with Flutter and Supabase</a> .</p> 
+     <p dir="ltr" lang="en">The video demonstrates how an application connects to Supabase and uses database operations. It focuses on Flutter rather than a combined Flutter and ASP.NET system. Apply the same shared-backend principle to both of your applications.</p> 
+     <p dir="ltr" lang="en">You can also refer to the official <a href="https://supabase.com/docs/guides/getting-started/quickstarts/flutter" dir="ltr" lang="en">Supabase Flutter Quickstart </a> and <a href="https://supabase.com/docs/reference/csharp/installing" dir="ltr" lang="en">Supabase C#</a> Documentation for the respective application connections.</p> 
+     <h3 dir="ltr" lang="en">While Watching</h3> 
+     <p dir="ltr" lang="en">Consider these questions:</p> 
+     <ol> 
+      <li dir="ltr" lang="en">How does an application connect to Supabase?</li> 
+      <li dir="ltr" lang="en">How is information saved to the database?</li> 
+      <li dir="ltr" lang="en">How does the application retrieve information?</li> 
+      <li dir="ltr" lang="en">What must your group do to ensure that Flutter and ASP.NET work with the same data?</li> 
+     </ol> 
+     <h2 dir="ltr" lang="en">Activity at a Glance</h2> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">You will complete</p></th> 
+        <th><p dir="ltr" lang="en">Main outcome</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Check both application connections</p></td> 
+        <td><p dir="ltr" lang="en">One shared Supabase backend</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Implement shared processes</p></td> 
+        <td><p dir="ltr" lang="en">Data moves correctly between the applications</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Check user roles and access</p></td> 
+        <td><p dir="ltr" lang="en">Users can perform their approved functions</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Check data consistency</p></td> 
+        <td><p dir="ltr" lang="en">Both applications use the same records and status values</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Identify and correct integration problems</p></td> 
+        <td><p dir="ltr" lang="en">Improved working prototype</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Update project records</p></td> 
+        <td><p dir="ltr" lang="en">Evidence of development and integration progress</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <h2 dir="ltr" lang="en">What You Must Do</h2> 
+     <h3 dir="ltr" lang="en">Step 1: Review Your Approved Integration Design</h3> 
+     <p dir="ltr" lang="en">Open your updated SRS and review the system architecture, use case diagram and sequence diagrams from Unit 3.</p> 
+     <p dir="ltr" lang="en">Identify the processes that require information to move between Flutter, Supabase and ASP.NET.</p> 
+     <p dir="ltr" lang="en">Complete the following table for your project.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Shared process</p></th> 
+        <th><p dir="ltr" lang="en">Action in Flutter</p></th> 
+        <th><p dir="ltr" lang="en">Action in ASP.NET</p></th> 
+        <th><p dir="ltr" lang="en">Shared information</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">P1: Book-in reaches the other app</p></td> 
+        <td><p dir="ltr" lang="en">Staff book in a vehicle; later reopen it and see the part added on the web, with stock reduced</p></td> 
+        <td><p dir="ltr" lang="en">The booking appears on the dashboard; staff open it and add a part</p></td> 
+        <td><p dir="ltr" lang="en">bookings, customers, booking_parts, stock_items, stock_movements</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">P2: Repair progress reaches the customer</p></td> 
+        <td><p dir="ltr" lang="en">The customer enters the reference code and sees the phase (push on Android); staff can also change the phase</p></td> 
+        <td><p dir="ltr" lang="en">Staff change the phase and send it on WhatsApp; Track shows it</p></td> 
+        <td><p dir="ltr" lang="en">bookings.phase, bookings.reference_code, booking_push_tokens</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">P3: Admin closes the job</p></td> 
+        <td><p dir="ltr" lang="en">The booking shows as closed; the customer sees "Finalized"</p></td> 
+        <td><p dir="ltr" lang="en">An admin finalizes the booking and downloads the invoice</p></td> 
+        <td><p dir="ltr" lang="en">bookings.status, bookings.phase, bookings.closed_at</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Short example: Salon appointment system</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Shared process</p></th> 
+        <th><p dir="ltr" lang="en">Action in Flutter</p></th> 
+        <th><p dir="ltr" lang="en">Action in ASP.NET</p></th> 
+        <th><p dir="ltr" lang="en">Shared information</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Appointment request</p></td> 
+        <td><p dir="ltr" lang="en">Customer submits a request</p></td> 
+        <td><p dir="ltr" lang="en">Staff view the request</p></td> 
+        <td><p dir="ltr" lang="en">Appointment details</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Appointment approval</p></td> 
+        <td><p dir="ltr" lang="en">Customer views the status</p></td> 
+        <td><p dir="ltr" lang="en">Staff approve the request</p></td> 
+        <td><p dir="ltr" lang="en">Appointment status</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Appointment rejection</p></td> 
+        <td><p dir="ltr" lang="en">Customer views the status</p></td> 
+        <td><p dir="ltr" lang="en">Staff reject the request</p></td> 
+        <td><p dir="ltr" lang="en">Appointment status</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Your group's processes must reflect your own approved requirements.</p> 
+     <h3 dir="ltr" lang="en">Step 2: Confirm That Both Applications Use the Same Backend</h3> 
+     <p dir="ltr" lang="en">Check the configuration of your Flutter and ASP.NET projects.</p> 
+     <p dir="ltr" lang="en">Both applications must connect to the same Supabase project and the relevant shared database tables.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Item to check</p></th> 
+        <th><p dir="ltr" lang="en">Flutter</p></th> 
+        <th><p dir="ltr" lang="en">ASP.NET</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Correct Supabase project</p></td> 
+        <td><p dir="ltr" lang="en">SUPABASE_URL in mobile/.env: the shared project (set 20 Oct)</p></td> 
+        <td><p dir="ltr" lang="en">Supabase:Url in user-secrets (and Vercel settings): the same project, connected 20 Oct</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Required database tables</p></td> 
+        <td><p dir="ltr" lang="en">bookings, customers, booking_parts, booking_labor, stock_items, stock_movements, categories, suppliers, profiles, booking_push_tokens</p></td> 
+        <td><p dir="ltr" lang="en">bookings, customers, booking_parts, jobs, stock_items, stock_movements, categories, suppliers</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Appropriate authentication</p></td> 
+        <td><p dir="ltr" lang="en">Supabase Auth email and password; role read from profiles</p></td> 
+        <td><p dir="ltr" lang="en">Supabase Auth email and password; each request runs as that staff member; admin from a configured list (moving to profiles)</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Required database operations</p></td> 
+        <td><p dir="ltr" lang="en">Create, read, update on the tables; database functions update_booking_phase, delete_booking_and_restock, get_booking_by_reference_code, register_push_token</p></td> 
+        <td><p dir="ltr" lang="en">The same, plus add_booking_part (stock, part and movement in one transaction)</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Approved user permissions</p></td> 
+        <td><p dir="ltr" lang="en">Admin-only actions hidden for mechanics; the database enforces admin-only delete and staff-only functions</p></td> 
+        <td><p dir="ltr" lang="en">Admin checked on the server for finalize, delete and reopen; the same database rules apply</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Important: Using the same backend does not mean every user has the same permissions. Access must still follow the roles and requirements in your SRS.</p> 
+     <h3 dir="ltr" lang="en">Step 3: Check That Both Applications Use Consistent Information</h3> 
+     <p dir="ltr" lang="en">Compare the database fields and values used in the two applications.</p> 
+     <p dir="ltr" lang="en">For example, if the Appointment table contains a Status field, the applications must use the same agreed status values.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Field</p></th> 
+        <th><p dir="ltr" lang="en">Flutter</p></th> 
+        <th><p dir="ltr" lang="en">ASP.NET</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">AppointmentID</p></td> 
+        <td><p dir="ltr" lang="en">Identifies the appointment</p></td> 
+        <td><p dir="ltr" lang="en">Identifies the same appointment</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">CustomerID</p></td> 
+        <td><p dir="ltr" lang="en">Associates the request with the customer</p></td> 
+        <td><p dir="ltr" lang="en">Identifies the relevant customer</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Status</p></td> 
+        <td><p dir="ltr" lang="en">Displays the current status</p></td> 
+        <td><p dir="ltr" lang="en">Updates the current status</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">bookings.id</p></td> 
+        <td><p dir="ltr" lang="en">Opens the booking details</p></td> 
+        <td><p dir="ltr" lang="en">Opens the same booking (Booking details)</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">bookings.customer_id</p></td> 
+        <td><p dir="ltr" lang="en">Links the booking to the customer picked or created at book-in</p></td> 
+        <td><p dir="ltr" lang="en">The same: picks or creates the customers row</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">bookings.status</p></td> 
+        <td><p dir="ltr" lang="en">checked_in or closed</p></td> 
+        <td><p dir="ltr" lang="en">checked_in or closed (same values)</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">bookings.phase</p></td> 
+        <td><p dir="ltr" lang="en">booked_in, labor_in_progress, reassembly, ready_for_pickup, finalized (same labels)</p></td> 
+        <td><p dir="ltr" lang="en">The same five values and labels</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">bookings.reference_code</p></td> 
+        <td><p dir="ltr" lang="en">The customer enters it to track the car</p></td> 
+        <td><p dir="ltr" lang="en">Shown on the booking page, sent on WhatsApp, used on Track</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Labour</p></td> 
+        <td><p dir="ltr" lang="en">Saved in booking_labor</p></td> 
+        <td><p dir="ltr" lang="en">Saved in jobs (hours x rate). Not consistent yet: the group is choosing one table</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Avoid situations where one application uses Approved while the other expects a different value that it cannot interpret.</p> 
+     <p dir="ltr" lang="en">Both applications must also handle dates, required fields and record identifiers consistently.</p> 
+     <h3 dir="ltr" lang="en">Step 4: Demonstrate a Complete Shared Process</h3> 
+     <p dir="ltr" lang="en">Select at least two important processes from your approved requirements that involve both applications. Where possible, demonstrate information flowing in both directions.</p> 
+     <p dir="ltr" lang="en">For each process, check what happens from the first user action to the final result.</p> 
+     <p dir="ltr" lang="en">Short example: Salon appointment system</p> 
+     <ol> 
+      <li dir="ltr" lang="en">A customer submits an appointment request in Flutter.</li> 
+      <li dir="ltr" lang="en">Flutter saves the request in Supabase.</li> 
+      <li dir="ltr" lang="en">A staff member opens the ASP.NET web application.</li> 
+      <li dir="ltr" lang="en">The web application retrieves the same request from Supabase.</li> 
+      <li dir="ltr" lang="en">The staff member approves the request.</li> 
+      <li dir="ltr" lang="en">ASP.NET updates the appointment status in Supabase.</li> 
+      <li dir="ltr" lang="en">The customer refreshes or reopens the relevant Flutter screen and sees the updated status.</li> 
+     </ol> 
+     <p dir="ltr" lang="en">The final step does not need to happen automatically unless real-time updates form part of your approved requirements. Supabase supports real-time change subscriptions, but these must be configured and implemented if needed.</p> 
+     <p><a href="https://supabase.com/docs/reference/dart/stream" dir="ltr" lang="en">Flutter stream</a></p> 
+     <h3><a href="https://supabase.com/docs/guides/realtime/realtime-listening-flutter"><span style="font-size: 0.75rem;"><strong dir="ltr" lang="en">Listening to Postgres Changes with Flutter</strong></span></a></h3> 
+     <h3 dir="ltr" lang="en">Step 5: Check Authentication and Access Across the System</h3> 
+     <p dir="ltr" lang="en">Check the approved user roles using suitable test accounts.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">User role</p></th> 
+        <th><p dir="ltr" lang="en">Expected action</p></th> 
+        <th><p dir="ltr" lang="en">Result</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Mobile user</p></td> 
+        <td><p dir="ltr" lang="en">Access their permitted functions and information</p></td> 
+        <td><p dir="ltr" lang="en">Staff log in with Supabase Auth; admin-only actions are hidden for mechanics. Not yet re-checked on a phone in Phase 3.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Web user</p></td> 
+        <td><p dir="ltr" lang="en">Access their permitted functions and information</p></td> 
+        <td><p dir="ltr" lang="en">Admin checked on the server for finalize, delete and reopen; logged-out visitors are sent to the login page (checked 20 Oct).</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Unauthorised user</p></td> 
+        <td><p dir="ltr" lang="en">Cannot access restricted records or functions</p></td> 
+        <td><p dir="ltr" lang="en">Checked live 20 Oct: anonymous visitors read no rows and cannot run update_booking_phase, add_booking_part or delete_booking_and_restock (permission denied). Database check for finalize and reopen is ready (migration 0011) but not yet run.</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">For example, a customer should not be able to approve another customer's appointment simply by changing information in the application.</p> 
+     <p dir="ltr" lang="en">Check that the database permissions support the intended access rules, rather than relying only on hiding buttons or pages.</p> 
+     <p><a href="https://supabase.com/docs/reference/dart/installing" dir="ltr" lang="en">Flutter installing</a></p> 
+     <p><a href="https://supabase.com/docs/reference/csharp/installing" dir="ltr" lang="en">C# installing</a></p> 
+     <h3 dir="ltr" lang="en">Step 6: Record and Correct Integration Problems</h3> 
+     <p dir="ltr" lang="en">As you check the shared processes, record any problems.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Integration problem</p></th> 
+        <th><p dir="ltr" lang="en">Possible cause</p></th> 
+        <th><p dir="ltr" lang="en">Action taken</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">New request does not appear in ASP.NET</p></td> 
+        <td><p dir="ltr" lang="en">Incorrect query or connection</p></td> 
+        <td><p dir="ltr" lang="en">Not seen: the web app reads the bookings table on every page load, and the dashboard reloads by itself when data changes (checked 20 Oct).</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Updated status is not shown in Flutter</p></td> 
+        <td><p dir="ltr" lang="en">Information was not retrieved again</p></td> 
+        <td><p dir="ltr" lang="en">Found 20 Oct: Flutter keeps its lists in memory and has no refresh. Gary is adding pull-to-refresh (tracker P3-25).</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">A user cannot retrieve an authorised record</p></td> 
+        <td><p dir="ltr" lang="en">Incorrect access policy or query</p></td> 
+        <td><p dir="ltr" lang="en">Web "Add part" failed (error 42804, an old copy of the database function). The web uses a workaround; Gary runs migration 0009.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Information is displayed incorrectly</p></td> 
+        <td><p dir="ltr" lang="en">Different field names or data formats</p></td> 
+        <td><p dir="ltr" lang="en">Labour is stored in two tables (jobs and booking_labor), so the two invoices can differ. The group is choosing one table.</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">A phase could be changed without logging in</p></td> 
+        <td><p dir="ltr" lang="en">Database functions could be run by anyone by default</p></td> 
+        <td><p dir="ltr" lang="en">Migration 0008 applied; confirmed live 20 Oct (anonymous call refused).</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Wrong password showed a technical error message</p></td> 
+        <td><p dir="ltr" lang="en">The raw Supabase error was shown to staff</p></td> 
+        <td><p dir="ltr" lang="en">Fixed 20 Oct: the login page now shows "Incorrect email or password."</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Assign each problem to a group member, correct it and check the affected process again.</p> 
+     <p dir="ltr" lang="en">Keep the problem and correction records in your Project Progress Tracker.</p> 
+     <h3 dir="ltr" lang="en">Step 7: Demonstrate the Integrated Prototype</h3> 
+     <p dir="ltr" lang="en">Prepare a short demonstration showing that your mobile and web applications work together.</p> 
+     <p dir="ltr" lang="en">Your demonstration should show:</p> 
+     <ol> 
+      <li dir="ltr" lang="en">The Flutter mobile application running.</li> 
+      <li dir="ltr" lang="en">The ASP.NET web application running.</li> 
+      <li dir="ltr" lang="en">A user completing an important function in one application.</li> 
+      <li dir="ltr" lang="en">The relevant information being saved or updated in Supabase.</li> 
+      <li dir="ltr" lang="en">The other application retrieving or updating that information.</li> 
+      <li dir="ltr" lang="en">The final result appearing correctly in the first application, where applicable.</li> 
+     </ol> 
+     <p dir="ltr" lang="en">Use suitable dummy data during the demonstration.</p> 
+     <h3 dir="ltr" lang="en">Step 8: Update Your Project Documentation and Tools</h3> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Document or tool</p></th> 
+        <th><p dir="ltr" lang="en">What to update</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">SRS</p></td> 
+        <td><p dir="ltr" lang="en">Record approved changes made during implementation</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">GitHub</p></td> 
+        <td><p dir="ltr" lang="en">Commit final integration changes and relevant documentation</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Microsoft Project</p></td> 
+        <td><p dir="ltr" lang="en">Update completed tasks and current progress</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Project Progress Tracker</p></td> 
+        <td><p dir="ltr" lang="en">Record integration work, contributions, problems and corrections</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Keep the source code for both applications in the existing group repository.</p> 
+     <h2 dir="ltr" lang="en">What to Keep as Evidence</h2> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Evidence</p></th> 
+        <th><p dir="ltr" lang="en">What it should show</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Flutter and ASP.NET screenshots</p></td> 
+        <td><p dir="ltr" lang="en">Both applications running</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Screenshots or short recording of shared processes</p></td> 
+        <td><p dir="ltr" lang="en">Information passing through the shared backend</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Supabase evidence</p></td> 
+        <td><p dir="ltr" lang="en">Records created or updated during the demonstration</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Integration problem records</p></td> 
+        <td><p dir="ltr" lang="en">Problems identified and actions taken</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">GitHub commits</p></td> 
+        <td><p dir="ltr" lang="en">Code changes and group contributions</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Updated Microsoft Project</p></td> 
+        <td><p dir="ltr" lang="en">Development and integration progress</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Updated Project Progress Tracker</p></td> 
+        <td><p dir="ltr" lang="en">Completed work and challenges</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Do not expose passwords, secret keys or confidential personal information in your evidence.</p> 
+     <h2 dir="ltr" lang="en">Activity Outcome</h2> 
+     <p dir="ltr" lang="en">A working integrated prototype in which the Flutter mobile application and ASP.NET web application use the same Supabase backend.</p> 
+     <p dir="ltr" lang="en">The group should be able to demonstrate the approved shared processes and explain how information moves through the system.</p> 
+     <h2 dir="ltr" lang="en">Before Moving On</h2> 
+     <p dir="ltr" lang="en">Confirm that your group has:</p> 
+     <ul> 
+      <li dir="ltr" lang="en">connected both applications to the same Supabase project;</li> 
+      <li dir="ltr" lang="en">implemented the shared processes identified in the SRS;</li> 
+      <li dir="ltr" lang="en">checked that information is stored and retrieved consistently;</li> 
+      <li dir="ltr" lang="en">confirmed that user access follows the approved requirements;</li> 
+      <li dir="ltr" lang="en">demonstrated at least two important shared processes;</li> 
+      <li dir="ltr" lang="en">identified and corrected integration problems;</li> 
+      <li dir="ltr" lang="en">retained evidence of the integrated prototype;</li> 
+      <li dir="ltr" lang="en">committed relevant changes to GitHub; and</li> 
+      <li dir="ltr" lang="en">updated Microsoft Project and the Project Progress Tracker.</li> 
+     </ul> 
+     <p dir="ltr" lang="en">Next: Unit 4 Group Progress Checkpoint.</p> 
+    </div> 
+   </div> 
+  </div>  
+ </body>
+</html>
