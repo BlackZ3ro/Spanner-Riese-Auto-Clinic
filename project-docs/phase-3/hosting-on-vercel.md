@@ -61,10 +61,14 @@ database changes because of hosting.
 - **Cold start.** Vercel stops the container after about 5 minutes with no
   visitors. The next visitor waits a few seconds while it starts. Before the
   presentation, open the site 2 minutes early.
-- **Staff may have to log in again** after the container restarts, because the
-  login cookie's encryption keys live in the container. Acceptable for a
-  prototype; to fix later, store the keys (ASP.NET Data Protection) somewhere
-  that survives restarts.
+- **Login 400 / surprise logouts (fixed 20 Oct).** Each container used to
+  invent its own encryption key, so a login form opened on one container
+  failed with HTTP 400 when submitted to the next, and staff were logged
+  out. The app now derives one key from the `DataProtection__Secret`
+  setting (`web/Auth/FixedKeyRepository.cs`). **Set it in Vercel** (any long
+  random text, kept private). Tested by sending a form and a login cookie
+  from one running copy of the app to a fresh one: 400 without the setting,
+  works with it.
 - **Realtime live-reload** on the dashboard needs a long-lived connection. If
   it drops when the container sleeps, the page still works; it just needs a
   manual refresh.

@@ -1,5 +1,6 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Spanner.Web.Auth;
 using Spanner.Web.Configuration;
@@ -50,6 +51,19 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
     options.KnownIPNetworks.Clear();
     options.KnownProxies.Clear();
 });
+
+// Same encryption key in every container on Vercel, so a login form or
+// login cookie made by one container still works on the next (see
+// Auth/FixedKeyRepository.cs). Without the setting (e.g. running locally)
+// ASP.NET keeps its default per-machine keys.
+var dataProtectionSecret = builder.Configuration["DataProtection:Secret"];
+if (!string.IsNullOrWhiteSpace(dataProtectionSecret))
+{
+    builder.Services.AddDataProtection()
+        .SetApplicationName("Spanner.Web")
+        .AddKeyManagementOptions(options => options.XmlRepository = new FixedKeyRepository(dataProtectionSecret))
+        .DisableAutomaticKeyGeneration();
+}
 
 builder.Services.Configure<SupabaseSettings>(
     builder.Configuration.GetSection(SupabaseSettings.SectionName));

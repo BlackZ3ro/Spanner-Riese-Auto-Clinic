@@ -52,6 +52,10 @@ after the first deploy and update `PublicSiteUrl` if it differs).
 1. In the Vercel project's **Settings > Environment Variables** (Production),
    add `Supabase__Url` and `Supabase__AnonKey` (the same values as the user
    secrets; anon/public key only, never the service-role key).
+   Also add `DataProtection__Secret`: any long random text (40+ characters),
+   kept private. Every container then uses the same encryption key, so the
+   login form doesn't fail with HTTP 400 and staff aren't logged out when
+   Vercel starts a new container (`Auth/FixedKeyRepository.cs`).
    `PublicSiteUrl` is already set.
 2. Deploy from the repo root on any computer with Node.js:
    ```bash
@@ -64,7 +68,7 @@ after the first deploy and update `PublicSiteUrl` if it differs).
 
 Notes: the container sleeps after 5 minutes without visitors, so the first
 page after a quiet spell takes a few seconds (open it before a demo). After it
-wakes up, staff may need to log in again. Tested locally with Docker:
+wakes up, staff stay logged in as long as `DataProtection__Secret` is set. Tested locally with Docker:
 `docker build -f Dockerfile.vercel -t spanner-web .` then
 `docker run -p 8080:80 -e Supabase__Url=... -e Supabase__AnonKey=... spanner-web`.
 
