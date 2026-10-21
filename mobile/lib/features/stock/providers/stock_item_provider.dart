@@ -45,17 +45,30 @@ class StockItemNotifier extends AsyncNotifier<List<StockItem>> {
   Future<void> adjustedQuantity(String itemId, int delta, {double? newCostPrice}) async {
     final repo = ref.read(stockItemRepositoryProvider);
     final current = state.value ?? [];
-    final item = current.firstWhere((i) => i.id == itemId);
-    final updated = await repo.updateQuantityAndCost(
-      itemId, 
-      item.quantityOnHand + delta,
-      newCostPrice:  newCostPrice
-      );
-    state = AsyncData([
-      for (final i in current)
-        if (i.id == itemId) updated else i,
-    ]);
+    int baseQuantity;
+  final cached = current.where((i) => i.id == itemId);
+  if (cached.isNotEmpty) {
+    baseQuantity = cached.first.quantityOnHand;
+  } else {
+    final all = await repo.fetchAll();
+    final match = all.where((i) => i.id == itemId);
+    if (match.isEmpty) {
+      throw StateError('Stock item $itemId no longer exists.');
+    }
+    baseQuantity = match.first.quantityOnHand;
   }
+
+  final updated = await repo.updateQuantityAndCost(
+    itemId,
+    baseQuantity + delta,
+    newCostPrice: newCostPrice,
+  );
+
+  final exists = current.any((i) => i.id == itemId);
+  state = AsyncData(exists
+      ? [for (final i in current) if (i.id == itemId) updated else i]
+      : [...current, updated]);
+}
 }
 
 final stockItemProvider = 
