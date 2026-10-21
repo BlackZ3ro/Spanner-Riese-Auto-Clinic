@@ -11,7 +11,7 @@ enum BookingStatus {
       case BookingStatus.checkedIn:
         return 'Checked in';
       case BookingStatus.closed:
-      return 'closed';
+      return 'Closed';
     }
   }
 }

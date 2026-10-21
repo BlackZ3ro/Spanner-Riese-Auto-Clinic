@@ -1,43 +1,68 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/widgets/app_widgets.dart';
+import '../../auth/models/user_role.dart';
+import '../../auth/providers/auth_provider.dart';
 import '../../stock/models/stock_item.dart';
 import '../../stock/providers/stock_item_provider.dart';
 import '../models/booking_labor.dart';
 import '../models/booking_part.dart';
+import '../models/booking_phase.dart';
 import '../models/booking_status.dart';
 import '../models/vehicle_booking.dart';
+import '../providers/booking_deletion_service.dart';
 import '../providers/booking_labor_provider.dart';
 import '../providers/booking_part_service.dart';
 import '../providers/booking_parts_provider.dart';
 import '../providers/invoice_pdf_provider.dart';
 import '../providers/vehicle_booking_provider.dart';
-import 'package:intl/intl.dart';
-import '../../auth/models/user_role.dart';
-import '../../auth/providers/auth_provider.dart';
-import '../providers/booking_deletion_service.dart';
-import '../models/booking_phase.dart';
+import 'widgets/phase_widgets.dart';
+import 'send_reference_sheet.dart';
+
+String _formatDateTime(DateTime? dateTime) {
+  if (dateTime == null) return 'Unknown';
+  return DateFormat('dd MMM yyyy, HH:mm').format(dateTime.toLocal());
+}
+
+String _money(double amount) => 'R${amount.toStringAsFixed(2)}';
 
 class BookingDetailScreen extends ConsumerWidget {
   const BookingDetailScreen({super.key, required this.bookingId});
+
   final String bookingId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bookingsAsync = ref.watch(vehicleBookingProvider);
-    final profileAsync = ref.watch(currentProfileProvider);
-    final isAdmin = profileAsync.value?.role == UserRole.admin;
+    final isAdmin = ref.watch(currentProfileProvider).value?.role == UserRole.admin;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Booking details')),
+      appBar: const AppTopBar(title: 'Booking details'),
       body: bookingsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (e, _) => Center(child: Text('Error: $e')),
         data: (bookings) {
-          final booking = bookings.firstWhere((b) => b.id == bookingId);
-          return _buildBody(context, ref, booking, isAdmin);
+          final matches = bookings.where((b) => b.id == bookingId);
+          if (matches.isEmpty) {
+            return Center(
+              child: Text(
+                'This booking is no longer available.',
+                style: AppText.body(14, color: AppColors.textMuted),
+              ),
+            );
+          }
+          return _buildBody(context, ref, matches.first, isAdmin);
         },
       ),
     );
+  }
+
+  String _stockItemName(List<StockItem> items, String id) {
+    final match = items.where((i) => i.id == id);
+    return match.isEmpty ? 'Unknown item' : match.first.name;
   }
 
   Widget _buildBody(BuildContext context, WidgetRef ref, VehicleBooking booking, bool isAdmin) {
@@ -48,237 +73,255 @@ class BookingDetailScreen extends ConsumerWidget {
     final parts = partsAsync.value ?? <BookingPart>[];
     final labor = laborAsync.value ?? <BookingLabor>[];
 
+    final partsTotal = parts.fold<double>(0, (sum, p) => sum + (p.unitPrice * p.quantity));
+    final laborTotal = labor.fold<double>(0, (sum, l) => sum + l.price);
+
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        if (booking.imageUrl != null)
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: Image.network(booking.imageUrl!, height: 160, fit: BoxFit.cover),
-          ),
-        const SizedBox(height: 12),
-        Text('${booking.brand} ${booking.model} (${booking.year})',
-            style: Theme.of(context).textTheme.headlineSmall),
-        Text('Invoice: ${booking.invoiceNumber}',
-          style: Theme.of(context)
-            .textTheme
-            .bodyMedium
-            ?.copyWith(fontWeight: FontWeight.bold)),
-        Text('Reference: ${booking.referenceCode}'),
-        if (booking.customerName.isNotEmpty) ...[
-          const SizedBox(height: 8,),
-          Text('Customer', style: Theme.of(context).textTheme.titleSmall,),
-          Text(booking.customerName),
-          Text(booking.customerPhone),
-          if (booking.customerEmail != null) Text(booking.customerEmail!),
-          if (booking.customerCompany != null) Text(booking.customerCompany!), 
-        ],
-        const SizedBox(height: 4,),
-        Text('Registration: ${booking.registration}'),
-        Text('Kilometers: ${booking.kilometers} km'),
-        if (booking.engineSize != null) Text('Engine size: ${booking.engineSize}'),
-        if (booking.engineCode != null) Text('Engine code: ${booking.engineCode}'),
-        Text('Transmission: ${booking.transmissionType.displayName}'),
-        const SizedBox(height: 8),
-        Chip(
-          label: Text(booking.status.displayName),
-          backgroundColor: isOpen ? Colors.orange[100] : Colors.green[100],
+        VehiclePhoto(imageUrl: booking.imageUrl),
+        const SizedBox(height: 14),
+        Text('${booking.brand} ${booking.model} (${booking.year})', style: AppText.heading(20)),
+        const SizedBox(height: 4),
+        Text(
+          'Invoice: ${booking.invoiceNumber}',
+          style: AppText.body(13.5, weight: FontWeight.w600),
         ),
-        const SizedBox(height: 8,),
-        Text('Booked in: ${_formatDateTime(booking.createdAt)}'),
-        if (booking.closedAt != null)
-          Text('Finalized: ${_formatDateTime(booking.closedAt)}'),
-        const Divider(height: 32),
-        const SizedBox(height: 12),
-Text('Phase', style: Theme.of(context).textTheme.titleSmall),
-if (isOpen)
-  DropdownButton<BookingPhase>(
-    value: booking.phase,
-    isExpanded: true,
-    items: BookingPhase.selectable
-        .map((p) => DropdownMenuItem(value: p, child: Text(p.displayName)))
-        .toList(),
-    onChanged: (newPhase) async {
-      if (newPhase == null) return;
-      try {
-        await ref.read(vehicleBookingProvider.notifier).updatePhase(booking.id, newPhase);
-      } catch (e) {
-        if (context.mounted) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('Could not update phase: $e')));
-        }
-      }
-    },
-  )
-else
-  Text(booking.phase.displayName),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        const SizedBox(height: 2),
+        Text(
+          'Reference: ${booking.referenceCode}',
+          style: AppText.body(13, color: AppColors.textMuted),
+        ),
+        const SizedBox(height: 14),
+        if (booking.customerName.isNotEmpty) ...[
+          _CustomerCard(booking: booking),
+          const SizedBox(height: 14),
+        ],
+        _VehicleFacts(booking: booking),
+        const SizedBox(height: 14),
+        Wrap(
+          spacing: 10,
+          runSpacing: 6,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Text('Parts', style: Theme.of(context).textTheme.titleMedium),
-            if (isOpen)
-              IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (_) => _AddPartDialog(booking: booking, stockItems: stockItems),
-                ),
-              ),
+            StatusPill(
+              label: isOpen ? 'Checked in' : 'Closed',
+              tone: isOpen ? AppTone.gold : AppTone.green,
+              large: true,
+            ),
+            Text(
+              'Booked in: ${_formatDateTime(booking.createdAt)}',
+              style: AppText.body(12.5, color: AppColors.textFaint),
+            ),
           ],
+        ),
+        if (booking.closedAt != null) ...[
+          const SizedBox(height: 6),
+          Text(
+            'Finalized: ${_formatDateTime(booking.closedAt)}',
+            style: AppText.body(12.5, color: AppColors.textFaint),
+          ),
+        ],
+        const AppDivider(),
+        const SectionLabel('Phase'),
+        const SizedBox(height: 14),
+        PhaseStepper(
+          phase: booking.phase,
+          onSelect: isOpen ? (phase) => _confirmPhaseChange(context, ref, booking, phase) : null,
+        ),
+        if (isOpen) ...[
+          const SizedBox(height: 10),
+          Text(
+            'Tap a step to change the phase. The customer is notified.',
+            style: AppText.body(11.5, color: AppColors.textFaint),
+          ),
+        ],
+        const AppDivider(),
+        _SectionHeader(
+          title: 'Parts',
+          onAdd: isOpen
+              ? () => showDialog(
+                    context: context,
+                    builder: (_) => _AddPartDialog(booking: booking, stockItems: stockItems),
+                  )
+              : null,
         ),
         if (parts.isEmpty)
-          const Text('No parts allocated yet.')
+          Text('No parts allocated yet.', style: AppText.body(13.5, color: AppColors.textMuted))
         else
-          for (final part in parts)
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(
-                stockItems
-                    .firstWhere((i) => i.id == part.stockItemId, orElse: () => stockItems.first)
-                    .name,
-              ),
-              subtitle: Text('${part.quantity} × R ${part.unitPrice.toStringAsFixed(2)}'),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('R ${(part.unitPrice * part.quantity).toStringAsFixed(2)}',
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-                  // Removing parts/labour is admin-only (agreed 23 Sept).
-                  if (isOpen && isAdmin)
-                  IconButton(
-                    icon: const Icon(Icons.close, size: 20),
-                    onPressed: () => _confirmRemovePart(context, ref, booking, part, stockItems),
-                  )
-                ],
-              )
+          for (var i = 0; i < parts.length; i++)
+            _LineItem(
+              title: _stockItemName(stockItems, parts[i].stockItemId),
+              subtitle: '${parts[i].quantity} \u00d7 ${_money(parts[i].unitPrice)}',
+              amount: _money(parts[i].unitPrice * parts[i].quantity),
+              showDivider: i < parts.length - 1,
+              onRemove: isOpen
+                  ? () => _confirmRemovePart(context, ref, booking, parts[i], stockItems)
+                  : null,
             ),
-        const Divider(height: 32),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text('Labor / work done', style: Theme.of(context).textTheme.titleMedium),
-            if (isOpen)
-              IconButton(
-                icon: const Icon(Icons.add),
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (_) => _AddLaborDialog(bookingId: booking.id),
-                ),
-              ),
-          ],
+        const AppDivider(),
+        _SectionHeader(
+          title: 'Labor / work done',
+          onAdd: isOpen
+              ? () => showDialog(
+                    context: context,
+                    builder: (_) => _AddLaborDialog(bookingId: booking.id),
+                  )
+              : null,
         ),
         if (labor.isEmpty)
-          const Text('No work logged yet.')
+          Text('No work logged yet.', style: AppText.body(13.5, color: AppColors.textMuted))
         else
-          for (final item in labor)
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              title: Text(item.description),
-              subtitle: Text('${item.hours} hrs * R${item.rate.toStringAsFixed(2)}'),
-              trailing: Row( 
-              mainAxisSize: MainAxisSize.min,
-              children: [
-               Text('R ${item.price.toStringAsFixed(2)}',
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-                  // Removing parts/labour is admin-only (agreed 23 Sept).
-                  if (isOpen && isAdmin)
-                  IconButton(
-                    icon: const Icon(Icons.close, size: 20),
-                    onPressed: () => _confirmRemoveLabor(context, ref, booking.id, item),
-                  ),
-              ],
-              ),
+          for (var i = 0; i < labor.length; i++)
+            _LineItem(
+              title: labor[i].description,
+              subtitle: '${labor[i].hours} hrs \u00d7 ${_money(labor[i].rate)}/hr',
+              amount: _money(labor[i].price),
+              showDivider: i < labor.length - 1,
+              onRemove:
+                  isOpen ? () => _confirmRemoveLabor(context, ref, booking.id, labor[i]) : null,
             ),
-        const Divider(height: 32),
-        _buildTotals(parts, labor),
-        const SizedBox(height: 24),
-        if (isOpen && isAdmin) ...[
+        const AppDivider(),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text('Parts total: ${_money(partsTotal)}',
+                style: AppText.body(13, color: AppColors.textMuted)),
+            const SizedBox(height: 3),
+            Text('Labor total: ${_money(laborTotal)}',
+                style: AppText.body(13, color: AppColors.textMuted)),
+            const SizedBox(height: 5),
+            Text('Grand total: ${_money(partsTotal + laborTotal)}', style: AppText.heading(19)),
+          ],
+        ),
+        const SizedBox(height: 20),
+        if (isAdmin && isOpen) ...[
           FilledButton.icon(
-            icon: const Icon(Icons.lock_outline),
+            style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+            icon: const Icon(Icons.lock_outline, size: 18),
             label: const Text('Finalize & close'),
             onPressed: () => _confirmClose(context, ref, booking),
           ),
-          const SizedBox(height: 12,),
-          OutlinedButton.icon(
-            icon: const Icon(Icons.delete_outline),
-            label: const Text('Delete booking'),
-            style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
-            onPressed: () => _confirmDeleteBooking(context, ref, booking), 
-          ),
-          const SizedBox(height: 12,)
+          const SizedBox(height: 12),
         ],
-        if (!isOpen && isAdmin) ...[
+        if (isAdmin && !isOpen) ...[
           OutlinedButton.icon(
-            icon: const Icon(Icons.lock_open),
+            style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+            icon: const Icon(Icons.lock_open, size: 18),
             label: const Text('Reopen booking'),
             onPressed: () => _confirmReopen(context, ref, booking),
           ),
-  const SizedBox(height: 12),
-],
-        const SizedBox(height: 12),
+          const SizedBox(height: 12),
+        ],
         OutlinedButton.icon(
-          icon: const Icon(Icons.picture_as_pdf),
+          style: OutlinedButton.styleFrom(minimumSize: const Size.fromHeight(48)),
+          icon: const Icon(Icons.picture_as_pdf_outlined, size: 18),
           label: const Text('Export / print invoice'),
           onPressed: () async {
             final names = {for (final item in stockItems) item.id: item.name};
-            await ref.read(invoicePdfServiceProvider).printOrShare(
-                  booking: booking,
-                  parts: parts,
-                  labor: labor,
-                  stockItemNames: names,
-                );
+            try {
+              await ref.read(invoicePdfServiceProvider).printOrShare(
+                    booking: booking,
+                    parts: parts,
+                    labor: labor,
+                    stockItemNames: names,
+                  );
+            } catch (e) {
+              if (context.mounted) {
+                ScaffoldMessenger.of(context)
+                    .showSnackBar(SnackBar(content: Text('Could not create the invoice: $e')));
+              }
+            }
           },
         ),
+        if (isAdmin && isOpen) ...[
+          const SizedBox(height: 12),
+          OutlinedButton.icon(
+            style: OutlinedButton.styleFrom(
+              minimumSize: const Size.fromHeight(48),
+              foregroundColor: AppColors.danger,
+              side: const BorderSide(color: AppColors.dangerOutline),
+            ),
+            icon: const Icon(Icons.delete_outline, size: 18),
+            label: const Text('Delete booking'),
+            onPressed: () => _confirmDeleteBooking(context, ref, booking),
+          ),
+        ],
+        const SizedBox(height: 8),
       ],
     );
   }
 
-  String _formatDateTime(DateTime? dateTime){
-    if (dateTime == null) return 'Unknown';
-    return DateFormat('dd MMM yyyy, HH:mm').format(dateTime.toLocal());
-  }
-
-  Widget _buildTotals(List<BookingPart> parts, List<BookingLabor> labor) {
-    final partsTotal = parts.fold<double>(0, (sum, p) => sum + (p.unitPrice * p.quantity));
-    final laborTotal = labor.fold<double>(0, (sum, l) => sum + l.price);
-    final grandTotal = partsTotal + laborTotal;
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: [
-        Text('Parts total: R ${partsTotal.toStringAsFixed(2)}'),
-        Text('Labor total: R ${laborTotal.toStringAsFixed(2)}'),
-        const SizedBox(height: 4),
-        Text('Grand total: R ${grandTotal.toStringAsFixed(2)}',
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-      ],
+  void _confirmPhaseChange(
+    BuildContext context,
+    WidgetRef ref,
+    VehicleBooking booking,
+    BookingPhase newPhase,
+  ) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: Text('Move to "${newPhase.shortLabel}"?'),
+        content: const Text(
+            'If the customer is following this booking in the app, they will get a notification.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+              try {
+                await ref.read(vehicleBookingProvider.notifier).updatePhase(booking.id, newPhase);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Could not update phase: $e')));
+                }
+              }
+            },
+            child: const Text('Update'),
+          ),
+        ],
+      ),
     );
   }
 
   void _confirmDeleteBooking(BuildContext context, WidgetRef ref, VehicleBooking booking) {
     showDialog(
-      context: context, 
+      context: context,
       builder: (dialogContext) => AlertDialog(
-        title:  const Text('Delete this booking?'),
+        title: const Text('Delete this booking?'),
         content: const Text(
-          'This permanently removes the booking and returns any allocated parts to the stock. This cannot be undone.'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(), 
-              child: const Text('Cancel'),
-              ),
-              FilledButton(
-                style: FilledButton.styleFrom(backgroundColor: Colors.red),
-                onPressed: () async {
-                  Navigator.of(dialogContext).pop();
-                  await ref.read(bookingDeletionServiceProvider).deleteBooking(booking);
-                  if (context.mounted) Navigator.of(context).pop();
-                }, 
-                child: const Text('Delete'),
-                )
-          ],
-      ) 
-      );
+            'This permanently removes the booking and returns any allocated parts to the stock. This cannot be undone.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            style: FilledButton.styleFrom(
+              backgroundColor: AppColors.danger,
+              foregroundColor: AppColors.onGold,
+            ),
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+              try {
+                await ref.read(bookingDeletionServiceProvider).deleteBooking(booking);
+                if (context.mounted) Navigator.of(context).pop();
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Could not delete booking: $e')));
+                }
+              }
+            },
+            child: const Text('Delete'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _confirmClose(BuildContext context, WidgetRef ref, VehicleBooking booking) {
@@ -296,7 +339,14 @@ else
           FilledButton(
             onPressed: () async {
               Navigator.of(dialogContext).pop();
-              await ref.read(vehicleBookingProvider.notifier).closeBooking(booking.id);
+              try {
+                await ref.read(vehicleBookingProvider.notifier).closeBooking(booking.id);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Could not finalize booking: $e')));
+                }
+              }
             },
             child: const Text('Finalize'),
           ),
@@ -305,101 +355,316 @@ else
     );
   }
 
-
-void _confirmRemovePart(
-  BuildContext context,
-  WidgetRef ref,
-  VehicleBooking booking,
-  BookingPart part,
-  List<StockItem> stockItems,
-) {
-  showDialog(
-    context: context, 
-    builder: (dialogContext) => AlertDialog(
-      title: const Text('Remove part?'),
-      content: const Text('This will also add the quantity back to stock.'),
-      actions: [
-        TextButton(onPressed: () => Navigator.of(dialogContext).pop(), 
-        child: const Text('Cancel'),
-        ),
-        FilledButton(
-          onPressed: () async {
-            Navigator.of(dialogContext).pop();
-            final item = stockItems.firstWhere(
-              (i) => i.id == part.stockItemId,
-              orElse: () => stockItems.first,
-            );
-            await ref.read(bookingPartServiceProvider).removePart(
-              partId: part.id, 
-              stockItemId: part.stockItemId, 
-              quantity: part.quantity, 
-              costPrice: item.costPrice, 
-              registration: booking.registration
-              );
-              ref.invalidate(bookingPartsProvider(booking.id));
-          }, 
-          child: const Text('Remove'),
-        ), 
-      ],
-    ),
-  );
-}
-
-void _confirmRemoveLabor(
-  BuildContext context,
-  WidgetRef ref,
-  String bookingId,
-  BookingLabor item,
-){
-  showDialog(
-    context: context, 
-    builder: (dialogContext) => AlertDialog(
-      title: const Text('Remove this work item?'),
-      content: Text('"${item.description}" will be removed from this booking.'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(), 
-          child: const Text('Cancel')
+  void _confirmRemovePart(
+    BuildContext context,
+    WidgetRef ref,
+    VehicleBooking booking,
+    BookingPart part,
+    List<StockItem> stockItems,
+  ) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Remove part?'),
+        content: const Text('This will also add the quantity back to stock.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
           ),
           FilledButton(
             onPressed: () async {
               Navigator.of(dialogContext).pop();
-              await ref.read(bookingLaborProvider(bookingId).notifier).removeLabor(item.id);
-            }, 
-            child: const Text('Remove')
-            )
-      ],
-    )
+              final matches = stockItems.where((i) => i.id == part.stockItemId);
+              if (matches.isEmpty) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Could not find this item in stock.')),
+                  );
+                }
+                return;
+              }
+              try {
+                await ref.read(bookingPartServiceProvider).removePart(
+                      partId: part.id,
+                      stockItemId: part.stockItemId,
+                      quantity: part.quantity,
+                      costPrice: matches.first.costPrice,
+                      registration: booking.registration,
+                    );
+                ref.invalidate(bookingPartsProvider(booking.id));
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Could not remove part: $e')));
+                }
+              }
+            },
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _confirmRemoveLabor(
+    BuildContext context,
+    WidgetRef ref,
+    String bookingId,
+    BookingLabor item,
+  ) {
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Remove this work item?'),
+        content: Text('"${item.description}" will be removed from this booking.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+              try {
+                await ref.read(bookingLaborProvider(bookingId).notifier).removeLabor(item.id);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Could not remove work item: $e')));
+                }
+              }
+            },
+            child: const Text('Remove'),
+          ),
+        ],
+      ),
     );
   }
 
   void _confirmReopen(BuildContext context, WidgetRef ref, VehicleBooking booking) {
-  showDialog(
-    context: context,
-    builder: (dialogContext) => AlertDialog(
-      title: const Text('Reopen this booking?'),
-      content: const Text(
-          'This resumes work on the booking — parts and labor can be added again, and the finalized date will be cleared until it\'s closed next time.'),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.of(dialogContext).pop(),
-          child: const Text('Cancel'),
+    showDialog(
+      context: context,
+      builder: (dialogContext) => AlertDialog(
+        title: const Text('Reopen this booking?'),
+        content: const Text(
+            'This resumes work on the booking. Parts and labor can be added again, and the finalized date will be cleared until it is closed next time.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            child: const Text('Cancel'),
+          ),
+          FilledButton(
+            onPressed: () async {
+              Navigator.of(dialogContext).pop();
+              try {
+                await ref.read(vehicleBookingProvider.notifier).reopenBooking(booking.id);
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context)
+                      .showSnackBar(SnackBar(content: Text('Could not reopen booking: $e')));
+                }
+              }
+            },
+            child: const Text('Reopen'),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Small building blocks used by the screen above
+// ---------------------------------------------------------------------------
+
+class _CustomerCard extends StatelessWidget {
+  const _CustomerCard({required this.booking});
+
+  final VehicleBooking booking;
+
+  @override
+  Widget build(BuildContext context) {
+    return AppCard(
+      radius: 12,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SectionLabel('Customer'),
+            const SizedBox(height: 4),
+            Text(booking.customerName, style: AppText.body(14, weight: FontWeight.w600)),
+            const SizedBox(height: 3),
+            Text(booking.customerPhone, style: AppText.body(13, color: AppColors.textMuted)),
+            if (booking.customerEmail != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 3),
+                child: Text(
+                  booking.customerEmail!,
+                  style: AppText.body(13, color: AppColors.textMuted),
+                ),
+              ),
+            if (booking.customerCompany != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 3),
+                child: Text(
+                  booking.customerCompany!,
+                  style: AppText.body(13, color: AppColors.textMuted),
+                ),
+              ),
+              const SizedBox(height: 8),
+            TextButton.icon(
+              style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                minimumSize: const Size(0, 32),
+                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              ),
+              icon: const Icon(Icons.send_outlined, size: 16),
+              label: const Text('Send reference code'),
+              onPressed: () => showSendReferenceSheet(context, booking),
+            ),
+          ],
         ),
-        FilledButton(
-          onPressed: () async {
-            Navigator.of(dialogContext).pop();
-            await ref.read(vehicleBookingProvider.notifier).reopenBooking(booking.id);
-          },
-          child: const Text('Reopen'),
+      ),
+    );
+  }
+}
+
+class _VehicleFacts extends StatelessWidget {
+  const _VehicleFacts({required this.booking});
+
+  final VehicleBooking booking;
+
+  Widget _fact(String label, String value) => Padding(
+        padding: const EdgeInsets.only(bottom: 3),
+        child: Text.rich(
+          TextSpan(
+            style: AppText.body(13.5, color: AppColors.textMuted),
+            children: [
+              TextSpan(text: '$label: '),
+              TextSpan(
+                text: value,
+                style: AppText.body(13.5, weight: FontWeight.w600),
+              ),
+            ],
+          ),
         ),
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _fact('Registration', booking.registration),
+        _fact('Kilometers', '${booking.kilometers} km'),
+        if (booking.engineSize != null) _fact('Engine size', booking.engineSize!),
+        if (booking.engineCode != null) _fact('Engine code', booking.engineCode!),
+        _fact('Transmission', booking.transmissionType.displayName),
       ],
-    ),
-  );
+    );
+  }
 }
+
+class _SectionHeader extends StatelessWidget {
+  const _SectionHeader({required this.title, this.onAdd});
+
+  final String title;
+  final VoidCallback? onAdd;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(title, style: AppText.heading(15, weight: FontWeight.w700)),
+          if (onAdd != null)
+            Tooltip(
+              message: 'Add',
+              child: Material(
+                color: AppColors.surface,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: const BorderSide(color: AppColors.border),
+                ),
+                clipBehavior: Clip.antiAlias,
+                child: InkWell(
+                  onTap: onAdd,
+                  child: const SizedBox(width: 28, height: 28, child: Icon(Icons.add, size: 16)),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 }
+
+class _LineItem extends StatelessWidget {
+  const _LineItem({
+    required this.title,
+    required this.subtitle,
+    required this.amount,
+    required this.showDivider,
+    this.onRemove,
+  });
+
+  final String title;
+  final String subtitle;
+  final String amount;
+  final bool showDivider;
+  final VoidCallback? onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 9),
+      decoration: BoxDecoration(
+        border: showDivider
+            ? const Border(bottom: BorderSide(color: Color(0xFF242729)))
+            : null,
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: AppText.body(13.5, weight: FontWeight.w500)),
+                const SizedBox(height: 1),
+                Text(subtitle, style: AppText.body(12, color: AppColors.textFaint)),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Text(amount, style: AppText.body(13.5, weight: FontWeight.w700)),
+          if (onRemove != null)
+            GestureDetector(
+              onTap: onRemove,
+              behavior: HitTestBehavior.opaque,
+              child: const Padding(
+                padding: EdgeInsets.only(left: 10),
+                child: Icon(Icons.close, size: 18, color: AppColors.textFaint),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Dialogs
+// ---------------------------------------------------------------------------
 
 class _AddPartDialog extends ConsumerStatefulWidget {
   const _AddPartDialog({required this.booking, required this.stockItems});
+
   final VehicleBooking booking;
   final List<StockItem> stockItems;
 
@@ -415,16 +680,25 @@ class _AddPartDialogState extends ConsumerState<_AddPartDialog> {
   bool _saving = false;
 
   @override
+  void dispose() {
+    _quantityController.dispose();
+    _priceController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Add part'),
+      scrollable: true,
       content: Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             DropdownButtonFormField<StockItem>(
-              decoration: const InputDecoration(labelText: 'Stock item'),
+              isExpanded: true,
+              decoration: AppTheme.inputDecoration(label: 'Stock item', fill: AppColors.bg),
               initialValue: _selectedItem,
               items: widget.stockItems
                   .map((item) => DropdownMenuItem(value: item, child: Text(item.name)))
@@ -437,9 +711,10 @@ class _AddPartDialogState extends ConsumerState<_AddPartDialog> {
               },
               validator: (v) => v == null ? 'Pick an item' : null,
             ),
+            const SizedBox(height: 12),
             TextFormField(
               controller: _quantityController,
-              decoration: const InputDecoration(labelText: 'Quantity'),
+              decoration: AppTheme.inputDecoration(label: 'Quantity', fill: AppColors.bg),
               keyboardType: TextInputType.number,
               validator: (v) {
                 final n = int.tryParse(v ?? '');
@@ -450,9 +725,13 @@ class _AddPartDialogState extends ConsumerState<_AddPartDialog> {
                 return null;
               },
             ),
+            const SizedBox(height: 12),
             TextFormField(
               controller: _priceController,
-              decoration: const InputDecoration(labelText: 'Price charged (per unit)'),
+              decoration: AppTheme.inputDecoration(
+                label: 'Price charged (per unit)',
+                fill: AppColors.bg,
+              ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               validator: (v) =>
                   (v == null || double.tryParse(v) == null) ? 'Enter a number' : null,
@@ -469,7 +748,10 @@ class _AddPartDialogState extends ConsumerState<_AddPartDialog> {
           onPressed: _saving ? null : _submit,
           child: _saving
               ? const SizedBox(
-                  width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.onGold),
+                )
               : const Text('Add'),
         ),
       ],
@@ -492,8 +774,8 @@ class _AddPartDialogState extends ConsumerState<_AddPartDialog> {
       ref.invalidate(bookingPartsProvider(widget.booking.id));
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
-      setState(() => _saving = false);
       if (mounted) {
+        setState(() => _saving = false);
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Could not add part: $e')));
       }
@@ -503,6 +785,7 @@ class _AddPartDialogState extends ConsumerState<_AddPartDialog> {
 
 class _AddLaborDialog extends ConsumerStatefulWidget {
   const _AddLaborDialog({required this.bookingId});
+
   final String bookingId;
 
   @override
@@ -522,40 +805,56 @@ class _AddLaborDialogState extends ConsumerState<_AddLaborDialog> {
   double get _rate => double.tryParse(_rateController.text) ?? 0;
 
   @override
+  void dispose() {
+    _descriptionController.dispose();
+    _hoursController.dispose();
+    _rateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog(
       title: const Text('Add work / labor'),
+      scrollable: true,
       content: Form(
         key: _formKey,
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
               controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
+              decoration: AppTheme.inputDecoration(label: 'Description', fill: AppColors.bg),
               validator: (v) => (v == null || v.isEmpty) ? 'Required' : null,
             ),
+            const SizedBox(height: 12),
             TextFormField(
               controller: _hoursController,
-              decoration: const InputDecoration(labelText: 'Hours'),
+              decoration: AppTheme.inputDecoration(label: 'Hours', fill: AppColors.bg),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              onChanged: (_) => setState(() {}),
               validator: (v) {
                 final n = double.tryParse(v ?? '');
-                if(n == null || n <= 0) return 'Enter a number greater than 0';
+                if (n == null || n <= 0) return 'Enter a number greater than 0';
                 return null;
               },
             ),
+            const SizedBox(height: 12),
             TextFormField(
               controller: _rateController,
-              decoration: const InputDecoration(
-                labelText: 'Rate per hour',
-                helperText: 'Standard rate is R350 - adjust if needed',
+              decoration: AppTheme.inputDecoration(
+                label: 'Rate per hour',
+                helper: 'Standard rate is R350 - adjust if needed',
+                fill: AppColors.bg,
               ),
               keyboardType: const TextInputType.numberWithOptions(decimal: true),
               onChanged: (_) => setState(() {}),
               validator: (v) =>
-                (v == null || double.tryParse(v) == null) ? 'Enter a number' : null,
-            )
+                  (v == null || double.tryParse(v) == null) ? 'Enter a number' : null,
+            ),
+            const SizedBox(height: 12),
+            Text('Total: ${_money(_hours * _rate)}', style: AppText.body(14, weight: FontWeight.w700)),
           ],
         ),
       ),
@@ -568,7 +867,10 @@ class _AddLaborDialogState extends ConsumerState<_AddLaborDialog> {
           onPressed: _saving ? null : _submit,
           child: _saving
               ? const SizedBox(
-                  width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.onGold),
+                )
               : const Text('Add'),
         ),
       ],
@@ -587,8 +889,8 @@ class _AddLaborDialogState extends ConsumerState<_AddLaborDialog> {
           );
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
-      setState(() => _saving = false);
       if (mounted) {
+        setState(() => _saving = false);
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Could not add: $e')));
       }
     }

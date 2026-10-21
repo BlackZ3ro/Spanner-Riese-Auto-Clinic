@@ -6,6 +6,8 @@ import '../models/transmission_type.dart';
 import '../providers/customer_provider.dart';
 import '../providers/vehicle_booking_provider.dart';
 import '../providers/vehicle_image_provider.dart';
+import 'send_reference_sheet.dart';
+
 
 class BookInScreen extends ConsumerStatefulWidget {
   const BookInScreen({super.key});
@@ -343,7 +345,7 @@ class _BookInScreenState extends ConsumerState<BookInScreen> {
         customerId = newCustomer.id;
       }
 
-      await ref.read(vehicleBookingProvider.notifier).addBooking(
+      final booking = await ref.read(vehicleBookingProvider.notifier).addBooking(
             customerId: customerId,
             customerName: _customerNameController.text.trim(),
             customerPhone: _phoneController.text.trim(),
@@ -366,7 +368,13 @@ class _BookInScreenState extends ConsumerState<BookInScreen> {
                 : _engineCodeController.text.trim(),
             imageUrl: _imageUrl,
           );
-      if (mounted) Navigator.of(context).pop();
+      if (!mounted) return;
+    try {
+      await showSendReferenceSheet(context, booking, justBooked: true);
+    } catch (_) {
+      // Never let the prompt get in the way of a saved booking.
+    }
+    if (mounted) Navigator.of(context).pop();
     } catch (e) {
       setState(() => _saving = false);
       if (mounted) {

@@ -12,10 +12,10 @@ class VehicleBookingNotifier extends AsyncNotifier<List<VehicleBooking>> {
     return ref.read(vehicleBookingRepositoryProvider).fetchAll();
   }
 
-  Future<void> addBooking({
+  Future<VehicleBooking> addBooking({
     String? customerId,
-    required customerName,
-    required customerPhone,
+    required String customerName,
+    required String customerPhone,
     String? customerEmail,
     String? customerCompany,
     required String brand,
@@ -47,6 +47,7 @@ class VehicleBookingNotifier extends AsyncNotifier<List<VehicleBooking>> {
       );
       final current = state.value ?? [];
       state = AsyncData([newBooking, ...current]);
+      return newBooking;
   }
 
   Future<void> removeBooking(String id) async{
