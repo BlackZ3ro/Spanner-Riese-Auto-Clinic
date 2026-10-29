@@ -83,9 +83,22 @@
                 @{
                     var stageIndex = Spanner.Web.Pages.Track.IndexModel.Steps.ToList().FindIndex(s => s.Key == booking.Phase);
                     if (stageIndex < 0) { stageIndex = 0; }
+                    // Same four-step tracker as the Flutter app (phase_widgets.dart
+                    // PhaseStepper): "Ready for pickup" completes all four steps.
+                    var steps = Spanner.Web.Pages.Bookings.DetailsModel.SelectablePhases;
+                    var current = steps.ToList().FindIndex(p => p.Key == booking.Phase);
+                    var complete = booking.Phase is "ready_for_pickup" or "finalized";
+                    string StepState(int i) => complete || i < current ? "done" : i == current ? "active" : "";
                 }
-                <div class="sp-stages @(stageIndex >= 3 ? "done" : "")" aria-hidden="true">
-                    @for (var i = 0; i < 5; i++) { <span class="@(i <= stageIndex ? "on" : "")"></span> }
+                <div class="sp-stepper" aria-hidden="true">
+                    @for (var i = 0; i < steps.Count; i++)
+                    {
+                        <div class="sp-step @StepState(i)"><div class="c">@(StepState(i) == "done" ? "✓" : (i + 1).ToString())</div>@steps[i].Label</div>
+                        if (i < steps.Count - 1)
+                        {
+                            <div class="sp-step-line @(StepState(i + 1) != "" ? "on" : "")"></div>
+                        }
+                    }
                 </div>
                 <div class="sp-stage-label">Customer sees: step @(stageIndex + 1) of 5 - @Spanner.Web.Pages.Track.IndexModel.Steps[stageIndex].Label</div>
                 <form method="post" asp-page-handler="Phase" class="d-flex gap-2 align-items-center" style="max-width: 420px">
@@ -237,23 +250,23 @@
         </div>
     </div>
 
-    <p class="mt-3 d-flex gap-2">
+    <div class="mt-3 d-flex gap-2 flex-wrap">
         <a asp-page="/Bookings/Invoice" asp-route-id="@booking.Id" class="btn btn-outline-secondary" target="_blank">
             Download invoice (PDF)
         </a>
         @if (isOpen && Model.IsAdmin)
         {
             <form method="post" asp-page-handler="Finalize" onsubmit="return confirm('Finalize and close this booking? Parts and labour can no longer be added after this.');">
-                <button type="submit" class="btn btn-outline-danger">Finalize &amp; close</button>
+                <button type="submit" class="btn btn-primary">Finalize &amp; close</button>
             </form>
         }
         @if (Model.IsAdmin)
         {
             <form method="post" asp-page-handler="Delete" onsubmit="return confirm('Are you sure? This deletes the booking, restocks its parts, and removes its labour. This can\'t be undone.');">
-                <button type="submit" class="btn btn-danger">Delete booking</button>
+                <button type="submit" class="btn btn-outline-danger">Delete booking</button>
             </form>
         }
-    </p>
+    </div>
 
     <p class="mt-4"><a asp-page="/Index">&larr; Back to dashboard</a></p>
 }
