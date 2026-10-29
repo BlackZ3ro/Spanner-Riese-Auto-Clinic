@@ -50,9 +50,6 @@ class InvoicePdfService {
             if (booking.engineCode != null) pw.Text('Engine code: ${booking.engineCode}'),
             pw.Text('Transmission: ${booking.transmissionType.displayName}'),
             pw.SizedBox(height: 4),
-            pw.Text('Booked in: ${_formatDateTime(booking.createdAt)}'),
-            if (booking.closedAt != null)
-              pw.Text('Finalized: ${_formatDateTime(booking.closedAt)}'),
             pw.SizedBox(height: 20),
             pw.Text('Parts', style: pw.TextStyle(fontSize: 14, fontWeight: pw.FontWeight.bold)),
             pw.Table(

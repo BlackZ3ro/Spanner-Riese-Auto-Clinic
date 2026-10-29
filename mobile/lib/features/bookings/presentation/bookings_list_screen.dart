@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/widgets/app_widgets.dart';
 import '../models/booking_status.dart';
 import '../models/vehicle_booking.dart';
 import '../providers/vehicle_booking_provider.dart';
 import 'book_in_screen.dart';
 import 'booking_detail_screen.dart';
+import 'widgets/phase_widgets.dart';
 
 class BookingsListScreen extends ConsumerStatefulWidget {
   const BookingsListScreen({super.key});
@@ -22,7 +26,7 @@ class _BookingsListScreenState extends ConsumerState<BookingsListScreen>
   @override
   void initState() {
     super.initState();
-    // Tab order: Completed (left) / Open (right) — Open shown by default.
+    // Tab order: Open (left) / Completed (right), Open shown by default.
     _tabController = TabController(length: 2, vsync: this, initialIndex: 0);
   }
 
@@ -38,26 +42,25 @@ class _BookingsListScreenState extends ConsumerState<BookingsListScreen>
     final bookingsAsync = ref.watch(vehicleBookingProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Checked-in vehicles'),
+      appBar: AppTopBar(
+        title: 'Checked-in vehicles',
         bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(104),
+          preferredSize: const Size.fromHeight(110),
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
                 child: TextField(
                   controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search by invoice number',
-                    prefixIcon: const Icon(Icons.search),
-                    isDense: true,
-                    filled: true,
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(8)),
+                  style: AppText.body(14),
+                  decoration: AppTheme.inputDecoration(
+                    hint: 'Search by invoice number',
+                    fill: AppColors.bg,
+                    prefixIcon: const Icon(Icons.search, size: 20),
                     suffixIcon: _query.isEmpty
                         ? null
                         : IconButton(
-                            icon: const Icon(Icons.clear),
+                            icon: const Icon(Icons.close, size: 18),
                             onPressed: () {
                               _searchController.clear();
                               setState(() => _query = '');
@@ -67,12 +70,26 @@ class _BookingsListScreenState extends ConsumerState<BookingsListScreen>
                   onChanged: (value) => setState(() => _query = value),
                 ),
               ),
-              TabBar(
-                controller: _tabController,
-                tabs: const [
-                  Tab(text: 'Open'),
-                  Tab(text: 'Completed'),
-                ],
+              Align(
+                alignment: Alignment.centerLeft,
+                child: TabBar(
+                  controller: _tabController,
+                  isScrollable: true,
+                  tabAlignment: TabAlignment.start,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  dividerColor: Colors.transparent,
+                  indicatorColor: AppColors.gold,
+                  indicatorWeight: 2.5,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  labelColor: AppColors.gold,
+                  unselectedLabelColor: AppColors.textFaint,
+                  labelStyle: AppText.heading(14, weight: FontWeight.w700),
+                  unselectedLabelStyle: AppText.heading(14, weight: FontWeight.w700),
+                  tabs: const [
+                    Tab(text: 'Open'),
+                    Tab(text: 'Completed'),
+                  ],
+                ),
               ),
             ],
           ),
@@ -83,7 +100,12 @@ class _BookingsListScreenState extends ConsumerState<BookingsListScreen>
         error: (e, _) => Center(child: Text('Error: $e')),
         data: (bookings) {
           if (bookings.isEmpty) {
-            return const Center(child: Text('No vehicles booked in yet.'));
+            return Center(
+              child: Text(
+                'No vehicles booked in yet.',
+                style: AppText.body(14, color: AppColors.textMuted),
+              ),
+            );
           }
 
           final filtered = _query.trim().isEmpty
@@ -123,37 +145,86 @@ class _BookingListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (bookings.isEmpty) {
-      return Center(child: Text(emptyMessage));
+      return Center(
+        child: Text(emptyMessage, style: AppText.body(14, color: AppColors.textMuted)),
+      );
     }
-    return ListView(
-      children: [for (final booking in bookings) _BookingTile(booking: booking)],
+    return ListView.separated(
+      // Bottom padding keeps the last card clear of the + button.
+      padding: const EdgeInsets.fromLTRB(16, 14, 16, 96),
+      itemCount: bookings.length,
+      separatorBuilder: (_, _) => const SizedBox(height: 10),
+      itemBuilder: (_, index) => _BookingTile(booking: bookings[index]),
     );
   }
 }
 
 class _BookingTile extends StatelessWidget {
   const _BookingTile({required this.booking});
+
   final VehicleBooking booking;
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: booking.imageUrl != null
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(6),
-              child: Image.network(booking.imageUrl!, width: 56, height: 56, fit: BoxFit.cover),
-            )
-          : const Icon(Icons.directions_car, size: 40),
-      title: Text('${booking.brand} ${booking.model} (${booking.year})'),
-      subtitle: Text(
-        '${booking.registration} • ${booking.kilometers} km\nInvoice: ${booking.invoiceNumber}',
-      ),
-      isThreeLine: true,
-      trailing: booking.status == BookingStatus.closed
-          ? const Icon(Icons.check_circle, color: Colors.green)
-          : const Icon(Icons.chevron_right),
+    final url = booking.imageUrl;
+    const fallbackIcon = IconChip(
+      icon: Icons.directions_car_outlined,
+      tone: AppTone.green,
+      size: 52,
+      iconSize: 24,
+      radius: 10,
+    );
+
+    return AppCard(
+      padding: const EdgeInsets.all(14),
       onTap: () => Navigator.of(context).push(
         MaterialPageRoute(builder: (_) => BookingDetailScreen(bookingId: booking.id)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (url != null && url.isNotEmpty)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: Image.network(
+                url,
+                width: 52,
+                height: 52,
+                fit: BoxFit.cover,
+                errorBuilder: (_, _, _) => fallbackIcon,
+              ),
+            )
+          else
+            fallbackIcon,
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${booking.brand} ${booking.model} (${booking.year})',
+                  style: AppText.heading(15, weight: FontWeight.w700),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  '${booking.registration} \u00b7 ${booking.kilometers} km',
+                  style: AppText.body(12.5, color: AppColors.textMuted),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  'Invoice: ${booking.invoiceNumber}',
+                  style: AppText.body(12.5, color: AppColors.textMuted),
+                ),
+                const SizedBox(height: 7),
+                StatusPill(label: booking.phase.shortLabel, tone: booking.phase.tone),
+              ],
+            ),
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top: 2),
+            child: Icon(Icons.chevron_right, size: 20, color: AppColors.textFaint),
+          ),
+        ],
       ),
     );
   }
