@@ -1,0 +1,446 @@
+<!doctype html>
+<html dir="ltr" lang="en"> 
+ <head>
+  <title></title>
+ </head> 
+ <body> 
+  <div data-layout-row="a8d7579d-96c0-4518-96c0-4e5344c6679e"> 
+   <div data-layout-column="57d14d25-cfd3-45b9-9cf6-5ca30b2f10a6" data-layout-column-width="12"> 
+    <div data-bbid="bbml-editor-id_a61427ad-27df-4438-87de-a388e41e0e44"> 
+     <h2 dir="ltr" lang="en">Activity 4.3: Develop the ASP.NET Web Application</h2> 
+     <br> 
+     <h2><a href="https://ethuto.cut.ac.za/bbcswebdav/pid-1689978-dt-content-rid-23476314_1/xid-23476314_1?Kq3cZcYS15=1918815a42084c8f9a0d6caae8cda7b0&amp;VxJw3wfC56=1792527472&amp;3cCnGYSz89=MrTdmFwaem9v7QUIbanYQC06tDEBriZhNL3Jp5zBDRs%3D" dir="ltr" lang="en">Activity 4.3.mp4</a></h2> 
+     <p dir="ltr" lang="en">By the end of this activity, your group should have a working ASP.NET web application ready for integration with Flutter in Activity 4.4.</p> 
+     <h2 dir="ltr" lang="en">Supporting Video: Building an ASP.NET Web Application</h2> 
+     <p dir="ltr" lang="en">Watch the following tutorial to understand how an ASP.NET Core MVC application is developed:</p> 
+     <p><a href="https://www.youtube.com/watch?v=FeGXk8GagFg" dir="ltr" lang="en">Build a CRUD App with ASP.NET Core MVC (.NET 9 + EF Core Tutorial) - YouTube .</a></p> 
+     <br> 
+     <p dir="ltr" lang="en">While watching, focus on:</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Topic</p></th> 
+        <th><p dir="ltr" lang="en">What to learn</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Project setup</p></td> 
+        <td><p dir="ltr" lang="en">How an ASP.NET Core MVC project is created</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Models</p></td> 
+        <td><p dir="ltr" lang="en">How application data is represented</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Controllers and views</p></td> 
+        <td><p dir="ltr" lang="en">How application functions and pages are organised</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">CRUD operations</p></td> 
+        <td><p dir="ltr" lang="en">How records are created, retrieved, updated and deleted</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Forms and validation</p></td> 
+        <td><p dir="ltr" lang="en">How users submit information and receive feedback</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Important: The video demonstrates SQL Server and Entity Framework Core. Your project must continue using the shared Supabase backend developed in Activity 4.1. Do not create a separate SQL Server database simply to follow the video.</p> 
+     <p dir="ltr" lang="en">For the Supabase connection, refer to the <a href="https://supabase.com/docs/reference/csharp/introduction" dir="ltr" lang="en">C#: Introduction | Supabase Docs</a> . This documentation describes the community-maintained C# client for accessing Supabase services.</p> 
+     <h2 dir="ltr" lang="en">Activity at a Glance</h2> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">You will develop</p></th> 
+        <th><p dir="ltr" lang="en">Main outcome</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">ASP.NET project structure</p></td> 
+        <td><p dir="ltr" lang="en">Organised web application code</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Approved web pages</p></td> 
+        <td><p dir="ltr" lang="en">Working web interfaces</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Forms and navigation</p></td> 
+        <td><p dir="ltr" lang="en">Users can complete the intended processes</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Required web functions</p></td> 
+        <td><p dir="ltr" lang="en">Features based on the SRS</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Supabase connection</p></td> 
+        <td><p dir="ltr" lang="en">Web application uses the shared backend</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Initial function checks</p></td> 
+        <td><p dir="ltr" lang="en">Evidence of working web features</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <h2 dir="ltr" lang="en">What You Must Do</h2> 
+     <h3 dir="ltr" lang="en">Step 1: Review the Approved Web Application Requirements</h3> 
+     <p dir="ltr" lang="en">Open your updated SRS and review the web interface designs, use case diagram, sequence diagrams and relevant requirements.</p> 
+     <p dir="ltr" lang="en">Identify the functions assigned to the ASP.NET web application.</p> 
+     <p dir="ltr" lang="en">Complete the following table for your own project.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Web function</p></th> 
+        <th><p dir="ltr" lang="en">Related requirement or use case</p></th> 
+        <th><p dir="ltr" lang="en">Required page</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Staff sign in (admin or mechanic)</p></td> 
+        <td><p dir="ltr" lang="en">FR-12; Login</p></td> 
+        <td><p dir="ltr" lang="en">Login</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Open bookings and stock levels, live reload</p></td> 
+        <td><p dir="ltr" lang="en">Dashboard; FR-09, FR-10</p></td> 
+        <td><p dir="ltr" lang="en">Dashboard</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Book in a vehicle and its customer</p></td> 
+        <td><p dir="ltr" lang="en">FR-01; Book in a vehicle</p></td> 
+        <td><p dir="ltr" lang="en">Book in a vehicle</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Booking details: jobs, parts, totals</p></td> 
+        <td><p dir="ltr" lang="en">FR-02, FR-04, FR-06; Update booking</p></td> 
+        <td><p dir="ltr" lang="en">Booking details</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Labour hours and rate, complete a job</p></td> 
+        <td><p dir="ltr" lang="en">FR-05</p></td> 
+        <td><p dir="ltr" lang="en">Job details</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Change the booking phase</p></td> 
+        <td><p dir="ltr" lang="en">FR-15; Update booking phase</p></td> 
+        <td><p dir="ltr" lang="en">Booking details</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Send the reference code or status on WhatsApp</p></td> 
+        <td><p dir="ltr" lang="en">Phase 2 feedback (Mr G); Message customer on WhatsApp</p></td> 
+        <td><p dir="ltr" lang="en">Booking details</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Finalize, delete (with restock) and reopen: admin only</p></td> 
+        <td><p dir="ltr" lang="en">FR-17, FR-18</p></td> 
+        <td><p dir="ltr" lang="en">Booking details, Closed bookings</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Invoice PDF</p></td> 
+        <td><p dir="ltr" lang="en">FR-07, FR-08; Download invoice</p></td> 
+        <td><p dir="ltr" lang="en">Invoice download</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Stock list and add a part</p></td> 
+        <td><p dir="ltr" lang="en">FR-03, FR-10; Manage stock</p></td> 
+        <td><p dir="ltr" lang="en">Stock, Add a part</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Vehicle history search with reference image</p></td> 
+        <td><p dir="ltr" lang="en">FR-11, FR-13</p></td> 
+        <td><p dir="ltr" lang="en">Vehicle history</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Customer tracking by reference code (no login)</p></td> 
+        <td><p dir="ltr" lang="en">FR-14; Track repair status</p></td> 
+        <td><p dir="ltr" lang="en">Track your vehicle</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Short example: Salon appointment system</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Web function</p></th> 
+        <th><p dir="ltr" lang="en">Related use case</p></th> 
+        <th><p dir="ltr" lang="en">Required page</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Staff sign-in</p></td> 
+        <td><p dir="ltr" lang="en">Login</p></td> 
+        <td><p dir="ltr" lang="en">Login page</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">View requests</p></td> 
+        <td><p dir="ltr" lang="en">View Appointment Requests</p></td> 
+        <td><p dir="ltr" lang="en">Appointment list</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Approve or reject a request</p></td> 
+        <td><p dir="ltr" lang="en">Manage Appointment</p></td> 
+        <td><p dir="ltr" lang="en">Appointment details</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">View appointment information</p></td> 
+        <td><p dir="ltr" lang="en">View Appointments</p></td> 
+        <td><p dir="ltr" lang="en">Dashboard</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">The functions for your project must reflect your stakeholder's approved requirements.</p> 
+     <h3 dir="ltr" lang="en">Step 2: Prepare the ASP.NET Project</h3> 
+     <p dir="ltr" lang="en">Open your group's existing ASP.NET project, or create it if the project has not yet been prepared.</p> 
+     <p dir="ltr" lang="en">Use the ASP.NET approach selected for your approved design, such as ASP.NET Core MVC.</p> 
+     <p dir="ltr" lang="en">If using MVC, organise the project appropriately:</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Project component</p></th> 
+        <th><p dir="ltr" lang="en">Purpose</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Models</p></td> 
+        <td><p dir="ltr" lang="en">Represent the information used by the application</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Views</p></td> 
+        <td><p dir="ltr" lang="en">Display the web pages</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Controllers</p></td> 
+        <td><p dir="ltr" lang="en">Handle requests and coordinate application functions</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Services</p></td> 
+        <td><p dir="ltr" lang="en">Organise communication with Supabase and other required services</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Keep the web application in the web/ folder of your existing GitHub repository.</p> 
+     <p dir="ltr" lang="en">Check that the application launches successfully before implementing the remaining functions.</p> 
+     <p dir="ltr" lang="en">For additional guidance on project setup and MVC structure, use the <a href="https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-mvc-app/start-mvc?view=aspnetcore-10.0&amp;tabs=visual-studio" dir="ltr" lang="en">Get started with ASP.NET Core MVC | Microsoft Learn</a> .</p> 
+     <h3 dir="ltr" lang="en">Step 3: Develop the Approved Web Pages</h3> 
+     <p dir="ltr" lang="en">Use the wireframes developed in Unit 3 to implement the web application interfaces.</p> 
+     <p dir="ltr" lang="en">Identify the information, buttons, forms and tables required on each page.</p> 
+     <p dir="ltr" lang="en">For example:</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Page</p></th> 
+        <th><p dir="ltr" lang="en">Possible interface elements</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Login</p></td> 
+        <td><p dir="ltr" lang="en">Email, password and sign-in button</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Dashboard</p></td> 
+        <td><p dir="ltr" lang="en">Summary of relevant information</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Appointment list</p></td> 
+        <td><p dir="ltr" lang="en">Appointment details and current status</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Appointment details</p></td> 
+        <td><p dir="ltr" lang="en">Approve and Reject buttons</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Report page</p></td> 
+        <td><p dir="ltr" lang="en">Relevant information for authorised users</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Your web application must be appropriate for its intended users. Do not add functions that are outside the approved project scope simply because they appear in an online tutorial.</p> 
+     <h3 dir="ltr" lang="en">Step 4: Implement Navigation and Forms</h3> 
+     <p dir="ltr" lang="en">Connect the web pages so users can move through the application.</p> 
+     <p dir="ltr" lang="en">Implement the required forms and input validation.</p> 
+     <p dir="ltr" lang="en">Short example: A staff member opens the appointment list, selects a request, reviews its details and approves or rejects it.</p> 
+     <p dir="ltr" lang="en">The application must provide clear feedback when an operation succeeds or fails.</p> 
+     <p dir="ltr" lang="en">Use your SRS to determine which functions should be accessible to each user role.</p> 
+     <h3 dir="ltr" lang="en">Step 5: Connect ASP.NET to the Shared Supabase Backend</h3> 
+     <p dir="ltr" lang="en">Connect the ASP.NET application to the same Supabase project configured in Activity 4.1 and used by Flutter in Activity 4.2.</p> 
+     <p dir="ltr" lang="en">Implement the database operations needed by the web application.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Operation</p></th> 
+        <th><p dir="ltr" lang="en">Salon example</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Create</p></td> 
+        <td><p dir="ltr" lang="en">Add a record where the staff role permits it</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Read</p></td> 
+        <td><p dir="ltr" lang="en">Retrieve appointment requests</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Update</p></td> 
+        <td><p dir="ltr" lang="en">Approve or reject an appointment</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Delete</p></td> 
+        <td><p dir="ltr" lang="en">Remove a record only where permitted by the SRS</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Use an appropriate Supabase integration approach for your ASP.NET project. Keep sensitive credentials in secure server-side configuration, not in browser code or the GitHub repository.</p> 
+     <p dir="ltr" lang="en">Where users sign in, ensure the backend applies the required permissions to their requests. Do not use unrestricted administrative access as a substitute for implementing the approved user roles.</p> 
+     <h3 dir="ltr" lang="en">Step 6: Implement the Main Web Functions</h3> 
+     <p dir="ltr" lang="en">Develop the functions identified in Step 1.</p> 
+     <p dir="ltr" lang="en">For each function, confirm that the relevant user can complete the intended process.</p> 
+     <p dir="ltr" lang="en">Short example: Approving an appointment</p> 
+     <ol> 
+      <li dir="ltr" lang="en">Staff sign in to the ASP.NET web application.</li> 
+      <li dir="ltr" lang="en">The application retrieves the appointment requests from Supabase.</li> 
+      <li dir="ltr" lang="en">Staff select a request and choose Approve.</li> 
+      <li dir="ltr" lang="en">The application updates the appointment status in Supabase.</li> 
+      <li dir="ltr" lang="en">The updated status is displayed in the web application.</li> 
+     </ol> 
+     <p dir="ltr" lang="en">In Activity 4.4, the group will demonstrate that the same status can be retrieved through the Flutter application.</p> 
+     <h3 dir="ltr" lang="en">Step 7: Perform Initial Function Checks</h3> 
+     <p dir="ltr" lang="en">Use suitable dummy data to check the implemented web functions.</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Function or check</p></th> 
+        <th><p dir="ltr" lang="en">Result</p></th> 
+        <th><p dir="ltr" lang="en">Action required</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Web application launches successfully</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 20 Oct, against the live shared Supabase project.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Main pages display correctly</p></td> 
+        <td><p dir="ltr" lang="en">Login and Track: yes (screenshots, desktop and phone). Staff pages not checked 20 Oct (need a staff login).</p></td> 
+        <td><p dir="ltr" lang="en">Ofentse: screenshot every staff page by 25 Oct.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Navigation works</p></td> 
+        <td><p dir="ltr" lang="en">Yes: pages that need a login send visitors to the login page; Login and Track link to each other.</p></td> 
+        <td><p dir="ltr" lang="en">Check the menu links while logged in.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Forms validate user input</p></td> 
+        <td><p dir="ltr" lang="en">Yes: login shows messages for empty fields; Track rejects a malformed code.</p></td> 
+        <td><p dir="ltr" lang="en">Book-in form: leave fields empty while logged in.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Web application connects to Supabase</p></td> 
+        <td><p dir="ltr" lang="en">Yes: startup check and live-update (Realtime) subscription both connected.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Required records can be retrieved</p></td> 
+        <td><p dir="ltr" lang="en">Yes for the public reference-code lookup (unknown code handled). Staff lists not checked 20 Oct.</p></td> 
+        <td><p dir="ltr" lang="en">Check the dashboard and booking pages while logged in.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Records can be created or updated where required</p></td> 
+        <td><p dir="ltr" lang="en">Not checked 20 Oct (needs a staff login). Worked in earlier milestones M2-M5.</p></td> 
+        <td><p dir="ltr" lang="en">Book in a dummy vehicle, add a part (needs migration 0009), change the phase.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Authentication works, where required</p></td> 
+        <td><p dir="ltr" lang="en">Wrong password rejected; message fixed 20 Oct (was a raw technical error). Correct login not tested 20 Oct.</p></td> 
+        <td><p dir="ltr" lang="en">Log in as admin and as mechanic.</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">User access restrictions work as intended</p></td> 
+        <td><p dir="ltr" lang="en">Yes: logged-out visitors are redirected; the database refuses anonymous staff functions (checked live 20 Oct).</p></td> 
+        <td><p dir="ltr" lang="en">Confirm a mechanic cannot finalize, delete or reopen.</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Correct the problems identified during development. Formal testing of the complete prototype will take place in Unit 5.</p> 
+     <h3 dir="ltr" lang="en">Step 8: Commit Your Work and Update Project Records</h3> 
+     <p dir="ltr" lang="en">Commit your web application code to the group's existing GitHub repository.</p> 
+     <p dir="ltr" lang="en">Update the following:</p> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Document or tool</p></th> 
+        <th><p dir="ltr" lang="en">What to update</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">SRS</p></td> 
+        <td><p dir="ltr" lang="en">Record any approved changes to the requirements or design</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">GitHub</p></td> 
+        <td><p dir="ltr" lang="en">Commit web application code and maintain relevant documentation</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Microsoft Project</p></td> 
+        <td><p dir="ltr" lang="en">Record completed web development tasks and current progress</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Project Progress Tracker</p></td> 
+        <td><p dir="ltr" lang="en">Record completed work, individual contributions and challenges</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Do not start a new SRS or a separate repository for Phase 3.</p> 
+     <h2 dir="ltr" lang="en">What to Keep as Evidence</h2> 
+     <table> 
+      <tbody> 
+       <tr> 
+        <th><p dir="ltr" lang="en">Evidence</p></th> 
+        <th><p dir="ltr" lang="en">What it should show</p></th> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Web application screenshots</p></td> 
+        <td><p dir="ltr" lang="en">Implemented pages and navigation</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Function screenshots or short recordings</p></td> 
+        <td><p dir="ltr" lang="en">Main web functions working</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Supabase evidence</p></td> 
+        <td><p dir="ltr" lang="en">Required information retrieved or updated through ASP.NET</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">GitHub commits</p></td> 
+        <td><p dir="ltr" lang="en">Development progress and contributions</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Updated Microsoft Project</p></td> 
+        <td><p dir="ltr" lang="en">Current development progress</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Updated Project Progress Tracker</p></td> 
+        <td><p dir="ltr" lang="en">Completed tasks, contributions and challenges</p></td> 
+       </tr> 
+      </tbody> 
+     </table> 
+     <br> 
+     <p dir="ltr" lang="en">Do not include passwords, secret keys or confidential personal information in your evidence.</p> 
+     <h2 dir="ltr" lang="en">Activity Outcome</h2> 
+     <p dir="ltr" lang="en">A working ASP.NET web application with the approved pages, navigation and main functions implemented.</p> 
+     <p dir="ltr" lang="en">The application must connect to the shared Supabase backend and be ready for integration with the Flutter mobile application.</p> 
+     <h2 dir="ltr" lang="en">Before Moving On</h2> 
+     <p dir="ltr" lang="en">Confirm that your group has:</p> 
+     <ul> 
+      <li dir="ltr" lang="en">implemented the approved web pages and navigation;</li> 
+      <li dir="ltr" lang="en">developed the required forms and web functions;</li> 
+      <li dir="ltr" lang="en">connected ASP.NET to the shared Supabase backend;</li> 
+      <li dir="ltr" lang="en">checked the main functions using suitable test data;</li> 
+      <li dir="ltr" lang="en">retained evidence of the working web application;</li> 
+      <li dir="ltr" lang="en">committed relevant code to GitHub; and</li> 
+      <li dir="ltr" lang="en">updated Microsoft Project and the Project Progress Tracker.</li> 
+     </ul> 
+     <p dir="ltr" lang="en">Next: Activity 4.4: Integrate the Mobile and Web Applications.</p> 
+    </div> 
+   </div> 
+  </div>  
+ </body>
+</html>

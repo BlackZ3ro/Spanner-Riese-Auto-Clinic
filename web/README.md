@@ -26,7 +26,14 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
    dotnet user-secrets set "Supabase:Url" "https://<project-ref>.supabase.co"
    dotnet user-secrets set "Supabase:AnonKey" "<anon-public-key>"
    ```
-4. Run the application:
+4. Optional, once the site is online: set the public address so the
+   **Send on WhatsApp** message can link customers to the tracking page
+   (leave it blank while the app only runs on a staff computer - the message
+   then tells the customer to use the app's "I'm a customer" screen):
+   ```bash
+   dotnet user-secrets set "PublicSiteUrl" "https://<your-public-address>"
+   ```
+5. Run the application:
    ```bash
    dotnet run
    ```
@@ -34,7 +41,38 @@ access/auth/realtime. See `CLAUDE.md` for the full context and ground rules.
    Without credentials configured, it still starts (read-only pages that need
    Supabase just won't have data yet).
 
-## Try this build (new since M8 - quick checklist for anyone testing)
+## Run it online (Vercel)
+
+The app runs on Vercel as a container (`Dockerfile.vercel`, Vercel's Container
+Runtime). Vercel project: **riese-auto-clinic** (root directory `web`,
+framework "Container"). Public address once deployed:
+`https://riese-auto-clinic.vercel.app` (check the exact address Vercel gives
+after the first deploy and update `PublicSiteUrl` if it differs).
+
+1. In the Vercel project's **Settings > Environment Variables** (Production),
+   add `Supabase__Url` and `Supabase__AnonKey` (the same values as the user
+   secrets; anon/public key only, never the service-role key).
+   Also add `DataProtection__Secret`: any long random text (40+ characters),
+   kept private. Every container then uses the same encryption key, so the
+   login form doesn't fail with HTTP 400 and staff aren't logged out when
+   Vercel starts a new container (`Auth/FixedKeyRepository.cs`).
+   `PublicSiteUrl` is already set.
+2. Deploy from the repo root on any computer with Node.js:
+   ```bash
+   npx vercel link --project riese-auto-clinic
+   npx vercel deploy --prod
+   ```
+   Or connect the GitHub repo in the Vercel project (Settings > Git) so every
+   push to `main` deploys by itself.
+3. Open `/Track` and log in as staff to check.
+
+Notes: the container sleeps after 5 minutes without visitors, so the first
+page after a quiet spell takes a few seconds (open it before a demo). After it
+wakes up, staff stay logged in as long as `DataProtection__Secret` is set. Tested locally with Docker:
+`docker build -f Dockerfile.vercel -t spanner-web .` then
+`docker run -p 8080:80 -e Supabase__Url=... -e Supabase__AnonKey=... spanner-web`.
+
+ (new since M8 - quick checklist for anyone testing)
 
 Needs migrations `0004` and `0005` applied first for the "Add part" and
 "Delete booking" steps below to fully work (see "Still pending" at the end of
@@ -67,6 +105,13 @@ not written down here on purpose). Log in as each to see the difference:
    of the registration plate.
 8. Go to **Stock > Add a part** and type a brand-new category or supplier
    name instead of picking one from the dropdown.
+9. **Send on WhatsApp** (new 16 Oct 2026, Mr G's feedback): book in a vehicle
+   using your own phone number as the customer's. On the booking page, under
+   the invoice number, the **Customer reference code** box has a **Send on
+   WhatsApp** button. It opens WhatsApp with the code already typed in; tap
+   Send and check it arrives. Change the phase (e.g. *Finished - ready for
+   pickup*) and the same button now sends that status update; after
+   **Finalize & close** it sends a thank-you with the invoice number.
 
 ## Status
 

@@ -31,6 +31,14 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
     // for why this is a config allowlist and not a real roles table.
     public bool IsAdmin => config.IsAdmin(User.Identity?.Name);
 
+    // "Send on WhatsApp": click-to-chat link with the reference code (or the
+    // current status) typed in - see Services/CustomerWhatsApp.cs. PublicSiteUrl
+    // is only set once the site is online, so the message can link to /Track.
+    public string? WhatsAppUrl => Booking is { ReferenceCode.Length: > 0 } b
+        ? CustomerWhatsApp.Link(b, config["PublicSiteUrl"])
+        : null;
+    public bool WhatsAppNumberKnown => CustomerWhatsApp.ToWhatsAppNumber(Booking?.CustomerPhone) is not null;
+
     public Booking? Booking { get; private set; }
     public List<Job> Jobs { get; private set; } = new();
     public string? LoadError { get; private set; }

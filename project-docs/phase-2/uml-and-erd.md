@@ -9,6 +9,21 @@ not re-designing.
 
 ## Part 1 — Use Case Diagram
 
+> **UPDATED 16 Oct 2026 after the Phase 2 presentation (Mr G's feedback).**
+> The customer side is now a proper set of use cases, not one oval:
+> - **Track repair status** (reference code, web `/Track` or the app)
+>   `«include»`s **Check reference code in Supabase** (the
+>   `get_booking_by_reference_code` call) and **View phase, parts and labour**;
+>   **Show "code not found"** `«extend»`s it for a wrong or unknown code.
+> - **Get phase updates on the phone** (push, subscribe with the reference code)
+>   also `«include»`s the Supabase check (`register_push_token` refuses unknown codes).
+> - **Message customer on WhatsApp** (new staff use case, both roles): staff send
+>   the reference code after book-in, then status updates. The Customer receives
+>   it; **WhatsApp** is shown as an external `«system»` actor. It uses WhatsApp's
+>   free click-to-chat link, so the zero-budget rule still holds (see Change 12
+>   in `CHANGELOG.md`).
+> - Login lines now meet Login at its ends, so no line crosses another use case.
+
 > **FINAL STRUCTURE — 23 Sept 2026 (supersedes the layout described below).**
 > Reference image: `diagrams/usecase-restructured.png`. Sequence references:
 > `diagrams/seq-1-book-in-vehicle-flutter.png`, `seq-1b-book-in-vehicle-web.png`,
@@ -200,6 +215,27 @@ deliberately doesn't). Target: working by end of day 23 Sept.
 
 ## Part 2 — Sequence Diagrams (at least one Flutter, one ASP.NET)
 
+> **UPDATED 16 Oct 2026: communication with the customer (Mr G's feedback).**
+> Mr G asked for the communication with the client to be part of the
+> sequences, and described the customer's own sequence: "I open the app, I
+> select that I'm a client, then I enter [the code], then I see [the status]".
+> - **Book in (Flutter and ASP.NET):** new section 3, *Communication with the
+>   customer*. The booking row comes back with its `reference_code`; staff tap
+>   **Send on WhatsApp**, WhatsApp opens with the message filled in (code and
+>   tracking link), staff tap Send and the customer receives it. `alt`: no
+>   WhatsApp, so the code goes on the booking slip. The web button is built;
+>   the mobile button is still to build (same link).
+> - **Admin finalize:** finalize also sets `phase = 'finalized'`, so the
+>   database webhook sends the customer a push notification; staff can send a
+>   thank-you message with the invoice number on WhatsApp.
+> - **New: Customer checks the status and gets updates**
+>   (`seq-5-customer-updates`, page 14 of `spanner-all-designs.drawio`):
+>   open the app, *I'm a customer*, enter the code,
+>   `get_booking_by_reference_code` checks it in Supabase (`alt` found / not
+>   found), the phone subscribes with `register_push_token`; staff change the
+>   phase (`update_booking_phase`), the webhook pushes the change, staff send a
+>   WhatsApp update, and the customer refreshes and sees the new step.
+
 > **Superseded 23 Sept.** The current reference sequence diagrams are the PNGs
 > in `diagrams/` with editable draw.io versions in `diagrams/editable/`:
 > book in a vehicle (Flutter and web, Login first), admin finalize, admin
@@ -267,16 +303,18 @@ added mid-project and the 28 Sept additions (`booking_labor`, `profiles`,
 
 ```mermaid
 erDiagram
-    CUSTOMERS ||--o{ BOOKINGS : "books in"
+    CUSTOMERS |o--o{ BOOKINGS : "has"
+    AUTH_USERS |o--o{ BOOKINGS : "records (created_by)"
     BOOKINGS ||--o{ JOBS : "has"
     BOOKINGS ||--o{ BOOKING_PARTS : "uses"
-    BOOKINGS ||--o{ BOOKING_LABOR : "mobile labour"
+    BOOKINGS ||--o{ BOOKING_LABOR : "logs labour"
     BOOKINGS ||--o{ BOOKING_PUSH_TOKENS : "notifies"
-    AUTH_USERS ||--|| PROFILES : "has role"
-    STOCK_ITEMS ||--o{ BOOKING_PARTS : "used in"
+    AUTH_USERS ||--o| PROFILES : "has role"
+    AUTH_USERS |o--o{ STOCK_MOVEMENTS : "records"
+    STOCK_ITEMS ||--o{ BOOKING_PARTS : "fitted as"
     STOCK_ITEMS ||--o{ STOCK_MOVEMENTS : "tracked by"
-    CATEGORIES ||--o{ STOCK_ITEMS : "classifies"
-    SUPPLIERS ||--o{ STOCK_ITEMS : "supplies"
+    CATEGORIES |o--o{ STOCK_ITEMS : "classifies"
+    SUPPLIERS |o--o{ STOCK_ITEMS : "supplies"
 
     CUSTOMERS {
         uuid id PK
@@ -304,10 +342,11 @@ erDiagram
         text customer_company
         text status "checked_in / closed"
         text phase "booked_in ... finalized (28 Sept)"
-        text reference_code "random, unique - customer lookup (28 Sept)"
+        text reference_code UK "random, unique - customer lookup (28 Sept)"
         text invoice_number "DB-generated sequence, e.g. INV-00005"
         timestamptz created_at
         timestamptz closed_at
+        uuid created_by FK "staff who booked it in, default auth.uid() (migration 0010)"
     }
     JOBS {
         uuid id PK
@@ -346,7 +385,7 @@ erDiagram
         int quantity
         numeric cost_at_time
         text reference
-        uuid user_id
+        uuid user_id FK "auth.users.id of the staff member"
         timestamptz timestamp
     }
     CATEGORIES {
@@ -384,6 +423,26 @@ erDiagram
 ```
 
 ### Notes for the write-up
+
+- **Redrawn 16 Oct 2026 after Ms Mbele's Phase 2 feedback** ("fix the ERD signs
+  and lines"). Every line now runs from the primary key row of the "one" table
+  to the foreign key row of the "many" table, with right-angled lines and one
+  crow's-foot symbol per end (legend on the diagram). The parent end is
+  "zero or one" wherever the foreign key is optional (`bookings.customer_id`,
+  `stock_items.category_id`, `stock_items.supplier_id`,
+  `stock_movements.user_id`) and "exactly one" where it is `not null`
+  (every `booking_id`, `booking_parts.stock_item_id`,
+  `stock_movements.item_id`). Added the missing `auth.users` to
+  `stock_movements.user_id` line ("records"). The PNG is now rendered from the
+  `.drawio` file itself, so the picture and the editable source always match.
+- **Also from the 16 Oct recording.** Ms Mbele read the customers line
+  ("books in") as if the customer uses the system, and asked "where is the
+  mechanic here?" and how staff populate the tables. The line is now "has",
+  the legend says customers never log in and staff type their details in,
+  and `bookings.created_by` (migration `0010`, default `auth.uid()`, no app
+  change needed) links each booking to the staff member who booked it in:
+  `auth.users` (staff login) --records--> `bookings`. **Gary must run 0010**
+  on the live project for this column to exist.
 
 - `bookings` also keeps denormalized `customer_name`/`customer_phone`/
   `customer_email`/`customer_company` columns alongside the `customer_id`

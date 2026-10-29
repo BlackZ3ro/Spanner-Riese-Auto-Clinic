@@ -2,6 +2,7 @@
 @model Spanner.Web.Pages.Track.IndexModel
 @{
     ViewData["Title"] = "Track your vehicle";
+    ViewData["Description"] = "Riese Auto-Clinic: enter the reference code from your booking slip or WhatsApp message to see where your vehicle is, with no login.";
     var b = Model.Booking;
     var current = Model.CurrentIndex;
 }
@@ -10,7 +11,7 @@
     <div class="track-head">
         <div class="track-brand">Riese Auto-Clinic</div>
         <h1>Track your vehicle</h1>
-        <p>Enter the reference code from your booking slip to see where your vehicle is.</p>
+        <p>Enter the reference code from your booking slip or WhatsApp message to see where your vehicle is.</p>
 
         <form method="get" class="track-form" role="search">
             <label for="code" class="visually-hidden">Reference code</label>

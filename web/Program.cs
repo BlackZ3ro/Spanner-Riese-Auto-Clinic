@@ -1,5 +1,7 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Spanner.Web.Auth;
 using Spanner.Web.Configuration;
 using Spanner.Web.Services;
@@ -39,6 +41,30 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 builder.Services.AddAuthorization();
 
+// Hosted on Vercel (Dockerfile.vercel), requests arrive through Vercel's
+// proxy over plain HTTP. Trust its X-Forwarded-* headers so the app knows the
+// visitor really used HTTPS (absolute links, the link-preview image) and sees
+// their IP. Vercel's proxy addresses aren't fixed, hence the cleared lists.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
+// Same encryption key in every container on Vercel, so a login form or
+// login cookie made by one container still works on the next (see
+// Auth/FixedKeyRepository.cs). Without the setting (e.g. running locally)
+// ASP.NET keeps its default per-machine keys.
+var dataProtectionSecret = builder.Configuration["DataProtection:Secret"];
+if (!string.IsNullOrWhiteSpace(dataProtectionSecret))
+{
+    builder.Services.AddDataProtection()
+        .SetApplicationName("Spanner.Web")
+        .AddKeyManagementOptions(options => options.XmlRepository = new FixedKeyRepository(dataProtectionSecret))
+        .DisableAutomaticKeyGeneration();
+}
+
 builder.Services.Configure<SupabaseSettings>(
     builder.Configuration.GetSection(SupabaseSettings.SectionName));
 
@@ -76,6 +102,8 @@ builder.Services.AddHttpClient<VehicleImageService>(client =>
 });
 
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

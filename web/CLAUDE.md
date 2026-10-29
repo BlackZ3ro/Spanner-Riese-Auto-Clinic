@@ -392,3 +392,40 @@ and migrate the other, or have both apps write to both) before this gets
 used for more real invoices. Did not attempt to silently merge them into one
 total myself since that's a real business-logic/data-migration decision, not
 something to guess at from the app layer.
+
+### Send on WhatsApp (16 Oct 2026, Phase 2 presentation feedback)
+
+Mr G asked for "a little button that sends the codes" to the customer on
+WhatsApp, to be shown at the final presentation. Built on the booking
+details page: a **Customer reference code** box with a **Send on WhatsApp**
+button (`Services/CustomerWhatsApp.cs`).
+
+- Uses WhatsApp's free **click-to-chat** link (`https://wa.me/<number>?text=...`),
+  not the paid WhatsApp Business (Cloud) API, which charges per message for
+  messages the business starts. That keeps the SRS's zero-budget rule. The
+  link opens WhatsApp on the staff member's phone or computer with the
+  message typed in; they check it and tap Send. Nothing is stored, no keys.
+- The message follows the booking: the reference code at book-in, a status
+  update in later phases (same labels and wording as `/Track`, the app and
+  the push notification), a thank-you with the invoice number once closed.
+- Phone numbers: a 10-digit local number starting with 0 becomes `27...`;
+  `+27`/`0027`/`27` and other international numbers are kept. Anything it
+  can't be sure of opens WhatsApp's contact picker instead of guessing.
+- `PublicSiteUrl` (appsettings / user-secrets, blank by default): once the
+  site is online, the message links to `/Track?code=...`. While it's blank
+  the message points the customer to the app's "I'm a customer" screen,
+  because a localhost link is useless to them.
+- Verified: `dotnet build` 0 warnings / 0 errors; the phone, message and
+  link logic checked against 24 cases (SA and foreign formats, every
+  phase, closed, missing name/registration, unusable number). The booking
+  page itself needs a staff login against the live project, so it still
+  needs a click-through by someone with the credentials.
+- Mobile still needs the same button (url_launcher + the same link) - with
+  Gary.
+
+Also for Mr G's "Riese doesn't come up on Google": public pages are now
+titled "... - Riese Auto-Clinic" and `/Track` has a description and link
+preview tags (`og:*`), used by Google and by WhatsApp's link preview. Getting
+onto Google Search/Maps itself needs a Google Business Profile, which only
+the owner can claim - see `project-docs/phase-2/google-business-profile.md`.
+
