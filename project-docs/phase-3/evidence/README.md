@@ -34,6 +34,7 @@ The same screenshots with captions: `Spanner implementation evidence (30 Oct 202
 | m24-stock-item-part-decreased.png | Ponytail Test Part: 2 on hand (was 3 before the part was added to the booking). | FR-04, FR-10 |
 | m25-home-mechanic-role.png | Home screen, signed in as Mechanic. | FR-12, FR-17 |
 | m26-closed-booking-mechanic-no-reopen-delete.png | Closed booking as a mechanic: only "Export / print invoice", no Reopen or Delete. | FR-17 |
+| m27-pull-to-refresh-before-after.png | Pull-to-refresh on the bookings list: the left half shows a booking at "Book-in & inspection"; its phase was then changed in the database (as the website would); after pulling down the list the right half shows "Reassembly", without restarting the app. Other customers are cropped out. | FR-09, shared process P1/P2 |
 
 ## Website (`web/`)
 
@@ -59,6 +60,6 @@ The same screenshots with captions: `Spanner implementation evidence (30 Oct 202
 ## Known limitations seen
 
 - Labour was in two tables (found 30 Oct: phone R350, website R0). Fixed the same day: one table, booking_labor; w04, w12 and w16 retaken on the live site.
-- Flutter has no live updates (reload to see website changes).
+- Flutter has no live updates; pull the list or a booking down to reload it (m27, added 30 Oct).
 - Push notifications and fingerprint login need a physical Android phone.
 - Vehicle reference photo could not load in the capture environment.

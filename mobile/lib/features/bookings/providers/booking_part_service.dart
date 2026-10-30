@@ -1,14 +1,19 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../stock/providers/stock_item_provider.dart';
 import '../../stock/models/stock_movement.dart';
 import '../../stock/providers/stock_movement_service.dart';
-import '../models/booking_part.dart';
 import 'booking_parts_provider.dart';
 
 class BookingPartService {
   BookingPartService(this.ref);
   final Ref ref;
 
-  Future<BookingPart> allocatePart({
+  // One database call (add_booking_part, migration 0004): it checks the stock,
+  // lowers it, saves the part and writes the stock movement in a single
+  // transaction, the same function the website uses. If anything fails, nothing
+  // is saved, so stock can never end up out of step with the booking.
+  Future<void> allocatePart({
     required String bookingId,
     required String stockItemId,
     required int quantity,
@@ -16,24 +21,27 @@ class BookingPartService {
     required double costPrice,
     required String registration,
   }) async {
-    final repo = ref.read(bookingPartRepositoryProvider);
+    final client = Supabase.instance.client;
+    final userId = client.auth.currentUser?.id;
+    if (userId == null) {
+      throw Exception('You are signed out. Sign in again to add a part.');
+    }
 
-    final part = await repo.add(
-      bookingId: bookingId, 
-      stockItemId: stockItemId, 
-      quantity: quantity, 
-      unitPrice: customerPrice,
-      );
+    final rows = await client.rpc('add_booking_part', params: {
+      'p_booking_id': bookingId,
+      'p_stock_item_id': stockItemId,
+      'p_qty': quantity,
+      'p_unit_price': customerPrice,
+      'p_user_id': userId,
+      'p_reference': 'Booking $registration',
+    });
 
-      await ref.read(stockMovementServiceProvider).recordMovement(
-        itemId: stockItemId, 
-        type: MovementType.stockOut, 
-        quantity: quantity, 
-        costAtTime: costPrice,
-        reference: 'Booking $registration',
-        );
-
-        return part;
+    final result = (rows is List && rows.isNotEmpty) ? rows.first as Map : const {};
+    if (result['ok'] != true) {
+      throw Exception('Not enough stock (${result['quantity_on_hand'] ?? 0} left).');
+    }
+    ref.invalidate(bookingPartsProvider(bookingId));
+    ref.invalidate(stockItemProvider);
   }
 
   Future<void> removePart({

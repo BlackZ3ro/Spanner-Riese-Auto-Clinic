@@ -136,25 +136,47 @@ class _BookingsListScreenState extends ConsumerState<BookingsListScreen>
   }
 }
 
-class _BookingListView extends StatelessWidget {
+class _BookingListView extends ConsumerWidget {
   const _BookingListView({required this.bookings, required this.emptyMessage});
 
   final List<VehicleBooking> bookings;
   final String emptyMessage;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Pull down to reload from Supabase, so changes made on the website or by
+    // another mechanic show up without restarting the app.
+    Future<void> refresh() async {
+      ref.invalidate(vehicleBookingProvider);
+      await ref.read(vehicleBookingProvider.future);
+    }
+
     if (bookings.isEmpty) {
-      return Center(
-        child: Text(emptyMessage, style: AppText.body(14, color: AppColors.textMuted)),
+      return RefreshIndicator(
+        onRefresh: refresh,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          children: [
+            SizedBox(
+              height: 240,
+              child: Center(
+                child: Text(emptyMessage, style: AppText.body(14, color: AppColors.textMuted)),
+              ),
+            ),
+          ],
+        ),
       );
     }
-    return ListView.separated(
-      // Bottom padding keeps the last card clear of the + button.
-      padding: const EdgeInsets.fromLTRB(16, 14, 16, 96),
-      itemCount: bookings.length,
-      separatorBuilder: (_, _) => const SizedBox(height: 10),
-      itemBuilder: (_, index) => _BookingTile(booking: bookings[index]),
+    return RefreshIndicator(
+      onRefresh: refresh,
+      child: ListView.separated(
+        physics: const AlwaysScrollableScrollPhysics(),
+        // Bottom padding keeps the last card clear of the + button.
+        padding: const EdgeInsets.fromLTRB(16, 14, 16, 96),
+        itemCount: bookings.length,
+        separatorBuilder: (_, _) => const SizedBox(height: 10),
+        itemBuilder: (_, index) => _BookingTile(booking: bookings[index]),
+      ),
     );
   }
 }

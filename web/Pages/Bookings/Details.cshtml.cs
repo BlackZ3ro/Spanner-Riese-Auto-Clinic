@@ -29,7 +29,7 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
     // Admin-only gating (Finalize, Delete) checks this, server-side, on every
     // POST that needs it - never just hide the button. See Auth/AdminAccess.cs
     // for why this is a config allowlist and not a real roles table.
-    public bool IsAdmin => config.IsAdmin(User.Identity?.Name);
+    public bool IsAdmin => config.IsAdmin(User);
 
     // "Send on WhatsApp": click-to-chat link with the reference code (or the
     // current status) typed in - see Services/CustomerWhatsApp.cs. PublicSiteUrl
