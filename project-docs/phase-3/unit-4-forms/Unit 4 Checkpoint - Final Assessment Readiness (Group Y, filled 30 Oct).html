@@ -134,13 +134,13 @@
         <td><p dir="ltr" lang="en">Your process 1</p></td> 
         <td><p dir="ltr" lang="en">P1: Book-in reaches the other app. Staff book in a vehicle; reopen it to see the part added on the web</p></td> 
         <td><p dir="ltr" lang="en">The booking appears on the dashboard; staff add a part</p></td> 
-        <td><p dir="ltr" lang="en">Partly. Flutter to web works (both read the same table). Web to Flutter needs pull-to-refresh (P3-25). Not yet recorded end to end.</p></td> 
+        <td><p dir="ltr" lang="en">Yes (30 Oct): phone booking, part and labour open on the web with stock reduced (m09-m16, w04, m24). The phone needs a reload to show web changes. Recording still to capture.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Your process 2</p></td> 
         <td><p dir="ltr" lang="en">P2: Repair progress reaches the customer. The customer enters the reference code and sees the phase; staff can also change it</p></td> 
         <td><p dir="ltr" lang="en">Staff change the phase and send it on WhatsApp; Track shows it</p></td> 
-        <td><p dir="ltr" lang="en">Built in both apps through the same database function; access rule live (0008). Not yet recorded end to end (needs a staff login).</p></td> 
+        <td><p dir="ltr" lang="en">Yes (30 Oct): phase changed on the web is seen by the customer on the phone and /Track (w10, m17, w14); finalized on the phone and seen on the web. Recording still to capture.</p></td> 
        </tr> 
       </tbody> 
      </table> 
@@ -172,73 +172,73 @@
         <td><p dir="ltr" lang="en">FR-01 Book in a vehicle</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Book-in screen and page</p></td> 
-        <td><p dir="ltr" lang="en">Yes on the web (M2, M8). Flutter not re-checked in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Yes on both (30 Oct: m08-m10, w05).</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">FR-02, FR-05, FR-06 Jobs, labour and totals</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Labour lines and booking total</p></td> 
-        <td><p dir="ltr" lang="en">Works in each app, but labour is in two tables (being merged).</p></td> 
+        <td><p dir="ltr" lang="en">Yes on both. One labour table since 30 Oct (booking_labor).</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">FR-03, FR-10 Stock</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Stock pages and screens</p></td> 
-        <td><p dir="ltr" lang="en">Yes on the web (M3). Flutter not re-checked in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Yes on both (30 Oct: m23, w06).</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">FR-04 Parts used on a booking</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Add part</p></td> 
-        <td><p dir="ltr" lang="en">Web: temporary workaround until migration 0009. Flutter: works but not one transaction.</p></td> 
+        <td><p dir="ltr" lang="en">Yes on both (30 Oct: m11, m12, w04). Web uses the database function; Flutter makes three calls.</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">FR-07, FR-08 Invoice PDF</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Invoice download</p></td> 
-        <td><p dir="ltr" lang="en">Yes on the web (M5). Flutter not re-checked in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Yes on both (30 Oct: w16 and the PDF).</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">FR-09 Shared data</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">One Supabase project; web live reload</p></td> 
-        <td><p dir="ltr" lang="en">Web yes. Flutter needs pull-to-refresh.</p></td> 
+        <td><p dir="ltr" lang="en">Web yes. Flutter needs a reload (no live updates or pull-to-refresh).</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">FR-11, FR-13 Vehicle history and image</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Vehicle history search</p></td> 
-        <td><p dir="ltr" lang="en">Yes on the web (M6).</p></td> 
+        <td><p dir="ltr" lang="en">Yes on the web (M6); the photo did not load in the capture environment.</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">FR-12 Staff login</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Supabase Auth login</p></td> 
-        <td><p dir="ltr" lang="en">Yes (wrong-password message fixed 20 Oct).</p></td> 
+        <td><p dir="ltr" lang="en">Yes (30 Oct: m04, m05, m25, w01, w02).</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">FR-14 Customer tracking</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Track page; I'm a customer screen</p></td> 
-        <td><p dir="ltr" lang="en">Yes on the web (checked 20 Oct). Flutter not re-checked.</p></td> 
+        <td><p dir="ltr" lang="en">Yes on both (30 Oct: m02, m03, m17, w09, w14). Michael Riese confirmed it 30 Oct.</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">FR-15, FR-16 Phases and push</p></td> 
         <td><p dir="ltr" lang="en">Both (push: Flutter, Android)</p></td> 
         <td><p dir="ltr" lang="en">Phase selector; push notification</p></td> 
-        <td><p dir="ltr" lang="en">Built in both; not re-checked while logged in in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Phases yes on both (30 Oct: m13, m14, w10). Push not tested: needs a real Android phone.</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">FR-17, FR-18 Admin-only actions; delete with restock</p></td> 
         <td><p dir="ltr" lang="en">Both</p></td> 
         <td><p dir="ltr" lang="en">Finalize, delete, reopen</p></td> 
-        <td><p dir="ltr" lang="en">Delete enforced in the database. Finalize and reopen checked by the apps; database check ready (0011), not yet run.</p></td> 
+        <td><p dir="ltr" lang="en">Yes (30 Oct): delete restocks; finalize, reopen and delete are admin-only in the database (0007, 0011); mechanic refused (m26, w15).</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">Send on WhatsApp (Phase 2 feedback)</p></td> 
         <td><p dir="ltr" lang="en">ASP.NET (Flutter to follow)</p></td> 
         <td><p dir="ltr" lang="en">Send on WhatsApp button</p></td> 
-        <td><p dir="ltr" lang="en">Web built (message logic checked); Flutter not built yet.</p></td> 
+        <td><p dir="ltr" lang="en">Yes on both (30 Oct: m09, w12, whatsapp-message.txt).</p></td> 
        </tr> 
       </tbody> 
      </table> 
@@ -256,33 +256,39 @@
         <th><p dir="ltr" lang="en">Status</p></th> 
        </tr> 
        <tr> 
-        <td><p dir="ltr" lang="en">Migrations 0009, 0004, 0010, 0011 not yet run (0008 is live)</p></td> 
-        <td><p dir="ltr" lang="en">Run in the Supabase SQL editor; send the check-query results</p></td> 
+        <td><p dir="ltr" lang="en">Migrations 0009, 0004, 0010, 0011 not yet run</p></td> 
+        <td><p dir="ltr" lang="en">Run on the shared project</p></td> 
         <td><p dir="ltr" lang="en">Gary</p></td> 
-        <td><p dir="ltr" lang="en">Open</p></td> 
+        <td><p dir="ltr" lang="en">Done (confirmed 30 Oct)</p></td> 
        </tr> 
        <tr> 
+        <td><p dir="ltr" lang="en">Labour in two tables</p></td> 
+        <td><p dir="ltr" lang="en">One table, booking_labor; web moved over</p></td> 
+        <td><p dir="ltr" lang="en">Wisani</p></td> 
+        <td><p dir="ltr" lang="en">Done 30 Oct (PR #21)</p></td> 
+       </tr> 
+       <tr> 
+        <td><p dir="ltr" lang="en">Send on WhatsApp missing in Flutter</p></td> 
+        <td><p dir="ltr" lang="en">Built by Gary</p></td> 
+        <td><p dir="ltr" lang="en">Gary</p></td> 
+        <td><p dir="ltr" lang="en">Done 30 Oct</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Web app not yet online</p></td> 
+        <td><p dir="ltr" lang="en">Deployed on Vercel from main</p></td> 
+        <td><p dir="ltr" lang="en">Wisani</p></td> 
+        <td><p dir="ltr" lang="en">Done (redeployed 30 Oct)</p></td> 
+       </tr> 
+      <tr> 
         <td><p dir="ltr" lang="en">Flutter does not reload data</p></td> 
         <td><p dir="ltr" lang="en">Add pull-to-refresh</p></td> 
         <td><p dir="ltr" lang="en">Gary</p></td> 
         <td><p dir="ltr" lang="en">Open</p></td> 
        </tr> 
-       <tr> 
-        <td><p dir="ltr" lang="en">Labour in two tables</p></td> 
-        <td><p dir="ltr" lang="en">Choose one table; move the other app over</p></td> 
-        <td><p dir="ltr" lang="en">Wisani and Gary</p></td> 
-        <td><p dir="ltr" lang="en">Open (decision at the 20 Oct meeting)</p></td> 
-       </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">Admin role read from two places</p></td> 
         <td><p dir="ltr" lang="en">Web reads the role from profiles</p></td> 
         <td><p dir="ltr" lang="en">Wisani</p></td> 
-        <td><p dir="ltr" lang="en">Open</p></td> 
-       </tr> 
-      <tr> 
-        <td><p dir="ltr" lang="en">Send on WhatsApp missing in Flutter</p></td> 
-        <td><p dir="ltr" lang="en">Build the button with the same message</p></td> 
-        <td><p dir="ltr" lang="en">Gary</p></td> 
         <td><p dir="ltr" lang="en">Open</p></td> 
        </tr> 
       <tr> 
@@ -292,21 +298,15 @@
         <td><p dir="ltr" lang="en">Open</p></td> 
        </tr> 
       <tr> 
-        <td><p dir="ltr" lang="en">Leaked Firebase key</p></td> 
+        <td><p dir="ltr" lang="en">Leaked Firebase key (uploaded a third time)</p></td> 
         <td><p dir="ltr" lang="en">Revoke it in Google Cloud</p></td> 
         <td><p dir="ltr" lang="en">Gary</p></td> 
         <td><p dir="ltr" lang="en">Open</p></td> 
        </tr> 
       <tr> 
-        <td><p dir="ltr" lang="en">Web app online</p></td> 
-        <td><p dir="ltr" lang="en">Done: live at riese-auto-clinic.vercel.app; login HTTP 400 fixed</p></td> 
-        <td><p dir="ltr" lang="en">Wisani</p></td> 
-        <td><p dir="ltr" lang="en">Done 20 Oct</p></td> 
-       </tr> 
-      <tr> 
-        <td><p dir="ltr" lang="en">Logged-in evidence and the P1/P2 recording</p></td> 
-        <td><p dir="ltr" lang="en">Screenshots and recording with dummy data</p></td> 
-        <td><p dir="ltr" lang="en">Ofentse, Breyton, Kea</p></td> 
+        <td><p dir="ltr" lang="en">The P1/P2 recording; push and fingerprint on a real phone</p></td> 
+        <td><p dir="ltr" lang="en">Record with dummy data; test on an Android phone</p></td> 
+        <td><p dir="ltr" lang="en">Kea, Breyton</p></td> 
         <td><p dir="ltr" lang="en">Open</p></td> 
        </tr> 
       </tbody> 

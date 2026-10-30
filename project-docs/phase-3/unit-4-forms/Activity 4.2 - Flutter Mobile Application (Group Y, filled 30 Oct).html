@@ -140,7 +140,12 @@
       <tr> 
         <td><p dir="ltr" lang="en">Send the reference code on WhatsApp</p></td> 
         <td><p dir="ltr" lang="en">Phase 2 feedback (Mr G, 16 Oct)</p></td> 
-        <td><p dir="ltr" lang="en">Booking details (still to build)</p></td> 
+        <td><p dir="ltr" lang="en">Booking details (send-reference sheet)</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Sign in with a fingerprint</p></td> 
+        <td><p dir="ltr" lang="en">FR-12; Login</p></td> 
+        <td><p dir="ltr" lang="en">Login</p></td> 
        </tr> 
       </tbody> 
      </table> 
@@ -261,48 +266,48 @@
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Application launches successfully</p></td> 
-        <td><p dir="ltr" lang="en">Not yet checked in Phase 3 (no Flutter SDK on the machine used for the 20 Oct checks).</p></td> 
-        <td><p dir="ltr" lang="en">Breyton: run on a phone with the shared .env and screenshot, by 25 Oct.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: built with Flutter 3.47 and run (web build at phone size) against the live project.</p></td> 
+        <td><p dir="ltr" lang="en">Run on a real Android phone before the demo.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Main screens display correctly</p></td> 
-        <td><p dir="ltr" lang="en">Not yet checked in Phase 3.</p></td> 
-        <td><p dir="ltr" lang="en">Screenshot every screen listed in Step 1.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: 26 screenshots (project-docs/phase-3/evidence/mobile, m01-m26).</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Navigation works</p></td> 
-        <td><p dir="ltr" lang="en">Not yet checked in Phase 3.</p></td> 
-        <td><p dir="ltr" lang="en">Role choice &gt; login &gt; home &gt; bookings &gt; details; I'm a customer &gt; status.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: welcome &gt; staff sign in &gt; home &gt; bookings &gt; details &gt; stock; customer code &gt; status.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Forms validate input</p></td> 
-        <td><p dir="ltr" lang="en">Code checked: book-in and login use required-field validators. Not yet seen on a phone.</p></td> 
-        <td><p dir="ltr" lang="en">Leave a required field empty and screenshot the message.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: "Enter a whole number" and "Required" messages on the book-in form (m07).</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Mobile application connects to Supabase</p></td> 
-        <td><p dir="ltr" lang="en">Configured for the shared project (same project URL as the web app, .env set 20 Oct). Not yet run.</p></td> 
-        <td><p dir="ltr" lang="en">Confirm the bookings list loads.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: the home screen shows the same 9 open jobs as the website (m05).</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Required records can be saved</p></td> 
-        <td><p dir="ltr" lang="en">Not yet checked in Phase 3.</p></td> 
-        <td><p dir="ltr" lang="en">Book in a dummy vehicle and show the row in Supabase.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: dummy booking, part and labour saved (m08-m16); the website shows the same rows (w04).</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Required records can be retrieved</p></td> 
-        <td><p dir="ltr" lang="en">Partly: lists load once and do not reload (found 20 Oct), so web changes do not appear until the app restarts.</p></td> 
-        <td><p dir="ltr" lang="en">Gary: add pull-to-refresh (tracker P3-25) by 24 Oct.</p></td> 
+        <td><p dir="ltr" lang="en">Yes after a reload: the customer screen and lists show the web change (m17-m19). Lists still have no pull-to-refresh.</p></td> 
+        <td><p dir="ltr" lang="en">Gary: add pull-to-refresh (tracker P3-25).</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Authentication works, where required</p></td> 
-        <td><p dir="ltr" lang="en">Not yet checked in Phase 3.</p></td> 
-        <td><p dir="ltr" lang="en">Log in as admin and as mechanic.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: admin (m05) and mechanic (m25) both sign in.</p></td> 
+        <td><p dir="ltr" lang="en">Fingerprint login on a real phone.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Access restrictions work as intended</p></td> 
-        <td><p dir="ltr" lang="en">Database side checked live 20 Oct: anonymous calls to staff functions refused. App hides admin actions for mechanics (code).</p></td> 
-        <td><p dir="ltr" lang="en">Log in as mechanic and confirm there is no finalize or delete.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: a mechanic sees no Reopen or Delete on a closed booking (m26); the database refuses a mechanic's update of a closed booking (0 rows) and anonymous staff calls.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
       </tbody> 
      </table> 

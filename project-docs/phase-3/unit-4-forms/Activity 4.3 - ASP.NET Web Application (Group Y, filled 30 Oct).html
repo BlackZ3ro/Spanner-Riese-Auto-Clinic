@@ -114,9 +114,9 @@
         <td><p dir="ltr" lang="en">Booking details</p></td> 
        </tr> 
       <tr> 
-        <td><p dir="ltr" lang="en">Labour hours and rate, complete a job</p></td> 
+        <td><p dir="ltr" lang="en">Labour lines (work, hours, rate) on the booking; complete a job</p></td> 
         <td><p dir="ltr" lang="en">FR-05</p></td> 
-        <td><p dir="ltr" lang="en">Job details</p></td> 
+        <td><p dir="ltr" lang="en">Booking details, Job details</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">Change the booking phase</p></td> 
@@ -313,23 +313,23 @@
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Web application launches successfully</p></td> 
-        <td><p dir="ltr" lang="en">Yes, 20 Oct, against the live shared Supabase project.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct, against the live shared Supabase project and on Vercel.</p></td> 
         <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Main pages display correctly</p></td> 
-        <td><p dir="ltr" lang="en">Login and Track: yes (screenshots, desktop and phone). Staff pages not checked 20 Oct (need a staff login).</p></td> 
-        <td><p dir="ltr" lang="en">Ofentse: screenshot every staff page by 25 Oct.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: 16 screenshots of login, dashboard, booking, stock, Track, closed bookings and the invoice (evidence/web).</p></td> 
+        <td><p dir="ltr" lang="en">None. (w04, w12, w16 retaken after the labour change.)</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Navigation works</p></td> 
-        <td><p dir="ltr" lang="en">Yes: pages that need a login send visitors to the login page; Login and Track link to each other.</p></td> 
-        <td><p dir="ltr" lang="en">Check the menu links while logged in.</p></td> 
+        <td><p dir="ltr" lang="en">Yes: logged-out visitors go to the login page; staff move between dashboard, bookings, stock and closed bookings.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Forms validate user input</p></td> 
-        <td><p dir="ltr" lang="en">Yes: login shows messages for empty fields; Track rejects a malformed code.</p></td> 
-        <td><p dir="ltr" lang="en">Book-in form: leave fields empty while logged in.</p></td> 
+        <td><p dir="ltr" lang="en">Yes: login and Track show messages; the book-in and labour forms reject empty or invalid values.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Web application connects to Supabase</p></td> 
@@ -338,23 +338,23 @@
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Required records can be retrieved</p></td> 
-        <td><p dir="ltr" lang="en">Yes for the public reference-code lookup (unknown code handled). Staff lists not checked 20 Oct.</p></td> 
-        <td><p dir="ltr" lang="en">Check the dashboard and booking pages while logged in.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: dashboard, booking details, stock, closed bookings and Track all load live data.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Records can be created or updated where required</p></td> 
-        <td><p dir="ltr" lang="en">Not checked 20 Oct (needs a staff login). Worked in earlier milestones M2-M5.</p></td> 
-        <td><p dir="ltr" lang="en">Book in a dummy vehicle, add a part (needs migration 0009), change the phase.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: job added, phase changed, labour added and removed, booking finalized; invoice PDF generated.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Authentication works, where required</p></td> 
-        <td><p dir="ltr" lang="en">Wrong password rejected; message fixed 20 Oct (was a raw technical error). Correct login not tested 20 Oct.</p></td> 
-        <td><p dir="ltr" lang="en">Log in as admin and as mechanic.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: wrong password shows "Incorrect email or password."; admin and mechanic both log in.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">User access restrictions work as intended</p></td> 
-        <td><p dir="ltr" lang="en">Yes: logged-out visitors are redirected; the database refuses anonymous staff functions (checked live 20 Oct).</p></td> 
-        <td><p dir="ltr" lang="en">Confirm a mechanic cannot finalize, delete or reopen.</p></td> 
+        <td><p dir="ltr" lang="en">Yes, 30 Oct: logged-out visitors are redirected; a mechanic sees no Finalize, Reopen or Delete (w15) and the database refuses the update.</p></td> 
+        <td><p dir="ltr" lang="en">None.</p></td> 
        </tr> 
       </tbody> 
      </table> 
