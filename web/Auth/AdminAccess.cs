@@ -10,6 +10,17 @@ namespace Spanner.Web.Auth;
 // per environment via appsettings.json / user-secrets, not hardcoded in code.
 public static class AdminAccess
 {
+    // The role comes from profiles.role, read at login (the same source as the
+    // mobile app). Sessions without that claim (profile unreadable, or a login
+    // from before this change) fall back to the email allowlist below.
+    public static bool IsAdmin(this IConfiguration config, System.Security.Claims.ClaimsPrincipal user)
+    {
+        var role = user.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+        return role is not null
+            ? string.Equals(role, "admin", StringComparison.OrdinalIgnoreCase)
+            : config.IsAdmin(user.Identity?.Name);
+    }
+
     public static bool IsAdmin(this IConfiguration config, string? email)
     {
         if (string.IsNullOrEmpty(email))

@@ -76,7 +76,17 @@ class BookingDetailScreen extends ConsumerWidget {
     final partsTotal = parts.fold<double>(0, (sum, p) => sum + (p.unitPrice * p.quantity));
     final laborTotal = labor.fold<double>(0, (sum, l) => sum + l.price);
 
-    return ListView(
+    return RefreshIndicator(
+      // Pull down to reload this booking, its parts and its labour from Supabase.
+      onRefresh: () async {
+        ref.invalidate(bookingPartsProvider(booking.id));
+        ref.invalidate(bookingLaborProvider(booking.id));
+        ref.invalidate(stockItemProvider);
+        ref.invalidate(vehicleBookingProvider);
+        await ref.read(vehicleBookingProvider.future);
+      },
+      child: ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       children: [
         VehiclePhoto(imageUrl: booking.imageUrl),
@@ -249,6 +259,7 @@ class BookingDetailScreen extends ConsumerWidget {
         ],
         const SizedBox(height: 8),
       ],
+      ),
     );
   }
 

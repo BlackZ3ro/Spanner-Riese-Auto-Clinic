@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Spanner.Web.Auth;
+using Spanner.Web.Models;
 
 namespace Spanner.Web.Pages.Account;
 
@@ -51,6 +52,14 @@ public class LoginModel(Supabase.Client supabase) : PageModel
                 new(SupabaseClaimTypes.AccessToken, session.AccessToken),
                 new(SupabaseClaimTypes.RefreshToken, session.RefreshToken),
             };
+
+            // Same role the mobile app uses (profiles.role). If it can't be read
+            // the claim is left out and AdminAccess falls back to the email list.
+            var role = await ReadRoleAsync(session.User?.Id);
+            if (role is not null)
+            {
+                claims.Add(new Claim(ClaimTypes.Role, role));
+            }
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             await HttpContext.SignInAsync(
@@ -69,6 +78,26 @@ public class LoginModel(Supabase.Client supabase) : PageModel
                 ? "Incorrect email or password."
                 : $"Couldn't sign in: {ex.Message}";
             return Page();
+        }
+    }
+
+    private async Task<string?> ReadRoleAsync(string? userId)
+    {
+        if (!Guid.TryParse(userId, out var id))
+        {
+            return null;
+        }
+
+        try
+        {
+            var profile = await supabase.From<Profile>()
+                .Filter("id", Supabase.Postgrest.Constants.Operator.Equals, id.ToString())
+                .Single();
+            return profile?.Role?.Trim().ToLowerInvariant();
+        }
+        catch
+        {
+            return null;
         }
     }
 }
