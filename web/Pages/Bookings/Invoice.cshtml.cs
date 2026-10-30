@@ -31,8 +31,9 @@ public class InvoiceModel(Supabase.Client supabase) : PageModel
 
         try
         {
-            var jobs = (await supabase.From<Job>()
+            var labor = (await supabase.From<BookingLabor>()
                 .Filter("booking_id", Constants.Operator.Equals, id.ToString())
+                .Order("created_at", Constants.Ordering.Ascending)
                 .Get()).Models;
 
             var parts = (await supabase.From<BookingPart>()
@@ -50,7 +51,7 @@ public class InvoiceModel(Supabase.Client supabase) : PageModel
                     .Filter("id", Constants.Operator.In, stockItemIds)
                     .Get()).Models.ToDictionary(s => s.Id, s => s);
 
-            var document = new BookingInvoiceDocument(booking, jobs, parts, stockItems);
+            var document = new BookingInvoiceDocument(booking, labor, parts, stockItems);
             var pdfBytes = document.GeneratePdf();
 
             var registrationSlug = booking.Registration?.Replace(" ", "") ?? booking.Id.ToString();

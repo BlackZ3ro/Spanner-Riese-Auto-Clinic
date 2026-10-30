@@ -12,7 +12,7 @@ namespace Spanner.Web.Services;
 /// </summary>
 public class BookingInvoiceDocument(
     Booking booking,
-    List<Job> jobs,
+    List<BookingLabor> labor,
     List<BookingPart> parts,
     Dictionary<Guid, StockItem> stockItemsById) : IDocument
 {
@@ -85,8 +85,7 @@ public class BookingInvoiceDocument(
                     details.Item().Text($"Transmission: {booking.TransmissionType}");
                 });
 
-                var labourJobs = jobs.Where(j => j.LabourHours is not null && j.LabourRate is not null).ToList();
-                if (labourJobs.Count > 0)
+                if (labor.Count > 0)
                 {
                     column.Item().Column(section =>
                     {
@@ -103,19 +102,18 @@ public class BookingInvoiceDocument(
 
                             table.Header(header =>
                             {
-                                header.Cell().Text("Job").Bold();
+                                header.Cell().Text("Work").Bold();
                                 header.Cell().Text("Hours").Bold();
                                 header.Cell().Text("Rate").Bold();
                                 header.Cell().Text("Total").Bold();
                             });
 
-                            foreach (var job in labourJobs)
+                            foreach (var line in labor)
                             {
-                                var cost = job.LabourHours!.Value * job.LabourRate!.Value;
-                                table.Cell().Text(job.JobType);
-                                table.Cell().Text(job.LabourHours!.Value.ToString("0.##"));
-                                table.Cell().Text(job.LabourRate!.Value.ToString("C"));
-                                table.Cell().Text(cost.ToString("C"));
+                                table.Cell().Text(line.Description);
+                                table.Cell().Text(line.Hours.ToString("0.##"));
+                                table.Cell().Text(line.Rate.ToString("C"));
+                                table.Cell().Text(line.Price.ToString("C"));
                             }
                         });
                     });
@@ -158,7 +156,7 @@ public class BookingInvoiceDocument(
                 }
 
                 var partsTotal = parts.Sum(p => p.UnitPrice * p.Quantity);
-                var labourTotal = labourJobs.Sum(j => j.LabourHours!.Value * j.LabourRate!.Value);
+                var labourTotal = labor.Sum(l => l.Price);
                 var grandTotal = partsTotal + labourTotal;
 
                 column.Item().AlignRight().Column(totals =>

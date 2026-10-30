@@ -68,13 +68,30 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
     // both hours and rate recorded (regardless of completion status). See
     // web/CLAUDE.md for why this diverges from the build plan's per-job total.
     public decimal PartsTotal => PartsUsed.Sum(p => p.UnitPrice * p.Quantity);
-    public decimal LabourTotal => Jobs.Where(j => j.LabourHours is not null && j.LabourRate is not null)
-        .Sum(j => j.LabourHours!.Value * j.LabourRate!.Value);
+    // Labour comes from booking_labor, the same ledger the mobile app uses, so both
+    // apps always show the same total.
+    public List<BookingLabor> LaborLines { get; private set; } = new();
+    public string? LaborError { get; private set; }
+    public decimal LabourTotal => LaborLines.Sum(l => l.Price);
     public decimal GrandTotal => PartsTotal + LabourTotal;
 
     [BindProperty]
     [Required(ErrorMessage = "Enter a job type.")]
     public string NewJobType { get; set; } = string.Empty;
+
+    [BindProperty]
+    [Required(ErrorMessage = "Describe the work.")]
+    public string NewLabourDescription { get; set; } = string.Empty;
+
+    [BindProperty]
+    [Required(ErrorMessage = "Enter hours worked.")]
+    [Range(0.25, 999, ErrorMessage = "Enter hours between 0.25 and 999.")]
+    public decimal? NewLabourHours { get; set; }
+
+    [BindProperty]
+    [Required(ErrorMessage = "Enter an hourly rate.")]
+    [Range(0, 100000, ErrorMessage = "Enter a valid rate.")]
+    public decimal? NewLabourRate { get; set; } = 350m;
 
     [BindProperty]
     [Required(ErrorMessage = "Select a part.")]
@@ -277,6 +294,78 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
             // way rather than leaking which case it was.
             LoadError = "Incorrect password - booking not reopened.";
             return Page();
+        }
+
+        return RedirectToPage(new { id });
+    }
+
+    // Labour (FR-05): one line in booking_labor, exactly what the mobile app writes.
+    public async Task<IActionResult> OnPostAddLabourAsync(Guid id)
+    {
+        await LoadAsync(id);
+        if (Booking is null)
+        {
+            return NotFound();
+        }
+
+        if (Booking.Status == "closed")
+        {
+            LoadError = "This booking is closed - reopen it to add labour.";
+            return Page();
+        }
+
+        foreach (var key in ModelState.Keys.Where(k => !k.StartsWith("NewLabour")).ToList())
+        {
+            ModelState.Remove(key);
+        }
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
+
+        try
+        {
+            await supabase.From<BookingLabor>().Insert(new BookingLabor
+            {
+                BookingId = id,
+                Description = NewLabourDescription.Trim(),
+                Hours = NewLabourHours!.Value,
+                Rate = NewLabourRate!.Value,
+                Price = NewLabourHours.Value * NewLabourRate.Value,
+            });
+        }
+        catch (Exception ex)
+        {
+            LaborError = $"Couldn't add labour: {ex.Message}";
+            return Page();
+        }
+
+        return RedirectToPage(new { id });
+    }
+
+    public async Task<IActionResult> OnPostRemoveLabourAsync(Guid id, Guid laborId)
+    {
+        ModelState.Clear();
+        await LoadAsync(id);
+        if (Booking is null)
+        {
+            return NotFound();
+        }
+
+        if (Booking.Status != "closed")
+        {
+            try
+            {
+                await supabase.From<BookingLabor>()
+                    .Filter("id", Constants.Operator.Equals, laborId.ToString())
+                    .Filter("booking_id", Constants.Operator.Equals, id.ToString())
+                    .Delete();
+            }
+            catch (Exception ex)
+            {
+                LaborError = $"Couldn't remove that labour line: {ex.Message}";
+                return Page();
+            }
         }
 
         return RedirectToPage(new { id });
@@ -532,6 +621,7 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
         {
             await LoadJobsAsync(id);
         }
+        await LoadLaborAsync(id);
         await LoadPartsAsync(id);
     }
 
@@ -550,6 +640,21 @@ public class DetailsModel(Supabase.Client supabase, IConfiguration config) : Pag
             // Most likely: the `jobs` table doesn't exist yet in this Supabase project
             // (see web/CLAUDE.md and supabase/migrations/0001_create_jobs_table.sql).
             JobsError = $"Couldn't load jobs for this booking: {ex.Message}";
+        }
+    }
+
+    private async Task LoadLaborAsync(Guid id)
+    {
+        try
+        {
+            LaborLines = (await supabase.From<BookingLabor>()
+                .Filter("booking_id", Constants.Operator.Equals, id.ToString())
+                .Order("created_at", Constants.Ordering.Ascending)
+                .Get()).Models;
+        }
+        catch (Exception ex)
+        {
+            LaborError = $"Couldn't load labour for this booking: {ex.Message}";
         }
     }
 

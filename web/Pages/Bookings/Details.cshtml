@@ -146,7 +146,6 @@
                 <tr>
                     <th>Job type</th>
                     <th>Status</th>
-                    <th>Labour</th>
                     <th>Added</th>
                 </tr>
             </thead>
@@ -156,7 +155,6 @@
                     <tr>
                         <td><a asp-page="/Jobs/Details" asp-route-id="@job.Id">@job.JobType</a></td>
                         <td>@job.Status</td>
-                        <td>@(job.LabourHours is { } h && job.LabourRate is { } r ? (h * r).ToString("C") : "-")</td>
                         <td>@job.CreatedAt.ToLocalTime().ToString("dd MMM yyyy")</td>
                     </tr>
                 }
@@ -172,6 +170,68 @@
                 <button type="submit" class="btn btn-outline-primary">Add job</button>
             </div>
             <span asp-validation-for="NewJobType" class="text-danger"></span>
+        </form>
+    }
+
+    <h2 class="h4 mt-4">Labour</h2>
+
+    @if (!string.IsNullOrEmpty(Model.LaborError))
+    {
+        <div class="alert alert-info">@Model.LaborError</div>
+    }
+
+    @if (Model.LaborLines.Count == 0)
+    {
+        <p><em>No labour added to this booking yet.</em></p>
+    }
+    else
+    {
+        <table class="table table-sm table-striped col-md-8">
+            <thead>
+                <tr><th>Work</th><th>Hours</th><th>Rate</th><th>Line total</th>@if (isOpen) { <th></th> }</tr>
+            </thead>
+            <tbody>
+                @foreach (var line in Model.LaborLines)
+                {
+                    <tr>
+                        <td>@line.Description</td>
+                        <td>@line.Hours.ToString("0.##")</td>
+                        <td>@line.Rate.ToString("C")</td>
+                        <td>@line.Price.ToString("C")</td>
+                        @if (isOpen)
+                        {
+                            <td>
+                                <form method="post" asp-page-handler="RemoveLabour" asp-route-laborId="@line.Id" onsubmit="return confirm('Remove this labour line?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Remove</button>
+                                </form>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    @if (isOpen)
+    {
+        <form method="post" asp-page-handler="AddLabour" class="col-md-8 mt-3">
+            <div class="row g-2">
+                <div class="col-md-5">
+                    <input asp-for="NewLabourDescription" class="form-control" placeholder="e.g. Brake pad replacement" />
+                    <span asp-validation-for="NewLabourDescription" class="text-danger"></span>
+                </div>
+                <div class="col-4 col-md-2">
+                    <input asp-for="NewLabourHours" class="form-control" type="number" step="0.25" placeholder="Hours" />
+                    <span asp-validation-for="NewLabourHours" class="text-danger"></span>
+                </div>
+                <div class="col-4 col-md-3">
+                    <input asp-for="NewLabourRate" class="form-control" type="number" step="0.01" placeholder="Rate per hour" />
+                    <span asp-validation-for="NewLabourRate" class="text-danger"></span>
+                </div>
+                <div class="col-4 col-md-2">
+                    <button type="submit" class="btn btn-outline-primary w-100">Add</button>
+                </div>
+            </div>
         </form>
     }
 
