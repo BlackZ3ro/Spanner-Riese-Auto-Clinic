@@ -33,26 +33,14 @@
         <div class="alert alert-danger">@Model.SaveError</div>
     }
 
-    <form method="post" class="col-md-5">
-        <div class="mb-3">
-            <label asp-for="LabourHours" class="form-label">Labour hours</label>
-            <input asp-for="LabourHours" class="form-control" type="number" step="0.25" />
-            <span asp-validation-for="LabourHours" class="text-danger"></span>
-        </div>
-        <div class="mb-3">
-            <label asp-for="LabourRate" class="form-label">Labour rate (per hour)</label>
-            <input asp-for="LabourRate" class="form-control" type="number" step="0.01" />
-            <span asp-validation-for="LabourRate" class="text-danger"></span>
-        </div>
+    <p class="text-muted col-md-6">Labour is recorded on the booking itself, so the phone and the website always show the same total.</p>
 
-        @if (Model.LabourCost is { } cost)
-        {
-            <p class="fs-5">Labour cost: <strong>@cost.ToString("C")</strong></p>
-        }
-
-        <button type="submit" asp-page-handler="SaveHours" class="btn btn-outline-primary">Save hours</button>
-        <button type="submit" asp-page-handler="MarkComplete" class="btn btn-primary">Mark job complete</button>
-    </form>
+    @if (job.Status != "completed")
+    {
+        <form method="post" class="col-md-5">
+            <button type="submit" asp-page-handler="MarkComplete" class="btn btn-primary">Mark job complete</button>
+        </form>
+    }
 
     <p class="mt-4"><a asp-page="/Bookings/Details" asp-route-id="@job.BookingId">&larr; Back to booking</a></p>
 }
