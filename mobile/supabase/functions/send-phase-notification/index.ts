@@ -61,7 +61,13 @@ Deno.serve(async (req) => {
       {
         method: 'POST',
         headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: { token: fcm_token, notification: { title, body } } }),
+        body: JSON.stringify({
+          message: {
+            token: fcm_token,
+            notification: {title, body},
+            data: {reference_code : String(record.reference_code)}
+          }
+        }),
       },
     )
   }
