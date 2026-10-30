@@ -75,7 +75,7 @@
         <td><p dir="ltr" lang="en">P1: Book-in reaches the other app</p></td> 
         <td><p dir="ltr" lang="en">Staff book in a vehicle; later reopen it and see the part added on the web, with stock reduced</p></td> 
         <td><p dir="ltr" lang="en">The booking appears on the dashboard; staff open it and add a part</p></td> 
-        <td><p dir="ltr" lang="en">bookings, customers, booking_parts, stock_items, stock_movements</p></td> 
+        <td><p dir="ltr" lang="en">bookings, customers, booking_parts, booking_labor, stock_items, stock_movements</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">P2: Repair progress reaches the customer</p></td> 
@@ -141,12 +141,12 @@
        <tr> 
         <td><p dir="ltr" lang="en">Required database tables</p></td> 
         <td><p dir="ltr" lang="en">bookings, customers, booking_parts, booking_labor, stock_items, stock_movements, categories, suppliers, profiles, booking_push_tokens</p></td> 
-        <td><p dir="ltr" lang="en">bookings, customers, booking_parts, jobs, stock_items, stock_movements, categories, suppliers</p></td> 
+        <td><p dir="ltr" lang="en">bookings, customers, booking_parts, booking_labor, jobs, stock_items, stock_movements, categories, suppliers</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Appropriate authentication</p></td> 
         <td><p dir="ltr" lang="en">Supabase Auth email and password; role read from profiles</p></td> 
-        <td><p dir="ltr" lang="en">Supabase Auth email and password; each request runs as that staff member; admin from a configured list (moving to profiles)</p></td> 
+        <td><p dir="ltr" lang="en">Supabase Auth email and password; each request runs as that staff member; admin from a configured list (profiles still to be used)</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Required database operations</p></td> 
@@ -155,7 +155,7 @@
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Approved user permissions</p></td> 
-        <td><p dir="ltr" lang="en">Admin-only actions hidden for mechanics; the database enforces admin-only delete and staff-only functions</p></td> 
+        <td><p dir="ltr" lang="en">Admin-only actions hidden for mechanics; the database enforces admin-only finalize, reopen and delete (0007, 0011) and staff-only functions</p></td> 
         <td><p dir="ltr" lang="en">Admin checked on the server for finalize, delete and reopen; the same database rules apply</p></td> 
        </tr> 
       </tbody> 
@@ -215,7 +215,7 @@
       <tr> 
         <td><p dir="ltr" lang="en">Labour</p></td> 
         <td><p dir="ltr" lang="en">Saved in booking_labor</p></td> 
-        <td><p dir="ltr" lang="en">Saved in jobs (hours x rate). Not consistent yet: the group is choosing one table</p></td> 
+        <td><p dir="ltr" lang="en">Saved in booking_labor (same table, decided and changed 30 Oct)</p></td> 
        </tr> 
       </tbody> 
      </table> 
@@ -250,17 +250,17 @@
        <tr> 
         <td><p dir="ltr" lang="en">Mobile user</p></td> 
         <td><p dir="ltr" lang="en">Access their permitted functions and information</p></td> 
-        <td><p dir="ltr" lang="en">Staff log in with Supabase Auth; admin-only actions are hidden for mechanics. Not yet re-checked on a phone in Phase 3.</p></td> 
+        <td><p dir="ltr" lang="en">Staff log in with Supabase Auth; admin-only actions are hidden for mechanics (m25, m26); checked 30 Oct.</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Web user</p></td> 
         <td><p dir="ltr" lang="en">Access their permitted functions and information</p></td> 
-        <td><p dir="ltr" lang="en">Admin checked on the server for finalize, delete and reopen; logged-out visitors are sent to the login page (checked 20 Oct).</p></td> 
+        <td><p dir="ltr" lang="en">Admin checked on the server for finalize, delete and reopen; logged-out visitors are sent to the login page; checked 30 Oct (w15).</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Unauthorised user</p></td> 
         <td><p dir="ltr" lang="en">Cannot access restricted records or functions</p></td> 
-        <td><p dir="ltr" lang="en">Checked live 20 Oct: anonymous visitors read no rows and cannot run update_booking_phase, add_booking_part or delete_booking_and_restock (permission denied). Database check for finalize and reopen is ready (migration 0011) but not yet run.</p></td> 
+        <td><p dir="ltr" lang="en">Checked live 20 and 30 Oct: anonymous visitors read no rows and cannot run update_booking_phase, add_booking_part or delete_booking_and_restock (permission denied). Finalize and reopen are also refused for a mechanic by the database (0011, run; checked 30 Oct: 0 rows changed).</p></td> 
        </tr> 
       </tbody> 
      </table> 
@@ -281,22 +281,22 @@
        <tr> 
         <td><p dir="ltr" lang="en">New request does not appear in ASP.NET</p></td> 
         <td><p dir="ltr" lang="en">Incorrect query or connection</p></td> 
-        <td><p dir="ltr" lang="en">Not seen: the web app reads the bookings table on every page load, and the dashboard reloads by itself when data changes (checked 20 Oct).</p></td> 
+        <td><p dir="ltr" lang="en">Not seen: a booking made on the phone opened on the website with the same code, part and phase (w04); the dashboard also reloads by itself (checked 30 Oct).</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Updated status is not shown in Flutter</p></td> 
         <td><p dir="ltr" lang="en">Information was not retrieved again</p></td> 
-        <td><p dir="ltr" lang="en">Found 20 Oct: Flutter keeps its lists in memory and has no refresh. Gary is adding pull-to-refresh (tracker P3-25).</p></td> 
+        <td><p dir="ltr" lang="en">Seen 30 Oct: the phone shows a web change after a reload (m17-m19); lists have no pull-to-refresh yet (tracker P3-25).</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">A user cannot retrieve an authorised record</p></td> 
         <td><p dir="ltr" lang="en">Incorrect access policy or query</p></td> 
-        <td><p dir="ltr" lang="en">Web "Add part" failed (error 42804, an old copy of the database function). The web uses a workaround; Gary runs migration 0009.</p></td> 
+        <td><p dir="ltr" lang="en">Web "Add part" failed earlier (error 42804, an old copy of the database function). Fixed: migrations 0009 and 0004 run (30 Oct).</p></td> 
        </tr> 
        <tr> 
         <td><p dir="ltr" lang="en">Information is displayed incorrectly</p></td> 
         <td><p dir="ltr" lang="en">Different field names or data formats</p></td> 
-        <td><p dir="ltr" lang="en">Labour is stored in two tables (jobs and booking_labor), so the two invoices can differ. The group is choosing one table.</p></td> 
+        <td><p dir="ltr" lang="en">Labour was stored in two tables, so the two invoices differed (R370 on the phone, R20 on the web, 30 Oct). Fixed the same day: the web now uses booking_labor (PR #21).</p></td> 
        </tr> 
       <tr> 
         <td><p dir="ltr" lang="en">A phase could be changed without logging in</p></td> 
@@ -307,6 +307,16 @@
         <td><p dir="ltr" lang="en">Wrong password showed a technical error message</p></td> 
         <td><p dir="ltr" lang="en">The raw Supabase error was shown to staff</p></td> 
         <td><p dir="ltr" lang="en">Fixed 20 Oct: the login page now shows "Incorrect email or password."</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">Phone and website invoices disagreed on labour</p></td> 
+        <td><p dir="ltr" lang="en">Labour was saved in two tables</p></td> 
+        <td><p dir="ltr" lang="en">Fixed 30 Oct: one table, booking_labor (PR #21).</p></td> 
+       </tr> 
+      <tr> 
+        <td><p dir="ltr" lang="en">The mobile app did not build from GitHub</p></td> 
+        <td><p dir="ltr" lang="en">The pubspec listed riese_logo.png that was never uploaded</p></td> 
+        <td><p dir="ltr" lang="en">Fixed 30 Oct: logo asset added (PR #20).</p></td> 
        </tr> 
       </tbody> 
      </table> 
